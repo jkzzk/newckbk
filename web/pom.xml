@@ -111,9 +111,32 @@
                 <jdbc.url>jdbc:oracle:thin:@192.168.198.128:1521:orcl</jdbc.url>
                 <jdbc.username>wwwckbk</jdbc.username>
                 <jdbc.password>wwwckbk</jdbc.password>
-<!--                <jdbc.url>jdbc:oracle:thin:@192.168.36.43:1521:URPJW</jdbc.url>
+                <max.active>30</max.active>
+                <initial.size>10</initial.size>
+                <max.wait>60000</max.wait>
+                <maxidle>20</maxidle>
+                <minidle>10</minidle>
+                <removeAbandoned.timeout>180</removeAbandoned.timeout>
+                <!-- 日志级别，一般由大到小分为 debug info warn error 四个级别，越大日志越详细 -->
+                <log4j.level>debug</log4j.level>
+                <!--日志存储路径，多个项目可以用同一个路径，在该路径下每个项目会自动创建以项目名称命名的子文件夹 -->
+                <log4j.path>D:/workspaces/logs</log4j.path>
+                <img.url>/upload</img.url>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>pro</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <project.compVersion>${project.version}</project.compVersion>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+                <jdbc.driver.className>oracle.jdbc.driver.OracleDriver</jdbc.driver.className>
+                <jdbc.url>jdbc:oracle:thin:@192.168.36.43:1521:URPJW</jdbc.url>
                 <jdbc.username>wwwckbk</jdbc.username>
-                <jdbc.password>wwwckbk</jdbc.password>-->
+                <jdbc.password>wwwckbk</jdbc.password>
                 <max.active>30</max.active>
                 <initial.size>10</initial.size>
                 <max.wait>60000</max.wait>

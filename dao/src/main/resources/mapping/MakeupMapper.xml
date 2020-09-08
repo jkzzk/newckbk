@@ -229,8 +229,8 @@
 			makup.if_make_up as ifMakeUp
 		FROM
 			makup
-			left join cj_all_kw_view on cj_all_kw_view.xh = makup.xh and cj_all_kw_view.kccj = makup.max_score and cj_all_kw_view.kch = makup.kch
-			left join code_zxjxjhxnxqxx on code_zxjxjhxnxqxx.zxjxjhh = makup.jxjhh
+			inner join cj_all_kw_view on cj_all_kw_view.xh = makup.xh and cj_all_kw_view.kccj = makup.max_score and cj_all_kw_view.kch = makup.kch
+			inner join code_zxjxjhxnxqxx on code_zxjxjhxnxqxx.zxjxjhh = makup.jxjhh
 		WHERE
 			makup.xh = #{xh}
 		ORDER BY
@@ -255,11 +255,11 @@
 		SELECT DISTINCT
 			cj_all_kw_view.kch as kch,
 			cj_all_kw_view.kcm as kcm,
-			cj_all_view.xf as xf,
+			cj_all_kw_view.xf as xf,
 			xs_cj_max.zgcj as maxScore
 		FROM
 			xs_cj_max
-			left join cj_all_kw_view on cj_all_kw_view.xh = xs_cj_max.xh and cj_all_kw_view.kccj = xs_cj_max.zgcj and cj_all_kw_view.kch = xs_cj_max.kch
+			inner join cj_all_kw_view on cj_all_kw_view.xh = xs_cj_max.xh and cj_all_kw_view.kccj = xs_cj_max.zgcj and cj_all_kw_view.kch = xs_cj_max.kch
 		WHERE
 			xs_cj_max.xh = #{xh} and  xs_cj_max.zgcj &lt; #{bkfs}
 			and cj_all_kw_view.kch not in(

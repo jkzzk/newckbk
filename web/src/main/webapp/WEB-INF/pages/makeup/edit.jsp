@@ -44,7 +44,7 @@
                         <input type="hidden" value="${courseMk.ifMakeUp}" id="${courseMk.makupId}">
                     </td>
                     <td>${courseEx.ifMakeUpName}</td>
-                    <td>${courseEx.ZXJXJHM}</td>
+                    <td>${courseEx.jxjhh}</td>
                     <td>${courseEx.kch}</td>
                     <td>${courseEx.kxh}</td>
                     <td>${courseEx.kcm}</td>

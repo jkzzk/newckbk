@@ -296,6 +296,10 @@ public class MakeupServiceImpl extends AbstractService<Makeup, String> implement
                 makeup.setId(String.valueOf(snowRakeIdGenerator.nextId()));
                 makeup.setXh(xh);
                 makeup.setXm(student.getXm());
+                makeup.setKch(makeupNoInsertDatum.getKch());
+                makeup.setKcm(makeupNoInsertDatum.getKcm());
+                makeup.setXf(makeupNoInsertDatum.getXf());
+                makeup.setMaxScore(makeupNoInsertDatum.getMaxScore());
                 makeup.setIfMakeUp((byte) 0);
                 makeup.setIfPay((byte) 0);
                 makeup.setJxjhh(effectiveSet.getSxqzxjxjhh());

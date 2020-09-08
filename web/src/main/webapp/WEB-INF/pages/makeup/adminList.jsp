@@ -62,7 +62,7 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
-            <input class="input-text upload-url radius" placeholder="请输入学号，打印追考证" type="text" name="add" id="add">
+            <input class="input-text upload-url radius" placeholder="请输入学号，增加补考课程" type="text" name="add" id="add">
             <a href="javascript:;" onclick="addExtra()" class="btn btn-success radius"><i class="Hui-iconfont f-18">&#xe6dc;</i> 新增</a>
             <a href="javascript:;" onclick="inPay()" class="btn btn-success radius"><i class="Hui-iconfont f-18">&#xe6dc;</i> 缴费</a>
             <a href="javascript:;" onclick="outPay()" class="btn btn-danger radius"><i class="Hui-iconfont f-18">&#xe6de;</i> 取消缴费</a>
