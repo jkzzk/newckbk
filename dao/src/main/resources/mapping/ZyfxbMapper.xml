@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.ZyfxbDao">
+    <resultMap id="zyfxbMap" type="com.imust.newckbk.domain.Zyfxb">
+        <result property="xh" column="xh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xm" column="xm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xsm" column="xsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zym" column="zym" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bjh" column="bjh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="nfxxsm" column="nfxxsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="nfxzym" column="nfxzym" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="lxdh" column="lxdh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zxjxjhh" column="zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		zyfxb.xh,
+		zyfxb.xm,
+		zyfxb.xsm,
+		zyfxb.zym,
+		zyfxb.bjh,
+		zyfxb.nfxxsm,
+		zyfxb.nfxzym,
+		zyfxb.lxdh,
+		zyfxb.zxjxjhh
+	</sql>
+	<delete id="deleteByIdArr">
+		delete from ZYFXB  makeup where xh in
+		<foreach collection="array" open="(" close=")" item="xh" separator=",">
+			#{xh}
+		</foreach>
+	</delete>
+	<select id="getById" resultMap="zyfxbMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from ZYFXB  zyfxb
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="zyfxbMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from ZYFXB  zyfxb
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="zyfxbMap" parameterType="com.imust.newckbk.domain.Zyfxb">
+		select <include refid="cols"/> from ZYFXB  zyfxb
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="zyfxbMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from ZYFXB  zyfxb
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from ZYFXB  zyfxb
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from ZYFXB  zyfxb
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from ZYFXB  zyfxb
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getByXh" resultType="com.imust.newckbk.domain.Zyfxb">
+		select
+			<include refid="cols"/>,
+			CODE_ZXJXJHXNXQXX.ZXJXJHM AS zxjxjhm
+		from
+			ZYFXB  zyfxb
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.zxjxjhh = zyfxb.zxjxjhh
+		where
+			zyfxb.xh = #{xh}
+	</select>
+	<select id="getExtByPage" resultType="com.imust.newckbk.domain.Zyfxb">
+		select
+			<include refid="cols"/>,
+			CODE_ZXJXJHXNXQXX.ZXJXJHM AS zxjxjhm
+		from
+			ZYFXB  zyfxb
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.zxjxjhh = zyfxb.zxjxjhh
+		<where>
+			<if test="xh != null and xh != ''">
+				and zyfxb.xh = #{xh}
+			</if>
+			<if test="xm != null and xm != ''">
+				and zyfxb.xm like concat('%',concat(#{xm},'%'))
+			</if>
+			<if test="xsm != null and xsm != ''">
+				and zyfxb.xsm like concat('%',concat(#{xsm},'%'))
+			</if>
+			<if test="zym != null and zym != ''">
+				and zyfxb.zym like concat('%',concat(#{zym},'%'))
+			</if>
+			<if test="bjh != null and bjh != ''">
+				and zyfxb.bjh like concat('%',concat(#{bjh},'%'))
+			</if>
+			<if test="nfxxsm != null and nfxxsm != ''">
+				and zyfxb.nfxxsm like concat('%',concat(#{nfxxsm},'%'))
+			</if>
+			<if test="nfxzym != null and nfxzym != ''">
+				and zyfxb.nfxzym like concat('%',concat(#{nfxzym},'%'))
+			</if>
+			<if test="lxdh != null and lxdh != ''">
+				and zyfxb.lxdh like concat('%',concat(#{lxdh},'%'))
+			</if>
+			<if test="zxjxjhh != null and zxjxjhh != ''">
+				and zyfxb.zxjxjhh = #{zxjxjhh}
+			</if>
+		</where>
+	</select>
+	<select id="getMakeupExcle" resultType="com.imust.newckbk.domain.excel.ZyfxbExcel">
+		select
+			<include refid="cols"/>,
+			CODE_ZXJXJHXNXQXX.ZXJXJHM AS zxjxjhm
+		from
+			ZYFXB  zyfxb
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.zxjxjhh = zyfxb.zxjxjhh
+		where
+			zyfxb.zxjxjhh = #{zxjxjhh}
+	</select>
+	<select id="getReportByXh" resultType="com.imust.newckbk.domain.report.ZyfxbReportExt">
+		select
+			<include refid="cols"/>,
+			CODE_ZXJXJHXNXQXX.ZXJXJHM AS zxjxjhm,
+			XS_XJXXB_VIEW_KW.xb AS xb
+		from
+			ZYFXB  zyfxb
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.zxjxjhh = zyfxb.zxjxjhh
+			LEFT JOIN XS_XJXXB_VIEW_KW ON XS_XJXXB_VIEW_KW.xh = zyfxb.xh
+		where
+			zyfxb.xh = #{xh}
+	</select>
+	<insert id="insert" parameterType="com.imust.newckbk.domain.Zyfxb" useGeneratedKeys="true" keyProperty="id">
+		insert into ZYFXB
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" xh != null and xh != ''">
+				xh,
+			</if>
+			<if test=" xm != null and xm != ''">
+				xm,
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				xsm,
+			</if>
+			<if test=" zym != null and zym != ''">
+				zym,
+			</if>
+			<if test=" bjh != null and bjh != ''">
+				bjh,
+			</if>
+			<if test=" nfxxsm != null and nfxxsm != ''">
+				nfxxsm,
+			</if>
+			<if test=" nfxzym != null and nfxzym != ''">
+				nfxzym,
+			</if>
+			<if test=" lxdh != null and lxdh != ''">
+				lxdh,
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" xh != null and xh != ''">
+				#{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xm != null and xm != ''">
+				#{xm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				#{xsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" zym != null and zym != ''">
+				#{zym,jdbcType=VARCHAR},
+			</if>
+			<if test=" bjh != null and bjh != ''">
+				#{bjh,jdbcType=VARCHAR},
+			</if>
+			<if test=" nfxxsm != null and nfxxsm != ''">
+				#{nfxxsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" nfxzym != null and nfxzym != ''">
+				#{nfxzym,jdbcType=VARCHAR},
+			</if>
+			<if test=" lxdh != null and lxdh != ''">
+				#{lxdh,jdbcType=VARCHAR},
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				#{zxjxjhh,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Zyfxb">
+		update ZYFXB zyfxb
+		<set>
+			<if test=" xm != null and xm != ''">
+				xm = #{xm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				xsm = #{xsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" zym != null and zym != ''">
+				zym = #{zym,jdbcType=VARCHAR},
+			</if>
+			<if test=" bjh != null and bjh != ''">
+				bjh = #{bjh,jdbcType=VARCHAR},
+			</if>
+			<if test=" nfxxsm != null and nfxxsm != ''">
+				nfxxsm = #{nfxxsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" nfxzym != null and nfxzym != ''">
+				nfxzym = #{nfxzym,jdbcType=VARCHAR},
+			</if>
+			<if test=" lxdh != null and lxdh != ''">
+				lxdh = #{lxdh,jdbcType=VARCHAR},
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh = #{zxjxjhh,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where xh= #{xh}
+	</update>
+    <update id="updateByMap">
+		update ZYFXB  zyfxb set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update ZYFXB zyfxb set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update ZYFXB zyfxb set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Zyfxb">
+		update ZYFXB zyfxb set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

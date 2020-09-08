@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.MakeupDao">
+    <resultMap id="makeupMap" type="com.imust.newckbk.domain.Makeup">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xh" column="xh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xm" column="xm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kch" column="kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kcm" column="kcm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xf" column="xf" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result property="maxScore" column="max_score" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result property="ifMakeUp" column="if_make_up" javaType="java.lang.Byte" jdbcType="TINYINT"/>
+        <result property="ifPay" column="if_pay" javaType="java.lang.Byte" jdbcType="TINYINT"/>
+        <result property="jxjhh" column="jxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		xh,
+		xm,
+		kch,
+		kcm,
+		xf,
+		max_score,
+		if_make_up,
+		if_pay,
+		jxjhh
+	</sql>
+	<delete id="deleteByIdArr">
+		delete from MAKUP  makeup where id in
+		<foreach collection="array" open="(" close=")" item="id" separator=",">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="getById" resultMap="makeupMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from MAKUP  makeup
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="makeupMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from MAKUP  makeup
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="makeupMap" parameterType="com.imust.newckbk.domain.Makeup">
+		select <include refid="cols"/> from MAKUP  makeup
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="makeupMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from MAKUP  makeup
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from MAKUP  makeup
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from MAKUP  makeup
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from MAKUP  makeup
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getMakeupCourse" resultType="com.imust.newckbk.domain.Makeup">
+		SELECT
+			BKKCXXB.jxjhh as jxjhh,
+			XS_XJXXB_VIEW_KW.xh AS xh,
+			XS_XJXXB_VIEW_KW.xm AS xm,
+			BKKCXXB.kch AS kch,
+			BKKCXXB.kcm AS kcm,
+			BKKCXXB.xf,
+			XS_CJ_MAX.ZGCJ AS maxScore,
+			0 as ifMakeUp,
+			0 as ifPay
+		FROM
+			XS_XJXXB_VIEW_KW
+			LEFT JOIN XS_CJ_MAX ON XS_CJ_MAX.xh = XS_XJXXB_VIEW_KW.xh
+			LEFT JOIN BKKCXXB ON BKKCXXB.kch = XS_CJ_MAX.kch
+			where
+				BKKCXXB.sfzzbk = '是'
+				and XS_XJXXB_VIEW_KW.xh = #{xh}
+				and XS_CJ_MAX.ZGCJ &lt;= #{bkfs}
+				and BKKCXXB.Jxjhh = #{zxjxjhh}
+				and BKKCXXB.kch not in (select kch from MAKUP where if_make_up = 1 and JXJHH = #{zxjxjhh} and xh = #{xh})
+	UNION
+		SELECT
+			BKKCXXB.jxjhh as jxjhh,
+			XS_XJXXB_VIEW_KW.xh AS xh,
+			XS_XJXXB_VIEW_KW.xm AS xm,
+			JH_KCTDB_VIEW.btdkch AS kch,
+			BKKCXXB.kcm AS kcm,
+			BKKCXXB.xf,
+			XS_CJ_MAX.ZGCJ AS maxScore,
+			0 as ifMakeUp,
+			0 as ifPay
+		FROM
+			XS_XJXXB_VIEW_KW
+			LEFT JOIN XS_CJ_MAX ON XS_CJ_MAX.xh = XS_XJXXB_VIEW_KW.xh
+			LEFT JOIN JH_KCTDB_VIEW ON JH_KCTDB_VIEW.BTDKCH = XS_CJ_MAX.kch and JH_KCTDB_VIEW.Zxjxjhh = #{zxjxjhh}
+			LEFT JOIN BKKCXXB ON BKKCXXB.kch = JH_KCTDB_VIEW.tdkch
+		WHERE
+			BKKCXXB.sfzzbk = '是'
+			and XS_XJXXB_VIEW_KW.xh = #{xh}
+			and XS_CJ_MAX.ZGCJ &lt;= #{bkfs}
+			and BKKCXXB.Jxjhh = #{zxjxjhh}
+			and BKKCXXB.kch not in (select kch from MAKUP where if_make_up = 1 and JXJHH = #{zxjxjhh} and xh = #{xh})
+	</select>
+	<select id="getByExt" resultType="com.imust.newckbk.domain.ext.MakeupExt">
+		select
+			MAKUP.id,
+			MAKUP.xh,
+			MAKUP.xm,
+			MAKUP.kch,
+			MAKUP.kcm,
+			MAKUP.xf,
+			MAKUP.max_score,
+			MAKUP.if_make_up,
+			MAKUP.if_pay,
+			CODE_ZXJXJHXNXQXX.zxjxjhm as ZXJXJHM
+		from
+			MAKUP
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.ZXJXJHH = MAKUP.JXJHH
+		<where>
+			<if test="zxjxjhh != null and zxjxjhh != ''">
+				and CODE_ZXJXJHXNXQXX.zxjxjhh = #{zxjxjhh}
+			</if>
+			<if test="xh != null and xh != ''">
+				and MAKUP.xh = #{xh}
+			</if>
+		</where>
+	</select>
+    <select id="getExtByPage" resultType="com.imust.newckbk.domain.ext.MakeupExt">
+		select
+			MAKUP.id,
+			MAKUP.xh,
+			MAKUP.xm,
+			MAKUP.kch,
+			MAKUP.kcm,
+			MAKUP.xf,
+			MAKUP.max_score,
+			MAKUP.if_make_up,
+			MAKUP.if_pay,
+			CODE_ZXJXJHXNXQXX.zxjxjhm as ZXJXJHM
+		from
+			MAKUP
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.ZXJXJHH = MAKUP.JXJHH
+		<where>
+			MAKUP.if_make_up = 1
+			<if test="zxjxjhh != null and zxjxjhh != ''">
+				and CODE_ZXJXJHXNXQXX.zxjxjhh = #{zxjxjhh}
+			</if>
+			<if test="xh != null and xh != ''">
+				and MAKUP.xh like concat('%',concat(#{xh},'%'))
+			</if>
+			<if test="xm != null and xm != ''">
+				and MAKUP.xm like concat('%',concat(#{xm},'%'))
+			</if>
+			<if test="kch != null and kch != ''">
+				and MAKUP.kch like concat('%',concat(#{kch},'%'))
+			</if>
+			<if test="kcm != null and kcm != ''">
+				and MAKUP.kcm like concat('%',concat(#{kcm},'%'))
+			</if>
+			<if test="xf != null and xf != ''">
+				and MAKUP.xf = #{xf}
+			</if>
+			<if test="maxScore != null and maxScore != ''">
+				and MAKUP.max_score = #{maxScore}
+			</if>
+		</where>
+	</select>
+	<select id="getMakeupExcle" resultType="com.imust.newckbk.domain.excel.MakeUPExcel">
+		select
+			MAKUP.xh as xh,
+			MAKUP.xm as xm,
+			MAKUP.kch as kch,
+			MAKUP.kcm as kcm,
+			MAKUP.xf as xf,
+			MAKUP.max_score as maxScore,
+			CODE_ZXJXJHXNXQXX.zxjxjhm as zxjxjhm,
+			CASE MAKUP.if_pay
+			WHEN 0 THEN '未缴费'
+			WHEN 1 THEN '已缴费'
+			ELSE '错误' END AS IFPAY
+		from
+			MAKUP
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.ZXJXJHH = MAKUP.JXJHH
+		where MAKUP.JXJHH = #{zxjxjhh} and MAKUP.if_make_up = 1
+	</select>
+    <select id="getMakeupReportList" resultType="com.imust.newckbk.domain.report.MakeUpReportList">
+		SELECT
+			MAKUP.kch AS KCH,
+			MAKUP.kcm AS KCM,
+			MAKUP.xf AS XF,
+			MAKUP.MAX_SCORE AS MAXSCORE,
+			CASE MAKUP.if_pay
+			WHEN 0 THEN '未缴费'
+			WHEN 1 THEN '已缴费'
+			ELSE '错误' END AS IFPAY
+		FROM
+			MAKUP
+		WHERE
+			MAKUP.if_make_up = 1 AND MAKUP.if_pay = 1 AND MAKUP.xh = #{xh}
+	</select>
+	<select id="getExtraCourse" resultType="com.imust.newckbk.domain.ext.BkkcxxbExt">
+		SELECT DISTINCT
+			makup.id as makupId,
+			code_zxjxjhxnxqxx.zxjxjhm as zxjxjhm,
+			cj_all_kw_view.xh as xh,
+			cj_all_kw_view.kch as kch,
+			cj_all_kw_view.kxh as kxh,
+			cj_all_kw_view.kcm as kcm,
+			cj_all_kw_view.kccj as kccj,
+			cj_all_kw_view.xf as xf,
+			cj_all_kw_view.xs as xs,
+			cj_all_kw_view.kcsxmc as kcsxmc,
+			cj_all_kw_view.kslxmc as kslxmc,
+			case makup.if_make_up
+			when 1 then '已报名'
+			when 0 then '未报名'
+			else '未报名' end as ifMakeUpName,
+			makup.if_make_up as ifMakeUp
+		FROM
+			makup
+			left join cj_all_kw_view on cj_all_kw_view.xh = makup.xh and cj_all_kw_view.kccj = makup.max_score and cj_all_kw_view.kch = makup.kch
+			left join code_zxjxjhxnxqxx on code_zxjxjhxnxqxx.zxjxjhh = makup.jxjhh
+		WHERE
+			makup.xh = #{xh}
+		ORDER BY
+			ifMakeUpName desc
+	</select>
+	<select id="getMakeupReportSaveList" resultType="com.imust.newckbk.domain.report.MakeUpReportList">
+		SELECT
+			MAKUP.kch AS KCH,
+			MAKUP.kcm AS KCM,
+			MAKUP.xf AS XF,
+			MAKUP.MAX_SCORE AS MAXSCORE,
+			CASE MAKUP.if_pay
+			WHEN 0 THEN '未缴费'
+			WHEN 1 THEN '已缴费'
+			ELSE '错误' END AS IFPAY
+		FROM
+			MAKUP
+		WHERE
+			MAKUP.if_make_up = 1 AND MAKUP.xh = #{xh}
+	</select>
+	<select id="getNoInsertData" resultType="com.imust.newckbk.domain.ext.MakeupExt">
+		SELECT DISTINCT
+			cj_all_kw_view.kch as kch,
+			cj_all_kw_view.kcm as kcm,
+			cj_all_view.xf as xf,
+			xs_cj_max.zgcj as maxScore
+		FROM
+			xs_cj_max
+			left join cj_all_kw_view on cj_all_kw_view.xh = xs_cj_max.xh and cj_all_kw_view.kccj = xs_cj_max.zgcj and cj_all_kw_view.kch = xs_cj_max.kch
+		WHERE
+			xs_cj_max.xh = #{xh} and  xs_cj_max.zgcj &lt; #{bkfs}
+			and cj_all_kw_view.kch not in(
+				select kch from makup where makup.xh = #{xh}
+			)
+	</select>
+	<insert id="insert" parameterType="com.imust.newckbk.domain.Makeup" useGeneratedKeys="true" keyProperty="id">
+		insert into MAKUP
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" xh != null and xh != ''">
+				xh,
+			</if>
+			<if test=" xm != null and xm != ''">
+				xm,
+			</if>
+			<if test=" kch != null and kch != ''">
+				kch,
+			</if>
+			<if test=" kcm != null and kcm != ''">
+				kcm,
+			</if>
+			<if test=" xf != null and xf != ''">
+				xf,
+			</if>
+			<if test=" maxScore != null and maxScore != ''">
+				max_score,
+			</if>
+			<if test=" ifMakeUp != null">
+				if_make_up,
+			</if>
+			<if test=" ifPay != null">
+				if_pay,
+			</if>
+			<if test=" jxjhh != null and jxjhh != ''">
+				jxjhh
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" xh != null and xh != ''">
+				#{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xm != null and xm != ''">
+				#{xm,jdbcType=VARCHAR},
+			</if>
+			<if test=" kch != null and kch != ''">
+				#{kch,jdbcType=VARCHAR},
+			</if>
+			<if test=" kcm != null and kcm != ''">
+				#{kcm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xf != null and xf != ''">
+				#{xf,jdbcType=DECIMAL},
+			</if>
+			<if test=" maxScore != null and maxScore != ''">
+				#{maxScore,jdbcType=DECIMAL},
+			</if>
+			<if test=" ifMakeUp != null">
+				#{ifMakeUp,jdbcType=TINYINT},
+			</if>
+			<if test=" ifPay != null">
+				#{ifPay,jdbcType=TINYINT},
+			</if>
+			<if test=" jxjhh != null and jxjhh != ''">
+				#{jxjhh,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Makeup">
+		update MAKUP makeup
+		<set>
+			<if test=" xh != null and xh != ''">
+				xh = #{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xm != null and xm != ''">
+				xm = #{xm,jdbcType=VARCHAR},
+			</if>
+			<if test=" kch != null and kch != ''">
+				kch = #{kch,jdbcType=VARCHAR},
+			</if>
+			<if test=" kcm != null and kcm != ''">
+				kcm = #{kcm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xf != null and xf != ''">
+				xf = #{xf,jdbcType=DECIMAL},
+			</if>
+			<if test=" maxScore != null and maxScore != ''">
+				max_score = #{maxScore,jdbcType=DECIMAL},
+			</if>
+			<if test=" ifMakeUp != null and ifMakeUp != ''">
+				if_make_up = #{ifMakeUp,jdbcType=TINYINTDECIMAL},
+			</if>
+			<if test=" ifPay != null and ifPay != ''">
+				if_pay = #{ifPay,jdbcType=TINYINTDECIMAL}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update MAKUP  makeup set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update MAKUP makeup set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update MAKUP makeup set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Makeup">
+		update MAKUP makeup set deleted=1 
+		where id=#{id}
+	</update>
+    <update id="updateMakeUPByIdArr">
+		update MAKUP makeup set if_make_up = #{makeupFlag}
+		where id in
+		<foreach collection="ids" separator="," item="id" close=")" open="(">
+			#{id}
+		</foreach>
+	</update>
+	<update id="updatePayByIdArr">
+		update MAKUP makeup set if_pay = #{payFlag}
+		where id in
+		<foreach collection="ids" separator="," item="id" close=")" open="(">
+			#{id}
+		</foreach>
+	</update>
+</mapper>

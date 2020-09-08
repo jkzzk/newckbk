@@ -1,0 +1,65 @@
+html,body {
+    height: 100%;
+}
+.outer {
+    width: 100%;
+    height: 100%;
+    background-image: url("../imgs/mobile_bj.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    /*position: relative;*/
+}
+.outer .logo {
+    width: 100%;
+    margin: 30% auto 0;
+    padding: 0 5%;
+}
+.outer .logo img {
+    display: inline-block;
+    width: 90%;
+    margin: 0 auto;
+}
+.outer .form {
+    width: 100%;
+    margin: 1% auto 0;
+    padding: 0 10%;
+    /*border: 2px solid;*/
+}
+.outer .form input {
+    display: inline-block;
+    width: 80%;
+    height: 50px;
+    margin-top: 50px;
+    padding-left: 10%;
+    border-top : 0;
+    border-left : 0;
+    border-right : 0;
+    border-bottom: 2px solid mediumpurple;
+    font: 30px/30px "Arial";
+}
+.outer .form input.username {
+    background-image: url("../imgs/username.png");
+    background-repeat: no-repeat;
+    background-position: 5px;
+    background-size: 9% 70%;
+}
+.outer .form input.password {
+    background-image: url("../imgs/password.png");
+    background-repeat: no-repeat;
+    background-position: 5px;
+    background-size: 9% 70%;
+}
+
+.outer .form button {
+    display: inline-block;
+    width: 80%;
+    height: 50px;
+    margin-top: 50px;
+    color: white;
+    font: 25px/50px 'Arial';
+    border: 0;
+    border-radius: 5px;
+    background-image: url("../imgs/login_btn.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}

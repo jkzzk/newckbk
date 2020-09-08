@@ -9,3 +9,12 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
+.idea/
+NEWCKBK.iml
+web/web.iml
+service/service.iml
+dao/dao.iml
+common/common.iml
+domain/domain.iml
+dao/src/main/java/com/imust/newckbk/generator/Code.java
+dao/src/main/resources/generatorConfig.xml

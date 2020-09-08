@@ -1,0 +1,1 @@
+c:\Users\Administrator\Desktop\yy\static\js\anew.js

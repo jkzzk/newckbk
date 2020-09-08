@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.CetStuYyfbcjDao">
+    <resultMap id="cetStuYyfbcjMap" type="com.imust.newckbk.domain.CetStuYyfbcj">
+        <result property="kch" column="kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kcmc" column="kcmc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kxh" column="kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xh" column="xh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xm" column="xm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bjh" column="bjh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="fbdj" column="fbdj" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="djcj" column="djcj" javaType="java.lang.Double" jdbcType="NUMERIC"/>
+    </resultMap>
+    <sql id="cols">
+		kch,
+		kcmc,
+		kxh,
+		xh,
+		xm,
+		bjh,
+		fbdj,
+		djcj
+	</sql>
+    <select id="getById" resultMap="cetStuYyfbcjMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from CET_STU_YYFBCJ  cetStuYyfbcj
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="cetStuYyfbcjMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from CET_STU_YYFBCJ  cetStuYyfbcj
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="cetStuYyfbcjMap" parameterType="com.imust.newckbk.domain.CetStuYyfbcj">
+		select <include refid="cols"/> from CET_STU_YYFBCJ  cetStuYyfbcj
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="cetStuYyfbcjMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from CET_STU_YYFBCJ  cetStuYyfbcj
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from CET_STU_YYFBCJ  cetStuYyfbcj
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from CET_STU_YYFBCJ  cetStuYyfbcj
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from CET_STU_YYFBCJ  cetStuYyfbcj
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getExtByPage" resultType="com.imust.newckbk.domain.CetStuYyfbcj">
+		select
+			<include refid="cols"/>
+		from
+			CET_STU_YYFBCJ  cetStuYyfbcj
+		<where>
+			<if test="kxh != null and kxh != ''">
+				and kxh = #{kxh}
+			</if>
+			<if test="xh != null and xh != ''">
+				and xh like  concat(concat('%',#{xh}),'%')
+			</if>
+			<if test="xm != null and xm != ''">
+				and xm like  concat(concat('%',#{xm}),'%')
+			</if>
+			<if test="fbdj != null and fbdj != ''">
+				and fbdj = #{fbdj}
+			</if>
+			<if test="djcjMax != null and djcjMax != ''
+				and  djcjMin != null and djcjMin != ''">
+				and djcj between #{djcjMin} and #{djcjMin}
+			</if>
+		</where>
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.CetStuYyfbcj" useGeneratedKeys="true" keyProperty="id">
+		insert into CET_STU_YYFBCJ
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" kch != null and kch != ''">
+				kch,
+			</if>
+			<if test=" kcmc != null and kcmc != ''">
+				kcmc,
+			</if>
+			<if test=" kxh != null and kxh != ''">
+				kxh,
+			</if>
+			<if test=" xh != null and xh != ''">
+				xh,
+			</if>
+			<if test=" xm != null and xm != ''">
+				xm,
+			</if>
+			<if test=" bjh != null and bjh != ''">
+				bjh,
+			</if>
+			<if test=" fbdj != null and fbdj != ''">
+				fbdj,
+			</if>
+			<if test=" djcj != null and djcj != ''">
+				djcj
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" kch != null and kch != ''">
+				#{kch,jdbcType=VARCHAR},
+			</if>
+			<if test=" kcmc != null and kcmc != ''">
+				#{kcmc,jdbcType=VARCHAR},
+			</if>
+			<if test=" kxh != null and kxh != ''">
+				#{kxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xh != null and xh != ''">
+				#{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xm != null and xm != ''">
+				#{xm,jdbcType=VARCHAR},
+			</if>
+			<if test=" bjh != null and bjh != ''">
+				#{bjh,jdbcType=VARCHAR},
+			</if>
+			<if test=" fbdj != null and fbdj != ''">
+				#{fbdj,jdbcType=VARCHAR},
+			</if>
+			<if test=" djcj != null and djcj != ''">
+				#{djcj,jdbcType=NUMERIC}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.CetStuYyfbcj">
+		update CET_STU_YYFBCJ cetStuYyfbcj
+		<set>
+			<if test=" kch != null and kch != ''">
+				kch = #{kch,jdbcType=VARCHAR},
+			</if>
+			<if test=" kcmc != null and kcmc != ''">
+				kcmc = #{kcmc,jdbcType=VARCHAR},
+			</if>
+			<if test=" kxh != null and kxh != ''">
+				kxh = #{kxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xh != null and xh != ''">
+				xh = #{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xm != null and xm != ''">
+				xm = #{xm,jdbcType=VARCHAR},
+			</if>
+			<if test=" bjh != null and bjh != ''">
+				bjh = #{bjh,jdbcType=VARCHAR},
+			</if>
+			<if test=" fbdj != null and fbdj != ''">
+				fbdj = #{fbdj,jdbcType=VARCHAR},
+			</if>
+			<if test=" djcj != null and djcj != ''">
+				djcj = #{djcj,jdbcType=NUMERIC}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update CET_STU_YYFBCJ  cetStuYyfbcj set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update CET_STU_YYFBCJ cetStuYyfbcj set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update CET_STU_YYFBCJ cetStuYyfbcj set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.CetStuYyfbcj">
+		update CET_STU_YYFBCJ cetStuYyfbcj set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

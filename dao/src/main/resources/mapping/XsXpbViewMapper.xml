@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.XsXpbViewDao">
+    <resultMap id="xsXpbViewMap" type="com.imust.newckbk.domain.XsXpbView">
+        <result property="xh" column="xh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zplx" column="zplx" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bz" column="bz" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zp" column="zp" jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
+    </resultMap>
+    <sql id="cols">
+		xh,
+		zplx,
+		bz,
+		zp
+	</sql>
+    <select id="getById" resultMap="xsXpbViewMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from XS_XPB_VIEW  xsXpbView
+		 where xh = #{xh}
+	</select>
+    <select id="getByMap" resultMap="xsXpbViewMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from XS_XPB_VIEW  xsXpbView
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="xsXpbViewMap" parameterType="com.imust.newckbk.domain.XsXpbView">
+		select <include refid="cols"/> from XS_XPB_VIEW  xsXpbView
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="xsXpbViewMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from XS_XPB_VIEW  xsXpbView
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from XS_XPB_VIEW  xsXpbView
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from XS_XPB_VIEW  xsXpbView
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from XS_XPB_VIEW  xsXpbView
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.XsXpbView" useGeneratedKeys="true" keyProperty="id">
+		insert into XS_XPB_VIEW
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" xh != null and xh != ''">
+				xh,
+			</if>
+			<if test=" zplx != null and zplx != ''">
+				zplx,
+			</if>
+			<if test=" bz != null and bz != ''">
+				bz,
+			</if>
+			<if test=" zp != null and zp != ''">
+				zp
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" xh != null and xh != ''">
+				#{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" zplx != null and zplx != ''">
+				#{zplx,jdbcType=VARCHAR},
+			</if>
+			<if test=" bz != null and bz != ''">
+				#{bz,jdbcType=VARCHAR},
+			</if>
+			<if test=" zp != null and zp != ''">
+				#{zp,jdbcType=}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.XsXpbView">
+		update XS_XPB_VIEW xsXpbView
+		<set>
+			<if test=" xh != null and xh != ''">
+				xh = #{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" zplx != null and zplx != ''">
+				zplx = #{zplx,jdbcType=VARCHAR},
+			</if>
+			<if test=" bz != null and bz != ''">
+				bz = #{bz,jdbcType=VARCHAR},
+			</if>
+			<if test=" zp != null and zp != ''">
+				zp = #{zp,jdbcType=}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update XS_XPB_VIEW  xsXpbView set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update XS_XPB_VIEW xsXpbView set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update XS_XPB_VIEW xsXpbView set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.XsXpbView">
+		update XS_XPB_VIEW xsXpbView set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

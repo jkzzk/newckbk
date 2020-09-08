@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.ZzytjjlDao">
+    <resultMap id="zzytjjlMap" type="com.imust.newckbk.domain.Zzytjjl">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="grades" column="grades" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="status" column="status" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result property="zxjxjhh" column="zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		grades,
+		status,
+		zxjxjhh
+	</sql>
+	<delete id="clearInvalid">
+		delete from ZZYTJJL  zzytjjl where status = 0
+	</delete>
+	<select id="getById" resultMap="zzytjjlMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from ZZYTJJL  zzytjjl
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="zzytjjlMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from ZZYTJJL  zzytjjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="zzytjjlMap" parameterType="com.imust.newckbk.domain.Zzytjjl">
+		select <include refid="cols"/> from ZZYTJJL  zzytjjl
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="zzytjjlMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from ZZYTJJL  zzytjjl
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from ZZYTJJL  zzytjjl
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from ZZYTJJL  zzytjjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from ZZYTJJL  zzytjjl
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getExtByPage" resultType="com.imust.newckbk.domain.ext.ZzytjjlExt">
+		select
+			zzytjjl.id,
+			zzytjjl.grades,
+			zzytjjl.status,
+			case zzytjjl.status
+			WHEN 0 THEN '记录'
+			WHEN 1 THEN '当前'
+			ELSE '未知' END AS statusName,
+			CODE_ZXJXJHXNXQXX.ZXJXJHM AS zxjxjhm
+		from
+			ZZYTJJL  zzytjjl
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.zxjxjhh = zzytjjl.zxjxjhh
+		order by zzytjjl.status desc
+	</select>
+    <select id="getCurrentSet" resultType="com.imust.newckbk.domain.Zzytjjl">
+		select <include refid="cols"/> from ZZYTJJL  zzytjjl where status = 1
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.Zzytjjl" useGeneratedKeys="true" keyProperty="id">
+		insert into ZZYTJJL
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" grades != null and grades != ''">
+				grades,
+			</if>
+			<if test=" status != null and status != ''">
+				status,
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" grades != null and grades != ''">
+				#{grades,jdbcType=VARCHAR},
+			</if>
+			<if test=" status != null and status != ''">
+				#{status,jdbcType=DECIMAL},
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				#{zxjxjhh,jdbcType=DECIMAL}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Zzytjjl">
+		update ZZYTJJL zzytjjl
+		<set>
+			<if test=" grades != null and grades != ''">
+				grades = #{grades,jdbcType=VARCHAR},
+			</if>
+			<if test=" status != null and status != ''">
+				status = #{status,jdbcType=DECIMAL}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update ZZYTJJL  zzytjjl set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update ZZYTJJL zzytjjl set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update ZZYTJJL zzytjjl set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Zzytjjl">
+		update ZZYTJJL zzytjjl set deleted=1 
+		where id=#{id}
+	</update>
+	<update id="invalidAll">
+		update ZZYTJJL zzytjjl set status = 0 where status = 1
+	</update>
+</mapper>

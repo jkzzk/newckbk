@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.YjsXjxxbDao">
+    <resultMap id="yjsXjxxbMap" type="com.imust.newckbk.domain.YjsXjxxb">
+        <result property="xh" column="xh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xm" column="xm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xslb" column="xslb" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xb" column="xb" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="mz" column="mz" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zjlx" column="zjlx" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sfzh" column="sfzh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xsm" column="xsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zym" column="zym" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rxnf" column="rxnf" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		xh,
+		xm,
+		xslb,
+		xb,
+		mz,
+		zjlx,
+		sfzh,
+		xsm,
+		zym,
+		rxnf
+	</sql>
+    <select id="getById" resultMap="yjsXjxxbMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from YJS_XJXXB  yjsXjxxb
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="yjsXjxxbMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from YJS_XJXXB  yjsXjxxb
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="yjsXjxxbMap" parameterType="com.imust.newckbk.domain.YjsXjxxb">
+		select <include refid="cols"/> from YJS_XJXXB  yjsXjxxb
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="yjsXjxxbMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from YJS_XJXXB  yjsXjxxb
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from YJS_XJXXB  yjsXjxxb
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from YJS_XJXXB  yjsXjxxb
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from YJS_XJXXB  yjsXjxxb
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.YjsXjxxb" useGeneratedKeys="true" keyProperty="id">
+		insert into YJS_XJXXB
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" xh != null and xh != ''">
+				xh,
+			</if>
+			<if test=" xm != null and xm != ''">
+				xm,
+			</if>
+			<if test=" xslb != null and xslb != ''">
+				xslb,
+			</if>
+			<if test=" xb != null and xb != ''">
+				xb,
+			</if>
+			<if test=" mz != null and mz != ''">
+				mz,
+			</if>
+			<if test=" zjlx != null and zjlx != ''">
+				zjlx,
+			</if>
+			<if test=" sfzh != null and sfzh != ''">
+				sfzh,
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				xsm,
+			</if>
+			<if test=" zym != null and zym != ''">
+				zym,
+			</if>
+			<if test=" rxnf != null and rxnf != ''">
+				rxnf
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" xh != null and xh != ''">
+				#{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xm != null and xm != ''">
+				#{xm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xslb != null and xslb != ''">
+				#{xslb,jdbcType=VARCHAR},
+			</if>
+			<if test=" xb != null and xb != ''">
+				#{xb,jdbcType=VARCHAR},
+			</if>
+			<if test=" mz != null and mz != ''">
+				#{mz,jdbcType=VARCHAR},
+			</if>
+			<if test=" zjlx != null and zjlx != ''">
+				#{zjlx,jdbcType=VARCHAR},
+			</if>
+			<if test=" sfzh != null and sfzh != ''">
+				#{sfzh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				#{xsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" zym != null and zym != ''">
+				#{zym,jdbcType=VARCHAR},
+			</if>
+			<if test=" rxnf != null and rxnf != ''">
+				#{rxnf,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.YjsXjxxb">
+		update YJS_XJXXB yjsXjxxb
+		<set>
+			<if test=" xh != null and xh != ''">
+				xh = #{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xm != null and xm != ''">
+				xm = #{xm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xslb != null and xslb != ''">
+				xslb = #{xslb,jdbcType=VARCHAR},
+			</if>
+			<if test=" xb != null and xb != ''">
+				xb = #{xb,jdbcType=VARCHAR},
+			</if>
+			<if test=" mz != null and mz != ''">
+				mz = #{mz,jdbcType=VARCHAR},
+			</if>
+			<if test=" zjlx != null and zjlx != ''">
+				zjlx = #{zjlx,jdbcType=VARCHAR},
+			</if>
+			<if test=" sfzh != null and sfzh != ''">
+				sfzh = #{sfzh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				xsm = #{xsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" zym != null and zym != ''">
+				zym = #{zym,jdbcType=VARCHAR},
+			</if>
+			<if test=" rxnf != null and rxnf != ''">
+				rxnf = #{rxnf,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update YJS_XJXXB  yjsXjxxb set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update YJS_XJXXB yjsXjxxb set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update YJS_XJXXB yjsXjxxb set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.YjsXjxxb">
+		update YJS_XJXXB yjsXjxxb set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

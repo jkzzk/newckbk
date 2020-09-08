@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.ZyfxxxbDao">
+    <resultMap id="zyfxxxbMap" type="com.imust.newckbk.domain.Zyfxxxb">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zym" column="zym" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xsm" column="xsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xkfl" column="xkfl" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="lqdm" column="lqdm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="lqpc" column="lqpc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		zym,
+		xsm,
+		xkfl,
+		lqdm,
+		lqpc
+	</sql>
+	<delete id="deleteByArr">
+		delete from ZYFXXXB where id in
+		<foreach collection="list" open="(" close=")" item="id" separator=",">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="getById" resultMap="zyfxxxbMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from ZYFXXXB  zyfxxxb
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="zyfxxxbMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from ZYFXXXB  zyfxxxb
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="zyfxxxbMap" parameterType="com.imust.newckbk.domain.Zyfxxxb">
+		select <include refid="cols"/> from ZYFXXXB  zyfxxxb
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="zyfxxxbMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from ZYFXXXB  zyfxxxb
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from ZYFXXXB  zyfxxxb
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from ZYFXXXB  zyfxxxb
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from ZYFXXXB  zyfxxxb
+		<!--新建if语句新建过滤条件-->
+	</select>
+	<select id="getByExtPage" resultType="com.imust.newckbk.domain.Zyfxxxb">
+		select
+			<include refid="cols"/>
+		from
+			ZYFXXXB  zyfxxxb
+		<where>
+			<if test="zym != null and zym != ''">
+				and zyfxxxb.zym like concat('%',concat(#{zym},'%'))
+			</if>
+			<if test="xsm != null and xsm != ''">
+				and zyfxxxb.xsm like concat('%',concat(#{xsm},'%'))
+			</if>
+			<if test="xkfl != null and xkfl != ''">
+				and zyfxxxb.xkfl like concat('%',concat(#{xkfl},'%'))
+			</if>
+			<if test="lqdm != null and lqdm != ''">
+				and zyfxxxb.lqdm like #{lqdm}
+			</if>
+			<if test="lqpc != null and lqpc != ''">
+				and zyfxxxb.lqpc like concat('%',concat(#{lqpc},'%'))
+			</if>
+		</where>
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.Zyfxxxb" useGeneratedKeys="true" keyProperty="id">
+		insert into ZYFXXXB
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" zym != null and zym != ''">
+				zym,
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				xsm,
+			</if>
+			<if test=" xkfl != null and xkfl != ''">
+				xkfl,
+			</if>
+			<if test=" lqdm != null and lqdm != ''">
+				lqdm,
+			</if>
+			<if test=" lqpc != null and lqpc != ''">
+				lqpc
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" zym != null and zym != ''">
+				#{zym,jdbcType=VARCHAR},
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				#{xsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xkfl != null and xkfl != ''">
+				#{xkfl,jdbcType=VARCHAR},
+			</if>
+			<if test=" lqdm != null and lqdm != ''">
+				#{lqdm,jdbcType=VARCHAR},
+			</if>
+			<if test=" lqpc != null and lqpc != ''">
+				#{lqpc,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Zyfxxxb">
+		update ZYFXXXB zyfxxxb
+		<set>
+			<if test=" zym != null and zym != ''">
+				zym = #{zym,jdbcType=VARCHAR},
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				xsm = #{xsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xkfl != null and xkfl != ''">
+				xkfl = #{xkfl,jdbcType=VARCHAR},
+			</if>
+			<if test=" lqdm != null and lqdm != ''">
+				lqdm = #{lqdm,jdbcType=VARCHAR},
+			</if>
+			<if test=" lqpc != null and lqpc != ''">
+				lqpc = #{lqpc,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update ZYFXXXB  zyfxxxb set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update ZYFXXXB zyfxxxb set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update ZYFXXXB zyfxxxb set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Zyfxxxb">
+		update ZYFXXXB zyfxxxb set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

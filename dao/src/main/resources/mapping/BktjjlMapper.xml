@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.BktjjlDao">
+    <resultMap id="bktjjlMap" type="com.imust.newckbk.domain.Bktjjl">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zxjxjhh" column="zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sxqzxjxjhh" column="sxqzxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bkdx" column="bkdx" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zxnj" column="zxnj" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bkfs" column="bkfs" javaType="java.lang.Byte" jdbcType="TINYINT"/>
+        <result property="bklx" column="bklx" javaType="java.lang.Byte" jdbcType="TINYINT"/>
+        <result property="status" column="status" javaType="java.lang.Byte" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		zxjxjhh,
+		sxqzxjxjhh,
+		bkdx,
+		zxnj,
+		bkfs,
+		bklx,
+		status,
+		create_time,
+		create_by
+	</sql>
+    <select id="getById" resultMap="bktjjlMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from BKTJJL  bktjjl
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="bktjjlMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from BKTJJL  bktjjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="bktjjlMap" parameterType="com.imust.newckbk.domain.Bktjjl">
+		select <include refid="cols"/> from BKTJJL  bktjjl
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="bktjjlMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from BKTJJL  bktjjl
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from BKTJJL  bktjjl
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from BKTJJL  bktjjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from BKTJJL  bktjjl
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getExtByPage" resultType="com.imust.newckbk.domain.ext.BktjjlExt">
+		select
+			bktjjl.id,
+			bktjjl.zxjxjhh,
+			CODE_ZXJXJHXNXQXX.ZXJXJHM AS zxjxjhm,
+			bktjjl.bkdx,
+			CASE bktjjl.bkdx
+			WHEN '1' THEN '在校生'
+			WHEN '2' THEN '结业生'
+			WHEN '1,2' THEN '在校生、结业生'
+			ELSE '错误' END AS bkdxmc,
+			bktjjl.zxnj,
+			bktjjl.bkfs,
+			bktjjl.bklx,
+			CASE bktjjl.bklx
+			WHEN 1 THEN '结业生补考'
+			WHEN 2 THEN '在校生补考'
+			ELSE '错误' END AS bklxmc,
+			bktjjl.status,
+			CASE bktjjl.status
+			WHEN 0 THEN '记录'
+			WHEN 1 THEN '当前'
+			ELSE '错误' END AS isCurrentName,
+			bktjjl.create_time,
+			bktjjl.create_by,
+			SYS_USER.REAL_NAME AS realName
+		from
+			BKTJJL  bktjjl
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.zxjxjhh = bktjjl.zxjxjhh
+			LEFT JOIN SYS_USER ON SYS_USER.id = bktjjl.create_by
+		order by bktjjl.status desc
+	</select>
+    <select id="getCurrentSet" resultType="com.imust.newckbk.domain.ext.BktjjlExt">
+		select
+			bktjjl.id,
+			bktjjl.zxjxjhh,
+			codeZxjxjhxnxqxx.ZXJXJHM AS zxjxjhm,
+			bktjjl.sxqzxjxjhh,
+			sxqCodeZxjxjhxnxqxx.ZXJXJHM AS sxqzxjxjhm,
+			bktjjl.bkdx,
+			CASE bktjjl.bkdx
+			WHEN '1' THEN '在校生'
+			WHEN '2' THEN '结业生'
+			WHEN '1,2' THEN '在校生、结业生'
+			ELSE '错误' END AS bkdxmc,
+			bktjjl.zxnj,
+			bktjjl.bkfs,
+			bktjjl.bklx,
+			CASE bktjjl.bklx
+			WHEN 1 THEN '结业生补考'
+			WHEN 2 THEN '在校生补考'
+			ELSE '错误' END AS bklxmc,
+			bktjjl.status,
+			CASE bktjjl.status
+			WHEN 0 THEN '记录'
+			WHEN 1 THEN '当前'
+			ELSE '错误' END AS isCurrentName,
+			bktjjl.create_time,
+			bktjjl.create_by,
+			SYS_USER.REAL_NAME AS realName
+		from
+			BKTJJL  bktjjl
+			LEFT JOIN CODE_ZXJXJHXNXQXX codeZxjxjhxnxqxx ON codeZxjxjhxnxqxx.zxjxjhh = bktjjl.zxjxjhh
+			LEFT JOIN CODE_ZXJXJHXNXQXX sxqCodeZxjxjhxnxqxx ON sxqCodeZxjxjhxnxqxx.zxjxjhh = bktjjl.sxqzxjxjhh
+			LEFT JOIN SYS_USER ON SYS_USER.id = bktjjl.create_by
+		WHERE bktjjl.id = #{id}
+	</select>
+	<select id="getEffectiveSet" resultType="com.imust.newckbk.domain.ext.BktjjlExt">
+		select
+			bktjjl.id,
+			bktjjl.zxjxjhh,
+			codeZxjxjhxnxqxx.ZXJXJHM AS zxjxjhm,
+			bktjjl.sxqzxjxjhh,
+			sxqCodeZxjxjhxnxqxx.ZXJXJHM AS sxqzxjxjhm,
+			bktjjl.bkdx,
+			CASE bktjjl.bkdx
+			WHEN '1' THEN '在校生'
+			WHEN '2' THEN '结业生'
+			WHEN '1,2' THEN '在校生、结业生'
+			ELSE '错误' END AS bkdxmc,
+			bktjjl.zxnj,
+			bktjjl.bkfs,
+			bktjjl.bklx,
+			CASE bktjjl.bklx
+			WHEN 1 THEN '结业生补考'
+			WHEN 2 THEN '在校生补考'
+			ELSE '错误' END AS bklxmc,
+			bktjjl.status,
+			CASE bktjjl.status
+			WHEN 0 THEN '记录'
+			WHEN 1 THEN '当前'
+			ELSE '错误' END AS isCurrentName,
+			bktjjl.create_time,
+			bktjjl.create_by,
+			SYS_USER.REAL_NAME AS realName
+		from
+			BKTJJL  bktjjl
+			LEFT JOIN CODE_ZXJXJHXNXQXX codeZxjxjhxnxqxx ON codeZxjxjhxnxqxx.zxjxjhh = bktjjl.zxjxjhh
+			LEFT JOIN CODE_ZXJXJHXNXQXX sxqCodeZxjxjhxnxqxx ON sxqCodeZxjxjhxnxqxx.zxjxjhh = bktjjl.sxqzxjxjhh
+			LEFT JOIN SYS_USER ON SYS_USER.id = bktjjl.create_by
+		WHERE
+			bktjjl.status = 1
+	</select>
+	<insert id="insert" parameterType="com.imust.newckbk.domain.Bktjjl" useGeneratedKeys="true" keyProperty="id">
+		insert into BKTJJL
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh,
+			</if>
+			<if test=" sxqzxjxjhh != null and sxqzxjxjhh != ''">
+				sxqzxjxjhh,
+			</if>
+			<if test=" bkdx != null">
+				bkdx,
+			</if>
+			<if test=" zxnj != null and zxnj != ''">
+				zxnj,
+			</if>
+			<if test=" bkfs != null and bkfs != ''">
+				bkfs,
+			</if>
+			<if test=" bklx != null">
+				bklx,
+			</if>
+			<if test=" status != null">
+				status,
+			</if>
+			<if test=" createTime != null and createTime != ''">
+				create_time,
+			</if>
+			<if test=" createBy != null and createBy != ''">
+				create_by
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				#{zxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" sxqzxjxjhh != null and sxqzxjxjhh != ''">
+				#{sxqzxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" bkdx != null and bkdx != ''">
+				#{bkdx,jdbcType=VARCHAR},
+			</if>
+			<if test=" zxnj != null and zxnj != ''">
+				#{zxnj,jdbcType=VARCHAR},
+			</if>
+			<if test=" bkfs != null and bkfs != ''">
+				#{bkfs,jdbcType=TINYINT},
+			</if>
+			<if test=" bklx != null and bklx != ''">
+				#{bklx,jdbcType=TINYINT},
+			</if>
+			<if test=" status != null and status != ''">
+				#{status,jdbcType=TINYINT},
+			</if>
+			<if test=" createTime != null and createTime != ''">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test=" createBy != null and createBy != ''">
+				#{createBy,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Bktjjl">
+		update BKTJJL bktjjl
+		<set>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh = #{zxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" sxqzxjxjhh != null and sxqzxjxjhh != ''">
+				sxqzxjxjhh = #{sxqzxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" bkdx != null and bkdx != ''">
+				bkdx = #{bkdx,jdbcType=VARCHAR},
+			</if>
+			<if test=" zxnj != null and zxnj != ''">
+				zxnj = #{zxnj,jdbcType=VARCHAR},
+			</if>
+			<if test=" bkfs != null and bkfs != ''">
+				bkfs = #{bkfs,jdbcType=TINYINT},
+			</if>
+			<if test=" bklx != null and bklx != ''">
+				bklx = #{bklx,jdbcType=TINYINT},
+			</if>
+			<if test=" status != null and status != ''">
+				status = #{status,jdbcType=TINYINT}
+			</if>
+			<if test=" createTime != null and createTime != ''">
+				create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test=" createBy != null and createBy != ''">
+				create_by = #{createBy,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update BKTJJL  bktjjl set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update BKTJJL bktjjl set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update BKTJJL bktjjl set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Bktjjl">
+		update BKTJJL bktjjl set deleted=1 
+		where id=#{id}
+	</update>
+    <update id="abandonOld">
+		update BKTJJL bktjjl set status=0 where status = 1
+	</update>
+	<update id="clearBktjjl">
+		delete from BKTJJL bktjjl where status = 0
+	</update>
+</mapper>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.RwLlrwAllViewKwDao">
+    <resultMap id="rwLlrwAllViewKwMap" type="com.imust.newckbk.domain.RwLlrwAllViewKw">
+        <result property="zxjxjhh" column="zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kch" column="kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kcm" column="kcm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kxh" column="kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="jsh" column="jsh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="jsm" column="jsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xs" column="xs" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result property="xf" column="xf" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result property="xqm" column="xqm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kkxsjc" column="kkxsjc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		zxjxjhh,
+		kch,
+		kcm,
+		kxh,
+		jsh,
+		jsm,
+		xs,
+		xf,
+		xqm,
+		kkxsjc
+	</sql>
+    <select id="getById" resultMap="rwLlrwAllViewKwMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from RW_LLRW_ALL_VIEW_KW  rwLlrwAllViewKw
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="rwLlrwAllViewKwMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from RW_LLRW_ALL_VIEW_KW  rwLlrwAllViewKw
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="rwLlrwAllViewKwMap" parameterType="com.imust.newckbk.domain.RwLlrwAllViewKw">
+		select <include refid="cols"/> from RW_LLRW_ALL_VIEW_KW  rwLlrwAllViewKw
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="rwLlrwAllViewKwMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from RW_LLRW_ALL_VIEW_KW  rwLlrwAllViewKw
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from RW_LLRW_ALL_VIEW_KW  rwLlrwAllViewKw
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from RW_LLRW_ALL_VIEW_KW  rwLlrwAllViewKw
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from RW_LLRW_ALL_VIEW_KW  rwLlrwAllViewKw
+		<!--新建if语句新建过滤条件-->
+	</select>
+	<select id="getExtByPage" resultType="com.imust.newckbk.domain.ext.RwLlrwAllViewKwExt">
+		select
+			rwLlrwAllViewKw.zxjxjhh,
+			codeZxjxjhxnxqxx.zxjxjhm AS zxjxjhm,
+			nvl2(Cxkcxxb.kch,1,0) AS ifRetake,
+			rwLlrwAllViewKw.kch,
+			rwLlrwAllViewKw.kcm,
+			rwLlrwAllViewKw.kxh,
+			rwLlrwAllViewKw.jsh,
+			rwLlrwAllViewKw.jsm,
+			rwLlrwAllViewKw.xs,
+			rwLlrwAllViewKw.xf,
+			rwLlrwAllViewKw.xqm,
+			rwLlrwAllViewKw.kkxsjc
+		from
+			RW_LLRW_ALL_VIEW_KW  rwLlrwAllViewKw
+			LEFT JOIN CODE_ZXJXJHXNXQXX codeZxjxjhxnxqxx ON codeZxjxjhxnxqxx.zxjxjhh = rwLlrwAllViewKw.zxjxjhh
+			LEFT JOIN CXKCXXB Cxkcxxb ON Cxkcxxb.kch = rwLlrwAllViewKw.kch
+		<where>
+			<if test="ifRetake == 0">
+				and Cxkcxxb.kch is null
+			</if>
+			<if test="ifRetake == 1">
+				and Cxkcxxb.kch is not null
+			</if>
+			<if test="kch != null and kch != ''">
+				and rwLlrwAllViewKw.kch = #{kch}
+			</if>
+			<if test="kcm != null and kcm != ''">
+				and rwLlrwAllViewKw.kcm = #{kcm}
+			</if>
+			<if test="kxh != null and kxh != ''">
+				and rwLlrwAllViewKw.kxh = #{kxh}
+			</if>
+			<if test="jsh != null and jsh != ''">
+				and rwLlrwAllViewKw.jsh = #{jsh}
+			</if>
+			<if test="jsm != null and jsm != ''">
+				and rwLlrwAllViewKw.jsm = #{jsm}
+			</if>
+			<if test="xs != null and xs != ''">
+				and rwLlrwAllViewKw.xs = #{xs}
+			</if>
+			<if test="xf != null and xf != ''">
+				and rwLlrwAllViewKw.xf = #{xf}
+			</if>
+		</where>
+	</select>
+	<insert id="insert" parameterType="com.imust.newckbk.domain.RwLlrwAllViewKw" useGeneratedKeys="true" keyProperty="id">
+		insert into RW_LLRW_ALL_VIEW_KW
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh,
+			</if>
+			<if test=" kch != null and kch != ''">
+				kch,
+			</if>
+			<if test=" kcm != null and kcm != ''">
+				kcm,
+			</if>
+			<if test=" kxh != null and kxh != ''">
+				kxh,
+			</if>
+			<if test=" jsh != null and jsh != ''">
+				jsh,
+			</if>
+			<if test=" jsm != null and jsm != ''">
+				jsm,
+			</if>
+			<if test=" xs != null and xs != ''">
+				xs,
+			</if>
+			<if test=" xf != null and xf != ''">
+				xf,
+			</if>
+			<if test=" xqm != null and xqm != ''">
+				xqm,
+			</if>
+			<if test=" kkxsjc != null and kkxsjc != ''">
+				kkxsjc
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				#{zxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" kch != null and kch != ''">
+				#{kch,jdbcType=VARCHAR},
+			</if>
+			<if test=" kcm != null and kcm != ''">
+				#{kcm,jdbcType=VARCHAR},
+			</if>
+			<if test=" kxh != null and kxh != ''">
+				#{kxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" jsh != null and jsh != ''">
+				#{jsh,jdbcType=VARCHAR},
+			</if>
+			<if test=" jsm != null and jsm != ''">
+				#{jsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xs != null and xs != ''">
+				#{xs,jdbcType=DECIMAL},
+			</if>
+			<if test=" xf != null and xf != ''">
+				#{xf,jdbcType=DECIMAL},
+			</if>
+			<if test=" xqm != null and xqm != ''">
+				#{xqm,jdbcType=VARCHAR},
+			</if>
+			<if test=" kkxsjc != null and kkxsjc != ''">
+				#{kkxsjc,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.RwLlrwAllViewKw">
+		update RW_LLRW_ALL_VIEW_KW rwLlrwAllViewKw
+		<set>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh = #{zxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" kch != null and kch != ''">
+				kch = #{kch,jdbcType=VARCHAR},
+			</if>
+			<if test=" kcm != null and kcm != ''">
+				kcm = #{kcm,jdbcType=VARCHAR},
+			</if>
+			<if test=" kxh != null and kxh != ''">
+				kxh = #{kxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" jsh != null and jsh != ''">
+				jsh = #{jsh,jdbcType=VARCHAR},
+			</if>
+			<if test=" jsm != null and jsm != ''">
+				jsm = #{jsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xs != null and xs != ''">
+				xs = #{xs,jdbcType=DECIMAL},
+			</if>
+			<if test=" xf != null and xf != ''">
+				xf = #{xf,jdbcType=DECIMAL},
+			</if>
+			<if test=" xqm != null and xqm != ''">
+				xqm = #{xqm,jdbcType=VARCHAR},
+			</if>
+			<if test=" kkxsjc != null and kkxsjc != ''">
+				kkxsjc = #{kkxsjc,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update RW_LLRW_ALL_VIEW_KW  rwLlrwAllViewKw set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update RW_LLRW_ALL_VIEW_KW rwLlrwAllViewKw set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update RW_LLRW_ALL_VIEW_KW rwLlrwAllViewKw set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.RwLlrwAllViewKw">
+		update RW_LLRW_ALL_VIEW_KW rwLlrwAllViewKw set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

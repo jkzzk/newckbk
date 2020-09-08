@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.XszzyxxbDao">
+    <resultMap id="xszzyxxbMap" type="com.imust.newckbk.domain.Xszzyxxb">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xh" column="xh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sylb" column="sylb" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="lqpc" column="lqpc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="nzrxsm" column="nzrxsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="nzrzym" column="nzrzym" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sjh" column="sjh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="yxsm" column="yxsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="yzym" column="yzym" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ynjdm" column="ynjdm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ybjh" column="ybjh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		xh,
+		sylb,
+		lqpc,
+		nzrxsm,
+		nzrzym,
+		sjh,
+		yxsm,
+		yzym,
+		ynjdm,
+		ybjh
+	</sql>
+	<delete id="deleteByArr">
+		delete from XSZZYXXB  xszzyxxb where id in
+		<foreach collection="list" separator="," item="id" close=")" open="(">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="getById" resultMap="xszzyxxbMap" parameterType="java.lang.String">
+		select
+			xszzyxxb.id,
+			xszzyxxb.xh,
+			xszzyxxb.sylb,
+			xszzyxxb.lqpc,
+			xszzyxxb.nzrxsm,
+			xszzyxxb.nzrzym,
+			xszzyxxb.sjh,
+			XS_XJXXB_VIEW_KW.xm AS xm,
+			XS_XJXXB_VIEW_KW.xsm AS currentXsm,
+			XS_XJXXB_VIEW_KW.zym AS currentZym
+		from
+			XSZZYXXB  xszzyxxb
+			left join XS_XJXXB_VIEW_KW ON XS_XJXXB_VIEW_KW.xh = xszzyxxb.xh
+		where xszzyxxb.id = #{id}
+	</select>
+    <select id="getByMap" resultMap="xszzyxxbMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from XSZZYXXB  xszzyxxb
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="xszzyxxbMap" parameterType="com.imust.newckbk.domain.Xszzyxxb">
+			select
+				xszzyxxb.id,
+				xszzyxxb.xh,
+				xszzyxxb.sylb,
+				xszzyxxb.lqpc,
+				xszzyxxb.nzrxsm,
+				xszzyxxb.nzrzym,
+				xszzyxxb.sjh,
+				XS_XJXXB_VIEW_KW.xm AS xm,
+				XS_XJXXB_VIEW_KW.dqnj AS ynjdm,
+				XS_XJXXB_VIEW_KW.bjh AS ybjh,
+				XS_XJXXB_VIEW_KW.xsm AS yxsm,
+				XS_XJXXB_VIEW_KW.zym AS yzym
+			from
+				XSZZYXXB  xszzyxxb
+				left join XS_XJXXB_VIEW_KW ON XS_XJXXB_VIEW_KW.xh = xszzyxxb.xh
+		<where>
+			<if test="xh != null and xh != ''">
+				and xszzyxxb.xh like concat('%',concat(#{xh},'%'))
+			</if>
+			<if test="sylb != null and sylb != ''">
+				and xszzyxxb.sylb like concat('%',concat(#{sylb},'%'))
+			</if>
+			<if test="lqpc != null and lqpc != ''">
+				and xszzyxxb.lqpc like concat('%',concat(#{lqpc},'%'))
+			</if>
+			<if test="nzrxsm != null and nzrxsm != ''">
+				and xszzyxxb.nzrxsm like concat('%',concat(#{nzrxsm},'%'))
+			</if>
+			<if test="nzrzym != null and nzrzym != ''">
+				and xszzyxxb.nzrzym like concat('%',concat(#{nzrzym},'%'))
+			</if>
+			<if test="sjh != null and sjh != ''">
+				and xszzyxxb.sjh like concat('%',concat(#{sjh},'%'))
+			</if>
+			<if test="xm != null and xm != ''">
+				and XS_XJXXB_VIEW_KW.xm like concat('%',concat(#{xm},'%'))
+			</if>
+			<if test="dqnj != null and dqnj != ''">
+				and XS_XJXXB_VIEW_KW.dqnj like concat('%',concat(#{dqnj},'%'))
+			</if>
+			<if test="bjh != null and bjh != ''">
+				and XS_XJXXB_VIEW_KW.bjh like concat('%',concat(#{bjh},'%'))
+			</if>
+			<if test="currentXsm != null and currentXsm != ''">
+				and XS_XJXXB_VIEW_KW.xsm like concat('%',concat(#{currentXsm},'%'))
+			</if>
+			<if test="currentZym != null and currentZym != ''">
+				and XS_XJXXB_VIEW_KW.zym like concat('%',concat(#{currentZym},'%'))
+			</if>
+		</where>
+	</select>
+    <select id="getByPage" resultMap="xszzyxxbMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from XSZZYXXB  xszzyxxb
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from XSZZYXXB  xszzyxxb
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from XSZZYXXB  xszzyxxb
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from XSZZYXXB  xszzyxxb
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getExtByPage" resultType="com.imust.newckbk.domain.ext.XszzyxxbExt">
+		select
+			xszzyxxb.id,
+			xszzyxxb.xh,
+			xszzyxxb.sylb,
+			xszzyxxb.lqpc,
+			xszzyxxb.nzrxsm,
+			xszzyxxb.nzrzym,
+			xszzyxxb.sjh,
+			XS_XJXXB_VIEW_KW.xm AS xm,
+			XS_XJXXB_VIEW_KW.dqnj AS dqnj,
+			XS_XJXXB_VIEW_KW.bjh AS bjh,
+			XS_XJXXB_VIEW_KW.xsm AS currentXsm,
+			XS_XJXXB_VIEW_KW.zym AS currentZym
+		from
+			XSZZYXXB  xszzyxxb
+			left join XS_XJXXB_VIEW_KW ON XS_XJXXB_VIEW_KW.xh = xszzyxxb.xh
+		<where>
+			<if test="xh != null and xh != ''">
+				and xszzyxxb.xh like concat('%',concat(#{xh},'%'))
+			</if>
+			<if test="sylb != null and sylb != ''">
+				and xszzyxxb.sylb like concat('%',concat(#{sylb},'%'))
+			</if>
+			<if test="lqpc != null and lqpc != ''">
+				and xszzyxxb.lqpc like concat('%',concat(#{lqpc},'%'))
+			</if>
+			<if test="xsm != null and xsm != ''">
+				and xszzyxxb.nzrxsm like concat('%',concat(#{nzrxsm},'%'))
+			</if>
+			<if test="zym != null and zym != ''">
+				and xszzyxxb.nzrzym like concat('%',concat(#{nzrzym},'%'))
+			</if>
+			<if test="sjh != null and sjh != ''">
+				and xszzyxxb.sjh like concat('%',concat(#{sjh},'%'))
+			</if>
+			<if test="xm != null and xm != ''">
+				and XS_XJXXB_VIEW_KW.xm like concat('%',concat(#{xm},'%'))
+			</if>
+			<if test="dqnj != null and dqnj != ''">
+				and XS_XJXXB_VIEW_KW.dqnj like concat('%',concat(#{dqnj},'%'))
+			</if>
+			<if test="bjh != null and bjh != ''">
+				and XS_XJXXB_VIEW_KW.bjh like concat('%',concat(#{bjh},'%'))
+			</if>
+			<if test="currentXsm != null and currentXsm != ''">
+				and XS_XJXXB_VIEW_KW.xsm like concat('%',concat(#{currentXsm},'%'))
+			</if>
+			<if test="currentZym != null and currentZym != ''">
+				and XS_XJXXB_VIEW_KW.zym like concat('%',concat(#{currentZym},'%'))
+			</if>
+		</where>
+	</select>
+	<select id="getExtById" resultType="com.imust.newckbk.domain.ext.XszzyxxbExt">
+		select
+			xszzyxxb.id,
+			xszzyxxb.xh,
+			xszzyxxb.sylb,
+			xszzyxxb.lqpc,
+			xszzyxxb.nzrxsm,
+			xszzyxxb.nzrzym,
+			xszzyxxb.sjh,
+			XS_XJXXB_VIEW_KW.xm AS xm,
+			XS_XJXXB_VIEW_KW.dqnj AS dqnj,
+			XS_XJXXB_VIEW_KW.bjh AS bjh,
+			XS_XJXXB_VIEW_KW.xsm AS currentXsm,
+			XS_XJXXB_VIEW_KW.zym AS currentZym
+		from
+			XSZZYXXB  xszzyxxb
+			left join XS_XJXXB_VIEW_KW ON XS_XJXXB_VIEW_KW.xh = xszzyxxb.xh
+		where xszzyxxb.id = #{id}
+	</select>
+    <select id="getExtByXh" resultType="com.imust.newckbk.domain.ext.XszzyxxbExt">
+		select
+			xszzyxxb.id,
+			xszzyxxb.xh,
+			xszzyxxb.sylb,
+			xszzyxxb.lqpc,
+			xszzyxxb.nzrxsm,
+			xszzyxxb.nzrzym,
+			xszzyxxb.sjh,
+			XS_XJXXB_VIEW_KW.xm AS xm,
+			XS_XJXXB_VIEW_KW.dqnj AS dqnj,
+			XS_XJXXB_VIEW_KW.bjh AS bjh,
+			XS_XJXXB_VIEW_KW.xsm AS currentXsm,
+			XS_XJXXB_VIEW_KW.zym AS currentZym,
+			XS_XJXXB_VIEW_KW.SFYXJ AS sfyxj
+		from
+			XSZZYXXB  xszzyxxb
+			left join XS_XJXXB_VIEW_KW ON XS_XJXXB_VIEW_KW.xh = xszzyxxb.xh
+			where xszzyxxb.xh = #{xh}
+	</select>
+    <select id="getByXh" resultType="com.imust.newckbk.domain.report.XszzyxxReportExt">
+		select
+			XS_XJXXB_VIEW_KW.xm AS xm,
+			XS_XJXXB_VIEW_KW.xb AS xb,
+			xszzyxxb.xh AS xh,
+			XS_XJXXB_VIEW_KW.gkksh AS gkkh,
+			xszzyxxb.sylb AS ksfl,
+			xszzyxxb.sjh AS sjh,
+			concat(XS_XJXXB_VIEW_KW.zym,XS_XJXXB_VIEW_KW.bjh) AS currentZymBjh,
+			ZYXXB.XKFL AS currentZymlb,
+			ZYXXB.LQPC AS currentLqpc,
+			xszzyxxb.nzrzym AS nzrzym,
+			xszzyxxb.lqpc AS lqpc,
+			xszzyxxb.sylb AS zymlb
+		from
+			XSZZYXXB  xszzyxxb
+			left join XS_XJXXB_VIEW_KW ON XS_XJXXB_VIEW_KW.xh = xszzyxxb.xh
+			left join ZYXXB ON ZYXXB.zym = XS_XJXXB_VIEW_KW.zym
+		where xszzyxxb.xh = #{xh}
+	</select>
+    <!--<insert id="insert" parameterType="com.imust.newckbk.domain.Xszzyxxb">
+		insert into XSZZYXXB
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" xh != null and xh != ''">
+				xh,
+			</if>
+			<if test=" sylb != null and sylb != ''">
+				sylb,
+			</if>
+			<if test=" lqpc != null and lqpc != ''">
+				lqpc,
+			</if>
+			<if test=" nzrxsm != null and nzrxsm != ''">
+				nzrxsm,
+			</if>
+			<if test=" nzrzym != null and nzrzym != ''">
+				nzrzym,
+			</if>
+			<if test=" sjh != null and sjh != ''">
+				sjh,
+			</if>
+			<if test=" yxsm != nlll and yxsm != ''">
+				yxsm,
+			</if>
+			<if test=" yzym != nlll and yzym != ''">
+				yzym,
+			</if>
+			<if test=" ynjdm != nlll and ynjdm != ''">
+				ynjdm,
+			</if>
+			<if test=" ybjh != nlll and ybjh != ''">
+				ybjh
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" xh != null and xh != ''">
+				#{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" sylb != null and sylb != ''">
+				#{sylb,jdbcType=VARCHAR},
+			</if>
+			<if test=" lqpc != null and lqpc != ''">
+				#{lqpc,jdbcType=VARCHAR},
+			</if>
+			<if test=" nzrxsm != null and nzrxsm != ''">
+				#{nzrxsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" nzrzym != null and nzrzym != ''">
+				#{nzrzym,jdbcType=VARCHAR},
+			</if>
+			<if test=" sjh != null and sjh != ''">
+				#{sjh,jdbcType=VARCHAR},
+			</if>
+			<if test="yxsm != nlll and yxsm != ''">
+				#{yxsm,jdbcType=VARCHAR},
+			</if>
+			<if test="yzym != nlll and yzym != ''">
+				#{yzym,jdbcType=VARCHAR},
+			</if>
+			<if test="ynjdm != nlll and ynjdm != ''">
+				#{ynjdm,jdbcType=VARCHAR},
+			</if>
+			<if test="ybjh != nlll and ybjh != ''">
+				#{ybjh,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>-->
+	<insert id="insert" parameterType="com.imust.newckbk.domain.Xszzyxxb" useGeneratedKeys="true" keyProperty="id">
+		insert into XSZZYXXB
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" xh != null and xh != ''">
+				xh,
+			</if>
+			<if test=" sylb != null and sylb != ''">
+				sylb,
+			</if>
+			<if test=" lqpc != null and lqpc != ''">
+				lqpc,
+			</if>
+			<if test=" nzrxsm != null and nzrxsm != ''">
+				nzrxsm,
+			</if>
+			<if test=" nzrzym != null and nzrzym != ''">
+				nzrzym,
+			</if>
+			<if test=" sjh != null and sjh != ''">
+				sjh,
+			</if>
+			<if test=" yxsm != null and yxsm != ''">
+				yxsm,
+			</if>
+			<if test=" yzym != null and yzym != ''">
+				yzym,
+			</if>
+			<if test=" ynjdm != null and ynjdm != ''">
+				ynjdm,
+			</if>
+			<if test=" ybjh != null and ybjh != ''">
+				ybjh
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" xh != null and xh != ''">
+				#{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" sylb != null and sylb != ''">
+				#{sylb,jdbcType=VARCHAR},
+			</if>
+			<if test=" lqpc != null and lqpc != ''">
+				#{lqpc,jdbcType=VARCHAR},
+			</if>
+			<if test=" nzrxsm != null and nzrxsm != ''">
+				#{nzrxsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" nzrzym != null and nzrzym != ''">
+				#{nzrzym,jdbcType=VARCHAR},
+			</if>
+			<if test=" sjh != null and sjh != ''">
+				#{sjh,jdbcType=VARCHAR},
+			</if>
+			<if test=" yxsm != null and yxsm != ''">
+				#{yxsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" yzym != null and yzym != ''">
+				#{yzym,jdbcType=VARCHAR},
+			</if>
+			<if test=" ynjdm != null and ynjdm != ''">
+				#{ynjdm,jdbcType=VARCHAR},
+			</if>
+			<if test=" ybjh != null and ybjh != ''">
+				#{ybjh,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+	<update id="updateById" parameterType="com.imust.newckbk.domain.Xszzyxxb">
+		update XSZZYXXB xszzyxxb
+		<set>
+			<if test=" xh != null and xh != ''">
+				xh = #{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" sylb != null and sylb != ''">
+				sylb = #{sylb,jdbcType=VARCHAR},
+			</if>
+			<if test=" lqpc != null and lqpc != ''">
+				lqpc = #{lqpc,jdbcType=VARCHAR},
+			</if>
+			<if test=" nzrxsm != null and nzrxsm != ''">
+				nzrxsm = #{nzrxsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" nzrzym != null and nzrzym != ''">
+				nzrzym = #{nzrzym,jdbcType=VARCHAR},
+			</if>
+			<if test=" sjh != null and sjh != ''">
+				sjh = #{sjh,jdbcType=VARCHAR},
+			</if>
+			<if test=" yxsm != null and yxsm != ''">
+				yxsm = #{yxsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" yzym != null and yzym != ''">
+				yzym = #{yzym,jdbcType=VARCHAR},
+			</if>
+			<if test=" ynjdm != null and ynjdm != ''">
+				ynjdm = #{ynjdm,jdbcType=VARCHAR},
+			</if>
+			<if test=" ybjh != null and ybjh != ''">
+				ybjh = #{ybjh,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where id= #{id}
+	</update>
+    <update id="updateByMap">
+		update XSZZYXXB  xszzyxxb set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update XSZZYXXB xszzyxxb set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update XSZZYXXB xszzyxxb set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Xszzyxxb">
+		update XSZZYXXB xszzyxxb set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

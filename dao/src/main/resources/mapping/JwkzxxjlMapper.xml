@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.JwkzxxjlDao">
+    <resultMap id="jwkzxxjlMap" type="com.imust.newckbk.domain.Jwkzxxjl">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bkkg" column="bkkg" javaType="java.lang.Byte" jdbcType="TINYINT"/>
+        <result property="fxkg" column="fxkg" javaType="java.lang.Byte" jdbcType="TINYINT"/>
+        <result property="zzykg" column="zzykg" javaType="java.lang.Byte" jdbcType="TINYINT"/>
+        <result property="cetkg" column="cetkg" javaType="java.lang.Byte" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="status" column="status" javaType="java.lang.Byte" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		bkkg,
+		fxkg,
+		zzykg,
+		cetkg,
+		create_time,
+		create_by,
+		status
+	</sql>
+	<delete id="clearRecord">
+		delete from jwkzxxjl where jwkzxxjl.status = 0
+	</delete>
+	<select id="getById" resultMap="jwkzxxjlMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from JWKZXXJL  jwkzxxjl
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="jwkzxxjlMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from JWKZXXJL  jwkzxxjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="jwkzxxjlMap" parameterType="com.imust.newckbk.domain.Jwkzxxjl">
+		select <include refid="cols"/> from JWKZXXJL  jwkzxxjl
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="jwkzxxjlMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from JWKZXXJL  jwkzxxjl
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from JWKZXXJL  jwkzxxjl
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from JWKZXXJL  jwkzxxjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from JWKZXXJL  jwkzxxjl
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getExtByMapPage" resultType="com.imust.newckbk.domain.ext.JwkzxxjlExt">
+		select
+			jwkzxxjl.id,
+			CASE jwkzxxjl.bkkg
+			WHEN 1 THEN '开启'
+			WHEN 0 THEN '关闭'
+			ELSE '错误' END AS bkkgmc,
+			CASE jwkzxxjl.fxkg
+			WHEN 1 THEN '开启'
+			WHEN 0 THEN '关闭'
+			ELSE '错误' END AS fxkgmc,
+			CASE jwkzxxjl.zzykg
+			WHEN 1 THEN '开启'
+			WHEN 0 THEN '关闭'
+			ELSE '错误' END AS zzykgmc,
+			CASE jwkzxxjl.cetkg
+			WHEN 1 THEN '开启'
+			WHEN 0 THEN '关闭'
+			ELSE '错误' END AS cetkgmc,
+			jwkzxxjl.status,
+			CASE jwkzxxjl.status
+			WHEN 1 THEN '当前'
+			WHEN 0 THEN '记录'
+			ELSE '错误' END AS statusName,
+			TO_CHAR(jwkzxxjl.create_time, 'yyyy-mm-dd hh24:mi:ss') AS createTimeStr,
+			SYS_USER.REAL_NAME AS createUserName
+		from
+			JWKZXXJL  jwkzxxjl
+			LEFT JOIN SYS_USER ON SYS_USER.id = jwkzxxjl.create_by and SYS_USER.deleted = 0
+		order by jwkzxxjl.status DESC
+	</select>
+    <select id="getCurrentSet" resultType="com.imust.newckbk.domain.Jwkzxxjl">
+		SELECT
+			<include refid="cols"/>
+		from
+			JWKZXXJL  jwkzxxjl
+		where
+			jwkzxxjl.status = 1
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.Jwkzxxjl" useGeneratedKeys="true" keyProperty="id">
+		insert into JWKZXXJL
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" bkkg != null">
+				bkkg,
+			</if>
+			<if test=" fxkg != null">
+				fxkg,
+			</if>
+			<if test=" zzykg != null">
+				zzykg,
+			</if>
+			<if test=" cetkg != null">
+				cetkg,
+			</if>
+			<if test=" createTime != null and createTime != ''">
+				create_time,
+			</if>
+			<if test=" createBy != null and createBy != ''">
+				create_by,
+			</if>
+			<if test=" status != null">
+				status
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" bkkg != null">
+				#{bkkg,jdbcType=TINYINT},
+			</if>
+			<if test=" fxkg != null">
+				#{fxkg,jdbcType=TINYINT},
+			</if>
+			<if test=" zzykg != null">
+				#{zzykg,jdbcType=TINYINT},
+			</if>
+			<if test=" cetkg != null">
+				#{cetkg,jdbcType=TINYINT},
+			</if>
+			<if test=" createTime != null and createTime != ''">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test=" createBy != null and createBy != ''">
+				#{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test=" status != null">
+				#{status,jdbcType=TINYINT}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Jwkzxxjl">
+		update JWKZXXJL jwkzxxjl
+		<set>
+			<if test=" bkkg != null">
+				bkkg = #{bkkg,jdbcType=TINYINT},
+			</if>
+			<if test=" fxkg != null">
+				fxkg = #{fxkg,jdbcType=TINYINT},
+			</if>
+			<if test=" zzykg != null">
+				zzykg = #{zzykg,jdbcType=TINYINT},
+			</if>
+			<if test=" cetkg != null">
+				cetkg = #{cetkg,jdbcType=TINYINT},
+			</if>
+			<if test=" createTime != null and createTime != ''">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test=" createBy != null and createBy != ''">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test=" status != null">
+				status = #{status,jdbcType=TINYINT}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update JWKZXXJL  jwkzxxjl set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update JWKZXXJL jwkzxxjl set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update JWKZXXJL jwkzxxjl set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Jwkzxxjl">
+		update JWKZXXJL jwkzxxjl set deleted=1 
+		where id=#{id}
+	</update>
+    <update id="setCurrentSet">
+		update JWKZXXJL jwkzxxjl set jwkzxxjl.status = #{value}
+		where jwkzxxjl.status = 1
+	</update>
+</mapper>

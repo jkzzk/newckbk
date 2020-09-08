@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.BkkcxxbDao">
+    <resultMap id="bkkcxxbMap" type="com.imust.newckbk.domain.Bkkcxxb">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="jxjhh" column="jxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xsm" column="xsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kch" column="kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kcm" column="kcm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kcsx" column="kcsx" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xs" column="xs" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xf" column="xf" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="kslx" column="kslx" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sfzzbk" column="sfzzbk" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		jxjhh,
+		xsm,
+		kch,
+		kcm,
+		kcsx,
+		xs,
+		xf,
+		kslx,
+		sfzzbk
+	</sql>
+	<delete id="deleteByIdArr">
+		delete from BKKCXXB  bkkcxxb where id in
+		<foreach collection="array" open="(" close=")" item="id" separator=",">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="getById" resultMap="bkkcxxbMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from BKKCXXB  bkkcxxb
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="bkkcxxbMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from BKKCXXB  bkkcxxb
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="bkkcxxbMap" parameterType="com.imust.newckbk.domain.Bkkcxxb">
+		select <include refid="cols"/> from BKKCXXB  bkkcxxb
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="bkkcxxbMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from BKKCXXB  bkkcxxb
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from BKKCXXB  bkkcxxb
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from BKKCXXB  bkkcxxb
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from BKKCXXB  bkkcxxb
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getExtByPage" resultType="com.imust.newckbk.domain.ext.BkkcxxbExt">
+		select
+			bkkcxxb.id,
+			bkkcxxb.jxjhh,
+			CODE_ZXJXJHXNXQXX.ZXJXJHM as zxjxjhm,
+			bkkcxxb.xsm,
+			bkkcxxb.kch,
+			bkkcxxb.kcm,
+			bkkcxxb.kcsx,
+			bkkcxxb.xs,
+			bkkcxxb.xf,
+			bkkcxxb.kslx,
+			bkkcxxb.sfzzbk
+		from
+			BKKCXXB  bkkcxxb
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.ZXJXJHH = bkkcxxb.jxjhh
+		<where>
+			<if test="jxjhh != null and jxjhh != ''">
+				and bkkcxxb.jxjhh = #{jxjhh}
+			</if>
+			<if test="xsm != null and xsm != ''">
+				and bkkcxxb.xsm like concat('%',concat(#{xsm},'%'))
+			</if>
+			<if test="kch != null and kch != ''">
+				and bkkcxxb.kch like concat('%',concat(#{kch},'%'))
+			</if>
+			<if test="kcm != null and kcm != ''">
+				and bkkcxxb.kcm like concat('%',concat(#{kcm},'%'))
+			</if>
+			<if test="kcsx != null and kcsx != ''">
+				and bkkcxxb.kcsx = #{kcsx}
+			</if>
+			<if test="xf != null and xf != ''">
+				and bkkcxxb.xf = #{xf}
+			</if>
+			<if test="xs != null and xs != ''">
+				and bkkcxxb.xs = #{xs}
+			</if>
+			<if test="kslx != null and kslx != ''">
+				and bkkcxxb.kslx = #{kslx}
+			</if>
+			<if test="sfzzbk != null and sfzzbk != ''">
+				and bkkcxxb.sfzzbk = #{sfzzbk}
+			</if>
+		</where>
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.Bkkcxxb" useGeneratedKeys="true" keyProperty="id">
+		insert into BKKCXXB
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" jxjhh != null and jxjhh != ''">
+				jxjhh,
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				xsm,
+			</if>
+			<if test=" kch != null and kch != ''">
+				kch,
+			</if>
+			<if test=" kcm != null and kcm != ''">
+				kcm,
+			</if>
+			<if test=" kcsx != null and kcsx != ''">
+				kcsx,
+			</if>
+			<if test=" xs != null and xs != ''">
+				xs,
+			</if>
+			<if test=" xf != null and xf != ''">
+				xf,
+			</if>
+			<if test=" kslx != null and kslx != ''">
+				kslx,
+			</if>
+			<if test=" sfzzbk != null and sfzzbk != ''">
+				sfzzbk
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" jxjhh != null and jxjhh != ''">
+				#{jxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				#{xsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" kch != null and kch != ''">
+				#{kch,jdbcType=VARCHAR},
+			</if>
+			<if test=" kcm != null and kcm != ''">
+				#{kcm,jdbcType=VARCHAR},
+			</if>
+			<if test=" kcsx != null and kcsx != ''">
+				#{kcsx,jdbcType=VARCHAR},
+			</if>
+			<if test=" xs != null and xs != ''">
+				#{xs,jdbcType=VARCHAR},
+			</if>
+			<if test=" xf != null and xf != ''">
+				#{xf,jdbcType=VARCHAR},
+			</if>
+			<if test=" kslx != null and kslx != ''">
+				#{kslx,jdbcType=VARCHAR},
+			</if>
+			<if test=" sfzzbk != null and sfzzbk != ''">
+				#{sfzzbk,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Bkkcxxb">
+		update BKKCXXB bkkcxxb
+		<set>
+			<if test=" jxjhh != null and jxjhh != ''">
+				jxjhh = #{jxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				xsm = #{xsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" kch != null and kch != ''">
+				kch = #{kch,jdbcType=VARCHAR},
+			</if>
+			<if test=" kcm != null and kcm != ''">
+				kcm = #{kcm,jdbcType=VARCHAR},
+			</if>
+			<if test=" kcsx != null and kcsx != ''">
+				kcsx = #{kcsx,jdbcType=VARCHAR},
+			</if>
+			<if test=" xs != null and xs != ''">
+				xs = #{xs,jdbcType=VARCHAR},
+			</if>
+			<if test=" xf != null and xf != ''">
+				xf = #{xf,jdbcType=VARCHAR},
+			</if>
+			<if test=" kslx != null and kslx != ''">
+				kslx = #{kslx,jdbcType=VARCHAR},
+			</if>
+			<if test=" sfzzbk != null and sfzzbk != ''">
+				sfzzbk = #{sfzzbk,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update BKKCXXB  bkkcxxb set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update BKKCXXB bkkcxxb set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update BKKCXXB bkkcxxb set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Bkkcxxb">
+		update BKKCXXB bkkcxxb set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>
