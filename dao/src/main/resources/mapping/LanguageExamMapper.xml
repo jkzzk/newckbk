@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.LanguageExamDao">
+    <resultMap id="languageExamMap" type="com.imust.newckbk.domain.LanguageExam">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="type" column="type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xh" column="xh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xm" column="xm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xb" column="xb" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zylb" column="zylb" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sfzh" column="sfzh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xl" column="xl" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xz" column="xz" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="rxnf" column="rxnf" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="nj" column="nj" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xsm" column="xsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zym" column="zym" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bjh" column="bjh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xjdm" column="xjdm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="xxdm" column="xxdm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zxjxjhh" column="zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		type,
+		xh,
+		xm,
+		xb,
+		zylb,
+		sfzh,
+		xl,
+		xz,
+		rxnf,
+		nj,
+		xsm,
+		zym,
+		bjh,
+		xjdm,
+		xxdm,
+		zxjxjhh
+	</sql>
+	<delete id="deleteByIdArr">
+		delete from LANGUAGE_EXAM where id in
+		<foreach collection="array" open="(" close=")" item="id" separator=",">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="getById" resultMap="languageExamMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from LANGUAGE_EXAM  languageExam
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="languageExamMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from LANGUAGE_EXAM  languageExam
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="languageExamMap" parameterType="com.imust.newckbk.domain.LanguageExam">
+		select <include refid="cols"/> from LANGUAGE_EXAM  languageExam
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="languageExamMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from LANGUAGE_EXAM  languageExam
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_EXAM  languageExam
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_EXAM  languageExam
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_EXAM  languageExam
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getExtByPage" resultType="com.imust.newckbk.domain.ext.LanguageExamExt">
+		SELECT
+			languageExam.id,
+			languageExam.type,
+			languageExam.xh,
+			languageExam.xm,
+			languageExam.xb,
+			CASE languageExam.xb
+			WHEN '1' THEN '男'
+			WHEN '2' THEN '女'
+			ELSE '错误' END as xbName,
+			languageExam.zylb,
+			CASE languageExam.zylb
+			WHEN '1' THEN '身份证号'
+			ELSE '错误' END as zylbName,
+			languageExam.sfzh,
+			languageExam.xl,
+			CASE languageExam.xl
+			WHEN '10' THEN '研究生'
+			WHEN '20' THEN '本科'
+			WHEN '30' THEN '专科'
+			ELSE '错误' END as xlName,
+			languageExam.xz,
+			CASE languageExam.xz
+			WHEN '3' THEN '三年'
+			WHEN '4' THEN '四年'
+			WHEN '5' THEN '五年'
+			ELSE '错误' END as xzName,
+			languageExam.rxnf,
+			languageExam.nj,
+			languageExam.xsm,
+			languageExam.zym,
+			languageExam.bjh,
+			languageExam.xjdm,
+			languageExam.xxdm,
+			CODE_ZXJXJHXNXQXX.zxjxjhm as zxjxjhm
+		from
+			LANGUAGE_EXAM  languageExam
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.ZXJXJHH = languageExam.zxjxjhh
+		<where>
+			<if test="zxjxjhh != null and zxjxjhh != ''">
+				and languageExam.zxjxjhh = #{zxjxjhh}
+			</if>
+			<if test="type != null and type != ''">
+				and languageExam.type = #{type}
+			</if>
+			<if test="xh != null and xh != ''">
+				and languageExam.xh like concat(concat('%',#{xh}),'%')
+			</if>
+			<if test="xm != null and xm != ''">
+				and languageExam.xm like concat(concat('%',#{xm}),'%')
+			</if>
+			<if test="xb != null and xb != ''">
+				and languageExam.xb = #{xb}
+			</if>
+			<if test="sfzh != null and sfzh != ''">
+				and languageExam.sfzh like concat(concat('%',#{sfzh}),'%')
+			</if>
+			<if test="xl != null and xl != ''">
+				and languageExam.xl = #{xl}
+			</if>
+			<if test="xz != null and xz != ''">
+				and languageExam.xz = #{xz}
+			</if>
+			<if test="rxnf != null and rxnf != ''">
+				and languageExam.rxnf = #{rxnf}
+			</if>
+			<if test="xsm != null and xsm != ''">
+				and languageExam.xsm like concat(concat('%',#{xsm}),'%')
+			</if>
+			<if test="zym != null and zym != ''">
+				and languageExam.xsm like concat(concat('%',#{zym}),'%')
+			</if>
+			<if test="bjh != null and bjh != ''">
+				and languageExam.xsm like concat(concat('%',#{bjh}),'%')
+			</if>
+		</where>
+	</select>
+	<select id="getAllByTerm" resultType="com.imust.newckbk.domain.LanguageExam">
+		select
+			row_number() over(order by id) as num,
+			<include refid="cols"/>
+		from
+			LANGUAGE_EXAM  languageExam
+		where
+			languageExam.zxjxjhh = #{zxjxjhh}
+	</select>
+	<insert id="insert" parameterType="com.imust.newckbk.domain.LanguageExam" useGeneratedKeys="true" keyProperty="id">
+		insert into LANGUAGE_EXAM
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" type != null and type != ''">
+				type,
+			</if>
+			<if test=" xh != null and xh != ''">
+				xh,
+			</if>
+			<if test=" xm != null and xm != ''">
+				xm,
+			</if>
+			<if test=" xb != null and xb != ''">
+				xb,
+			</if>
+			<if test=" zylb != null and zylb != ''">
+				zylb,
+			</if>
+			<if test=" sfzh != null and sfzh != ''">
+				sfzh,
+			</if>
+			<if test=" xl != null and xl != ''">
+				xl,
+			</if>
+			<if test=" xz != null and xz != ''">
+				xz,
+			</if>
+			<if test=" rxnf != null and rxnf != ''">
+				rxnf,
+			</if>
+			<if test=" nj != null and nj != ''">
+				nj,
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				xsm,
+			</if>
+			<if test=" zym != null and zym != ''">
+				zym,
+			</if>
+			<if test=" bjh != null and bjh != ''">
+				bjh,
+			</if>
+			<if test=" xjdm != null and xjdm != ''">
+				xjdm,
+			</if>
+			<if test=" xxdm != null and xxdm != ''">
+				xxdm,
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" type != null and type != ''">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test=" xh != null and xh != ''">
+				#{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xm != null and xm != ''">
+				#{xm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xb != null and xb != ''">
+				#{xb,jdbcType=VARCHAR},
+			</if>
+			<if test=" zylb != null and zylb != ''">
+				#{zylb,jdbcType=VARCHAR},
+			</if>
+			<if test=" sfzh != null and sfzh != ''">
+				#{sfzh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xl != null and xl != ''">
+				#{xl,jdbcType=VARCHAR},
+			</if>
+			<if test=" xz != null and xz != ''">
+				#{xz,jdbcType=VARCHAR},
+			</if>
+			<if test=" rxnf != null and rxnf != ''">
+				#{rxnf,jdbcType=VARCHAR},
+			</if>
+			<if test=" nj != null and nj != ''">
+				#{nj,jdbcType=VARCHAR},
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				#{xsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" zym != null and zym != ''">
+				#{zym,jdbcType=VARCHAR},
+			</if>
+			<if test=" bjh != null and bjh != ''">
+				#{bjh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xjdm != null and xjdm != ''">
+				#{xjdm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xxdm != null and xxdm != ''">
+				#{xxdm,jdbcType=VARCHAR},
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				#{zxjxjhh,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.LanguageExam">
+		update LANGUAGE_EXAM languageExam
+		<set>
+			<if test=" type != null and type != ''">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test=" xh != null and xh != ''">
+				xh = #{xh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xm != null and xm != ''">
+				xm = #{xm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xb != null and xb != ''">
+				xb = #{xb,jdbcType=VARCHAR},
+			</if>
+			<if test=" zylb != null and zylb != ''">
+				zylb = #{zylb,jdbcType=VARCHAR},
+			</if>
+			<if test=" sfzh != null and sfzh != ''">
+				sfzh = #{sfzh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xl != null and xl != ''">
+				xl = #{xl,jdbcType=VARCHAR},
+			</if>
+			<if test=" xz != null and xz != ''">
+				xz = #{xz,jdbcType=VARCHAR},
+			</if>
+			<if test=" rxnf != null and rxnf != ''">
+				rxnf = #{rxnf,jdbcType=VARCHAR},
+			</if>
+			<if test=" nj != null and nj != ''">
+				nj = #{nj,jdbcType=VARCHAR},
+			</if>
+			<if test=" xsm != null and xsm != ''">
+				xsm = #{xsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" zym != null and zym != ''">
+				zym = #{zym,jdbcType=VARCHAR},
+			</if>
+			<if test=" bjh != null and bjh != ''">
+				bjh = #{bjh,jdbcType=VARCHAR},
+			</if>
+			<if test=" xjdm != null and xjdm != ''">
+				xjdm = #{xjdm,jdbcType=VARCHAR},
+			</if>
+			<if test=" xxdm != null and xxdm != ''">
+				xxdm = #{xxdm,jdbcType=VARCHAR},
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh = #{zxjxjhh,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update LANGUAGE_EXAM  languageExam set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update LANGUAGE_EXAM languageExam set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update LANGUAGE_EXAM languageExam set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.LanguageExam">
+		update LANGUAGE_EXAM languageExam set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

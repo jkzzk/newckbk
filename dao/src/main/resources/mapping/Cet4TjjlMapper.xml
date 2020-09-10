@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.Cet4TjjlDao">
+    <resultMap id="cet4TjjlMap" type="com.imust.newckbk.domain.Cet4Tjjl">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zxjxjhh" column="zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="tyId" column="ty_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="firstGrade" column="first_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="halfTerm" column="half_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="lastExamTerm" column="last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="firstTermId" column="first_term_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="secondTermId" column="second_term_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cet4PassScore" column="cet4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="crt4PassScore" column="crt4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cjt4PassScore" column="cjt4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="status" column="status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		zxjxjhh,
+		ty_id,
+		first_grade,
+		half_term,
+		last_exam_term,
+		first_term_id,
+		second_term_id,
+		cet4_pass_score,
+		crt4_pass_score,
+		cjt4_pass_score,
+		status
+	</sql>
+    <select id="getById" resultMap="cet4TjjlMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from CET4_TJJL  cet4Tjjl
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="cet4TjjlMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from CET4_TJJL  cet4Tjjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="cet4TjjlMap" parameterType="com.imust.newckbk.domain.Cet4Tjjl">
+		select <include refid="cols"/> from CET4_TJJL  cet4Tjjl
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="cet4TjjlMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from CET4_TJJL  cet4Tjjl
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from CET4_TJJL  cet4Tjjl
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from CET4_TJJL  cet4Tjjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from CET4_TJJL  cet4Tjjl
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getExtByPage" resultType="com.imust.newckbk.domain.ext.CET4TJExt">
+		select
+			cet4Tjjl.id,
+			cet4Tjjl.zxjxjhh,
+			CODE_ZXJXJHXNXQXX.zxjxjhm as zxjxjhm,
+			cet4Tjjl.ty_id,
+			cet4Tjjl.first_grade,
+			cet4Tjjl.half_term,
+			case cet4Tjjl.half_term
+			when '1' then '上半学期'
+			WHEN '2' then '下半学期'
+			ELSE '错误' END AS halfTermName,
+			cet4Tjjl.last_exam_term,
+			cet4Tjjl.first_term_id,
+			cet4Tjjl.second_term_id,
+			cet4Tjjl.cet4_pass_score,
+			cet4Tjjl.crt4_pass_score,
+			cet4Tjjl.cjt4_pass_score,
+			cet4Tjjl.status,
+			case cet4Tjjl.status
+			when '0' then '失效'
+			WHEN '1' then '当前'
+			ELSE '错误' END AS statusName
+		from
+			CET4_TJJL  cet4Tjjl
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.zxjxjhh = cet4Tjjl.zxjxjhh
+		order by cet4Tjjl.status desc
+	</select>
+	<select id="getByStatus" resultType="com.imust.newckbk.domain.Cet4Tjjl">
+		select <include refid="cols"/> from CET4_TJJL  cet4Tjjl where cet4Tjjl.status = #{status}
+	</select>
+	<select id="getExtById" resultType="com.imust.newckbk.domain.ext.CET4TJExt">
+		select
+			cet4Tjjl.id,
+			cet4Tjjl.zxjxjhh,
+			CODE_ZXJXJHXNXQXX.zxjxjhm as zxjxjhm,
+			cet4Tjjl.ty_id,
+			cet4Tjjl.first_grade,
+			cet4Tjjl.half_term,
+			case cet4Tjjl.half_term
+			when '1' then '上半学期'
+			WHEN '2' then '下半学期'
+			ELSE '错误' END AS halfTermName,
+			cet4Tjjl.last_exam_term,
+			cet4Tjjl.first_term_id,
+			cet4Tjjl.second_term_id,
+			cet4Tjjl.cet4_pass_score,
+			cet4Tjjl.crt4_pass_score,
+			cet4Tjjl.cjt4_pass_score,
+			cet4Tjjl.status,
+			case cet4Tjjl.status
+			when '0' then '失效'
+			WHEN '1' then '当前'
+			ELSE '错误' END AS statusName
+		from
+			CET4_TJJL  cet4Tjjl
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.zxjxjhh = cet4Tjjl.zxjxjhh
+		where
+			id = #{id}
+	</select>
+	<insert id="insert" parameterType="com.imust.newckbk.domain.Cet4Tjjl" useGeneratedKeys="true" keyProperty="id">
+		insert into CET4_TJJL
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh,
+			</if>
+			<if test=" tyId != null and tyId != ''">
+				ty_id,
+			</if>
+			<if test=" firstGrade != null and firstGrade != ''">
+				first_grade,
+			</if>
+			<if test=" halfTerm != null and halfTerm != ''">
+				half_term,
+			</if>
+			<if test=" lastExamTerm != null and lastExamTerm != ''">
+				last_exam_term,
+			</if>
+			<if test=" firstTermId != null and firstTermId != ''">
+				first_term_id,
+			</if>
+			<if test=" secondTermId != null and secondTermId != ''">
+				second_term_id,
+			</if>
+			<if test=" cet4PassScore != null and cet4PassScore != ''">
+				cet4_pass_score,
+			</if>
+			<if test=" crt4PassScore != null and crt4PassScore != ''">
+				crt4_pass_score,
+			</if>
+			<if test=" cjt4PassScore != null and cjt4PassScore != ''">
+				cjt4_pass_score,
+			</if>
+			<if test=" status != null and status != ''">
+				status
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				#{zxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" tyId != null and tyId != ''">
+				#{tyId,jdbcType=VARCHAR},
+			</if>
+			<if test=" firstGrade != null and firstGrade != ''">
+				#{firstGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" halfTerm != null and halfTerm != ''">
+				#{halfTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" lastExamTerm != null and lastExamTerm != ''">
+				#{lastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" firstTermId != null and firstTermId != ''">
+				#{firstTermId,jdbcType=VARCHAR},
+			</if>
+			<if test=" secondTermId != null and secondTermId != ''">
+				#{secondTermId,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4PassScore != null and cet4PassScore != ''">
+				#{cet4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4PassScore != null and crt4PassScore != ''">
+				#{crt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4PassScore != null and cjt4PassScore != ''">
+				#{cjt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" status != null and status != ''">
+				#{status,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Cet4Tjjl">
+		update CET4_TJJL cet4Tjjl
+		<set>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh = #{zxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" tyId != null and tyId != ''">
+				ty_id = #{tyId,jdbcType=VARCHAR},
+			</if>
+			<if test=" firstGrade != null and firstGrade != ''">
+				first_grade = #{firstGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" halfTerm != null and halfTerm != ''">
+				half_term = #{halfTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" lastExamTerm != null and lastExamTerm != ''">
+				last_exam_term = #{lastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" firstTermId != null and firstTermId != ''">
+				first_term_id = #{firstTermId,jdbcType=VARCHAR},
+			</if>
+			<if test=" secondTermId != null and secondTermId != ''">
+				second_term_id = #{secondTermId,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4PassScore != null and cet4PassScore != ''">
+				cet4_pass_score = #{cet4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4PassScore != null and crt4PassScore != ''">
+				crt4_pass_score = #{crt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4PassScore != null and cjt4PassScore != ''">
+				cjt4_pass_score = #{cjt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" status != null and status != ''">
+				status = #{status,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update CET4_TJJL  cet4Tjjl set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <delete id="deleteById" parameterType="java.lang.String">
+		delete CET4_TJJL cet4Tjjl where id=#{id}
+	</delete>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update CET4_TJJL cet4Tjjl set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Cet4Tjjl">
+		update CET4_TJJL cet4Tjjl set deleted=1 
+		where id=#{id}
+	</update>
+	<update id="updateByStatus">
+		update CET4_TJJL cet4Tjjl set status = #{status}
+	</update>
+</mapper>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.Cet4TytjjlDao">
+    <resultMap id="cet4TytjjlMap" type="com.imust.newckbk.domain.Cet4Tytjjl">
+        <result property="missingExam" column="missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="passedExam" column="passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isJapanese" column="is_japanese" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isRussian" column="is_russian" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="japaneseKch" column="japanese_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="russianKch" column="russian_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="specialXsm" column="special_xsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cet3Score" column="cet3_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		missing_exam,
+		passed_exam,
+		is_japanese,
+		is_russian,
+		japanese_kch,
+		russian_kch,
+		special_xsm,
+		id,
+		cet3_score
+	</sql>
+    <select id="getById" resultMap="cet4TytjjlMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from CET4_TYTJJL  cet4Tytjjl
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="cet4TytjjlMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from CET4_TYTJJL  cet4Tytjjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="cet4TytjjlMap" parameterType="com.imust.newckbk.domain.Cet4Tytjjl">
+		select <include refid="cols"/> from CET4_TYTJJL  cet4Tytjjl
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="cet4TytjjlMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from CET4_TYTJJL  cet4Tytjjl
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from CET4_TYTJJL  cet4Tytjjl
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from CET4_TYTJJL  cet4Tytjjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from CET4_TYTJJL  cet4Tytjjl
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.Cet4Tytjjl" useGeneratedKeys="true" keyProperty="id">
+		insert into CET4_TYTJJL
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" missingExam != null and missingExam != ''">
+				missing_exam,
+			</if>
+			<if test=" passedExam != null and passedExam != ''">
+				passed_exam,
+			</if>
+			<if test=" isJapanese != null and isJapanese != ''">
+				is_japanese,
+			</if>
+			<if test=" isRussian != null and isRussian != ''">
+				is_russian,
+			</if>
+			<if test=" japaneseKch != null and japaneseKch != ''">
+				japanese_kch,
+			</if>
+			<if test=" russianKch != null and russianKch != ''">
+				russian_kch,
+			</if>
+			<if test=" specialXsm != null and specialXsm != ''">
+				special_xsm,
+			</if>
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" cet3Score != null and cet3Score != ''">
+				cet3_score
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" missingExam != null and missingExam != ''">
+				#{missingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" passedExam != null and passedExam != ''">
+				#{passedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" isJapanese != null and isJapanese != ''">
+				#{isJapanese,jdbcType=VARCHAR},
+			</if>
+			<if test=" isRussian != null and isRussian != ''">
+				#{isRussian,jdbcType=VARCHAR},
+			</if>
+			<if test=" japaneseKch != null and japaneseKch != ''">
+				#{japaneseKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" russianKch != null and russianKch != ''">
+				#{russianKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" specialXsm != null and specialXsm != ''">
+				#{specialXsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet3Score != null and cet3Score != ''">
+				#{cet3Score,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Cet4Tytjjl">
+		update CET4_TYTJJL cet4Tytjjl
+		<set>
+			<if test=" missingExam != null and missingExam != ''">
+				missing_exam = #{missingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" passedExam != null and passedExam != ''">
+				passed_exam = #{passedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" isJapanese != null and isJapanese != ''">
+				is_japanese = #{isJapanese,jdbcType=VARCHAR},
+			</if>
+			<if test=" isRussian != null and isRussian != ''">
+				is_russian = #{isRussian,jdbcType=VARCHAR},
+			</if>
+			<if test=" japaneseKch != null and japaneseKch != ''">
+				japanese_kch = #{japaneseKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" russianKch != null and russianKch != ''">
+				russian_kch = #{russianKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" specialXsm != null and specialXsm != ''">
+				special_xsm = #{specialXsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet3Score != null and cet3Score != ''">
+				cet3_score = #{cet3Score,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update CET4_TYTJJL  cet4Tytjjl set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <delete id="deleteById" parameterType="java.lang.String">
+		delete from CET4_TYTJJL cet4Tytjjl where id=#{id}
+	</delete>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update CET4_TYTJJL cet4Tytjjl set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Cet4Tytjjl">
+		update CET4_TYTJJL cet4Tytjjl set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

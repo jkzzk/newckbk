@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.Cet4SecondTermDao">
+    <resultMap id="cet4SecondTermMap" type="com.imust.newckbk.domain.Cet4SecondTerm">
+        <result property="classaEnglishMin" column="classa_english_min" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classaEnglishMax" column="classa_english_max" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classbEnglishMin" column="classb_english_min" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classbEnglishMax" column="classb_english_max" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classcEnglishMin" column="classc_english_min" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classcEnglishMax" column="classc_english_max" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classaKxh" column="classa_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classbKxh" column="classb_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classcKxh" column="classc_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		classa_english_min,
+		classa_english_max,
+		classb_english_min,
+		classb_english_max,
+		classc_english_min,
+		classc_english_max,
+		classa_kxh,
+		classb_kxh,
+		classc_kxh,
+		id
+	</sql>
+    <select id="getById" resultMap="cet4SecondTermMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from CET4_SECOND_TERM  cet4SecondTerm
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="cet4SecondTermMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from CET4_SECOND_TERM  cet4SecondTerm
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="cet4SecondTermMap" parameterType="com.imust.newckbk.domain.Cet4SecondTerm">
+		select <include refid="cols"/> from CET4_SECOND_TERM  cet4SecondTerm
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="cet4SecondTermMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from CET4_SECOND_TERM  cet4SecondTerm
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from CET4_SECOND_TERM  cet4SecondTerm
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from CET4_SECOND_TERM  cet4SecondTerm
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from CET4_SECOND_TERM  cet4SecondTerm
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.Cet4SecondTerm" useGeneratedKeys="true" keyProperty="id">
+		insert into CET4_SECOND_TERM
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" classaEnglishMin != null and classaEnglishMin != ''">
+				classa_english_min,
+			</if>
+			<if test=" classaEnglishMax != null and classaEnglishMax != ''">
+				classa_english_max,
+			</if>
+			<if test=" classbEnglishMin != null and classbEnglishMin != ''">
+				classb_english_min,
+			</if>
+			<if test=" classbEnglishMax != null and classbEnglishMax != ''">
+				classb_english_max,
+			</if>
+			<if test=" classcEnglishMin != null and classcEnglishMin != ''">
+				classc_english_min,
+			</if>
+			<if test=" classcEnglishMax != null and classcEnglishMax != ''">
+				classc_english_max,
+			</if>
+			<if test=" classaKxh != null and classaKxh != ''">
+				classa_kxh,
+			</if>
+			<if test=" classbKxh != null and classbKxh != ''">
+				classb_kxh,
+			</if>
+			<if test=" classcKxh != null and classcKxh != ''">
+				classc_kxh,
+			</if>
+			<if test=" id != null and id != ''">
+				id
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" classaEnglishMin != null and classaEnglishMin != ''">
+				#{classaEnglishMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaEnglishMax != null and classaEnglishMax != ''">
+				#{classaEnglishMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbEnglishMin != null and classbEnglishMin != ''">
+				#{classbEnglishMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbEnglishMax != null and classbEnglishMax != ''">
+				#{classbEnglishMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcEnglishMin != null and classcEnglishMin != ''">
+				#{classcEnglishMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcEnglishMax != null and classcEnglishMax != ''">
+				#{classcEnglishMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaKxh != null and classaKxh != ''">
+				#{classaKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbKxh != null and classbKxh != ''">
+				#{classbKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcKxh != null and classcKxh != ''">
+				#{classcKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Cet4SecondTerm">
+		update CET4_SECOND_TERM cet4SecondTerm
+		<set>
+			<if test=" classaEnglishMin != null and classaEnglishMin != ''">
+				classa_english_min = #{classaEnglishMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaEnglishMax != null and classaEnglishMax != ''">
+				classa_english_max = #{classaEnglishMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbEnglishMin != null and classbEnglishMin != ''">
+				classb_english_min = #{classbEnglishMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbEnglishMax != null and classbEnglishMax != ''">
+				classb_english_max = #{classbEnglishMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcEnglishMin != null and classcEnglishMin != ''">
+				classc_english_min = #{classcEnglishMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcEnglishMax != null and classcEnglishMax != ''">
+				classc_english_max = #{classcEnglishMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaKxh != null and classaKxh != ''">
+				classa_kxh = #{classaKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbKxh != null and classbKxh != ''">
+				classb_kxh = #{classbKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcKxh != null and classcKxh != ''">
+				classc_kxh = #{classcKxh,jdbcType=VARCHAR},
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update CET4_SECOND_TERM  cet4SecondTerm set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <delete id="deleteById" parameterType="java.lang.String">
+		delete from CET4_SECOND_TERM cet4SecondTerm where id=#{id}
+	</delete>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update CET4_SECOND_TERM cet4SecondTerm set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Cet4SecondTerm">
+		update CET4_SECOND_TERM cet4SecondTerm set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

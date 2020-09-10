@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.Cet4FirstTermDao">
+    <resultMap id="cet4FirstTermMap" type="com.imust.newckbk.domain.Cet4FirstTerm">
+        <result property="classaMin" column="classa_min" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classaMax" column="classa_max" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classbMin" column="classb_min" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classbMax" column="classb_max" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classcMin" column="classc_min" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classcMax" column="classc_max" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		classa_min,
+		classa_max,
+		classb_min,
+		classb_max,
+		classc_min,
+		classc_max,
+		id
+	</sql>
+    <select id="getById" resultMap="cet4FirstTermMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from CET4_FIRST_TERM  cet4FirstTerm
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="cet4FirstTermMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from CET4_FIRST_TERM  cet4FirstTerm
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="cet4FirstTermMap" parameterType="com.imust.newckbk.domain.Cet4FirstTerm">
+		select <include refid="cols"/> from CET4_FIRST_TERM  cet4FirstTerm
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="cet4FirstTermMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from CET4_FIRST_TERM  cet4FirstTerm
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from CET4_FIRST_TERM  cet4FirstTerm
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from CET4_FIRST_TERM  cet4FirstTerm
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from CET4_FIRST_TERM  cet4FirstTerm
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.Cet4FirstTerm" useGeneratedKeys="true" keyProperty="id">
+		insert into CET4_FIRST_TERM
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" classaMin != null and classaMin != ''">
+				classa_min,
+			</if>
+			<if test=" classaMax != null and classaMax != ''">
+				classa_max,
+			</if>
+			<if test=" classbMin != null and classbMin != ''">
+				classb_min,
+			</if>
+			<if test=" classbMax != null and classbMax != ''">
+				classb_max,
+			</if>
+			<if test=" classcMin != null and classcMin != ''">
+				classc_min,
+			</if>
+			<if test=" classcMax != null and classcMax != ''">
+				classc_max,
+			</if>
+			<if test=" id != null and id != ''">
+				id
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" classaMin != null and classaMin != ''">
+				#{classaMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaMax != null and classaMax != ''">
+				#{classaMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbMin != null and classbMin != ''">
+				#{classbMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbMax != null and classbMax != ''">
+				#{classbMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcMin != null and classcMin != ''">
+				#{classcMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcMax != null and classcMax != ''">
+				#{classcMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.Cet4FirstTerm">
+		update CET4_FIRST_TERM cet4FirstTerm
+		<set>
+			<if test=" classaMin != null and classaMin != ''">
+				classa_min = #{classaMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaMax != null and classaMax != ''">
+				classa_max = #{classaMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbMin != null and classbMin != ''">
+				classb_min = #{classbMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbMax != null and classbMax != ''">
+				classb_max = #{classbMax,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcMin != null and classcMin != ''">
+				classc_min = #{classcMin,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcMax != null and classcMax != ''">
+				classc_max = #{classcMax,jdbcType=VARCHAR},
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update CET4_FIRST_TERM  cet4FirstTerm set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <delete id="deleteById" parameterType="java.lang.String">
+		delete from CET4_FIRST_TERM cet4FirstTerm where id=#{id}
+	</delete>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update CET4_FIRST_TERM cet4FirstTerm set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.Cet4FirstTerm">
+		update CET4_FIRST_TERM cet4FirstTerm set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

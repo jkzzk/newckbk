@@ -213,8 +213,8 @@ public class CodeUtil {
 		Document document = DocumentHelper.createDocument();
 		
 		// 创建根节点  
-		Element root = document.addElement("mapper").addAttribute("namespace", daoPackeageName+"."+uname+"Dao");   
-		document.addDocType("mapper", "", "-//mybatis.org//DTD Mapper 3.0//EN\" \"/WEB-INF/dtd/mybatis-3-mapper.dtd");
+		Element root = document.addElement("mapper").addAttribute("namespace", daoPackeageName+"."+uname+"Dao");
+		document.addDocType("mapper", "-//mybatis.org//DTD Mapper 3.0//EN\" \"/WEB-INF/dtd/mybatis-3-mapper.dtd", null);
 		
 		//创建ResultMap
 		getResultMapElement(root,name,ffArr);

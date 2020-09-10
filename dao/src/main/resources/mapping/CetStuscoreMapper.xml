@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.CetStuscoreDao">
+    <resultMap id="cetStuscoreMap" type="com.imust.newckbk.domain.CetStuscore">
+        <result property="ksKssj" column="ks_kssj" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ksYyjb" column="ks_yyjb" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ksXh" column="ks_xh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ksZf" column="ks_zf" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ksQk" column="ks_qk" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		ks_kssj,
+		ks_yyjb,
+		ks_xh,
+		ks_zf,
+		ks_qk
+	</sql>
+    <select id="getById" resultMap="cetStuscoreMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from CET_STUSCORE  cetStuscore
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="cetStuscoreMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from CET_STUSCORE  cetStuscore
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="cetStuscoreMap" parameterType="com.imust.newckbk.domain.CetStuscore">
+		select <include refid="cols"/> from CET_STUSCORE  cetStuscore
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="cetStuscoreMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from CET_STUSCORE  cetStuscore
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from CET_STUSCORE  cetStuscore
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from CET_STUSCORE  cetStuscore
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from CET_STUSCORE  cetStuscore
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.CetStuscore" useGeneratedKeys="true" keyProperty="id">
+		insert into CET_STUSCORE
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" ksKssj != null and ksKssj != ''">
+				ks_kssj,
+			</if>
+			<if test=" ksYyjb != null and ksYyjb != ''">
+				ks_yyjb,
+			</if>
+			<if test=" ksXh != null and ksXh != ''">
+				ks_xh,
+			</if>
+			<if test=" ksZf != null and ksZf != ''">
+				ks_zf,
+			</if>
+			<if test=" ksQk != null and ksQk != ''">
+				ks_qk
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" ksKssj != null and ksKssj != ''">
+				#{ksKssj,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksYyjb != null and ksYyjb != ''">
+				#{ksYyjb,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksXh != null and ksXh != ''">
+				#{ksXh,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksZf != null and ksZf != ''">
+				#{ksZf,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksQk != null and ksQk != ''">
+				#{ksQk,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.CetStuscore">
+		update CET_STUSCORE cetStuscore
+		<set>
+			<if test=" ksKssj != null and ksKssj != ''">
+				ks_kssj = #{ksKssj,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksYyjb != null and ksYyjb != ''">
+				ks_yyjb = #{ksYyjb,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksXh != null and ksXh != ''">
+				ks_xh = #{ksXh,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksZf != null and ksZf != ''">
+				ks_zf = #{ksZf,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksQk != null and ksQk != ''">
+				ks_qk = #{ksQk,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update CET_STUSCORE  cetStuscore set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update CET_STUSCORE cetStuscore set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update CET_STUSCORE cetStuscore set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.CetStuscore">
+		update CET_STUSCORE cetStuscore set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

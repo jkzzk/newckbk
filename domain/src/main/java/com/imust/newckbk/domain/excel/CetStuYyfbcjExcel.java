@@ -1,44 +1,37 @@
-package com.imust.newckbk.domain;
+package com.imust.newckbk.domain.excel;
 
-import com.imust.newckbk.domain.excel.CetStuYyfbcjExcel;
+import cn.afterturn.easypoi.excel.annotation.Excel;
 
-import java.math.BigDecimal;
+public class CetStuYyfbcjExcel {
 
-public class CetStuYyfbcj {
     private String id;
 
+    @Excel(name = "学期")
     private String zxjxjhh;
 
+    @Excel(name = "课程号")
     private String kch;
 
+    @Excel(name = "课程名称")
     private String kcmc;
 
+    @Excel(name = "课程序号")
     private String kxh;
 
+    @Excel(name = "学号")
     private String xh;
 
+    @Excel(name = "姓名")
     private String xm;
 
+    @Excel(name = "班级号")
     private String bjh;
 
+    @Excel(name = "分班等级")
     private String fbdj;
 
+    @Excel(name = "等级成绩")
     private Double djcj;
-
-    public CetStuYyfbcj() {
-    }
-
-    public CetStuYyfbcj(CetStuYyfbcjExcel cetStuYyfbcjExcel) {
-        this.zxjxjhh = cetStuYyfbcjExcel.getZxjxjhh();
-        this.kch = cetStuYyfbcjExcel.getKch();
-        this.kcmc = cetStuYyfbcjExcel.getKcmc();
-        this.kch = cetStuYyfbcjExcel.getKch();
-        this.xh = cetStuYyfbcjExcel.getXh();
-        this.xm = cetStuYyfbcjExcel.getXm();
-        this.bjh = cetStuYyfbcjExcel.getBjh();
-        this.fbdj = cetStuYyfbcjExcel.getFbdj();
-        this.djcj = cetStuYyfbcjExcel.getDjcj();
-    }
 
     public String getId() {
         return id;
@@ -61,7 +54,7 @@ public class CetStuYyfbcj {
     }
 
     public void setKch(String kch) {
-        this.kch = kch == null ? null : kch.trim();
+        this.kch = kch;
     }
 
     public String getKcmc() {
@@ -69,7 +62,7 @@ public class CetStuYyfbcj {
     }
 
     public void setKcmc(String kcmc) {
-        this.kcmc = kcmc == null ? null : kcmc.trim();
+        this.kcmc = kcmc;
     }
 
     public String getKxh() {
@@ -77,7 +70,7 @@ public class CetStuYyfbcj {
     }
 
     public void setKxh(String kxh) {
-        this.kxh = kxh == null ? null : kxh.trim();
+        this.kxh = kxh;
     }
 
     public String getXh() {
@@ -85,7 +78,7 @@ public class CetStuYyfbcj {
     }
 
     public void setXh(String xh) {
-        this.xh = xh == null ? null : xh.trim();
+        this.xh = xh;
     }
 
     public String getXm() {
@@ -93,7 +86,7 @@ public class CetStuYyfbcj {
     }
 
     public void setXm(String xm) {
-        this.xm = xm == null ? null : xm.trim();
+        this.xm = xm;
     }
 
     public String getBjh() {
@@ -101,7 +94,7 @@ public class CetStuYyfbcj {
     }
 
     public void setBjh(String bjh) {
-        this.bjh = bjh == null ? null : bjh.trim();
+        this.bjh = bjh;
     }
 
     public String getFbdj() {
@@ -109,7 +102,7 @@ public class CetStuYyfbcj {
     }
 
     public void setFbdj(String fbdj) {
-        this.fbdj = fbdj == null ? null : fbdj.trim();
+        this.fbdj = fbdj;
     }
 
     public Double getDjcj() {

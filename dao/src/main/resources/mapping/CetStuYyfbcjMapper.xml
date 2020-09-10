@@ -3,6 +3,8 @@
 
 <mapper namespace="com.imust.newckbk.dao.CetStuYyfbcjDao">
     <resultMap id="cetStuYyfbcjMap" type="com.imust.newckbk.domain.CetStuYyfbcj">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="zxjxjhh" column="zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="kch" column="kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="kcmc" column="kcmc" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="kxh" column="kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
@@ -13,6 +15,8 @@
         <result property="djcj" column="djcj" javaType="java.lang.Double" jdbcType="NUMERIC"/>
     </resultMap>
     <sql id="cols">
+		id,
+		zxjxjhh,
 		kch,
 		kcmc,
 		kxh,
@@ -22,7 +26,13 @@
 		fbdj,
 		djcj
 	</sql>
-    <select id="getById" resultMap="cetStuYyfbcjMap" parameterType="java.lang.String">
+	<delete id="deleteByArr">
+		delete from CET_STU_YYFBCJ where id in
+		<foreach collection="list" open="(" close=")" item="id" separator=",">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="getById" resultMap="cetStuYyfbcjMap" parameterType="java.lang.String">
 		select <include refid="cols"/> from CET_STU_YYFBCJ  cetStuYyfbcj
 		 where id = #{id}
 	</select>
@@ -58,20 +68,43 @@
 		select count(1) from CET_STU_YYFBCJ  cetStuYyfbcj
 		<!--新建if语句新建过滤条件-->
 	</select>
-    <select id="getExtByPage" resultType="com.imust.newckbk.domain.CetStuYyfbcj">
+    <select id="getExtByPage" resultType="com.imust.newckbk.domain.ext.CetStuYyfbcjExt">
 		select
-			<include refid="cols"/>
+			cetStuYyfbcj.id,
+			cetStuYyfbcj.zxjxjhh,
+			cetStuYyfbcj.kch,
+			cetStuYyfbcj.kcmc,
+			cetStuYyfbcj.kxh,
+			cetStuYyfbcj.xh,
+			cetStuYyfbcj.xm,
+			cetStuYyfbcj.bjh,
+			cetStuYyfbcj.fbdj,
+			cetStuYyfbcj.djcj,
+			CODE_ZXJXJHXNXQXX.zxjxjhm AS zxjxjhm
 		from
 			CET_STU_YYFBCJ  cetStuYyfbcj
+			LEFT JOIN CODE_ZXJXJHXNXQXX ON CODE_ZXJXJHXNXQXX.zxjxjhh = cetStuYyfbcj.zxjxjhh
 		<where>
+			<if test="zxjxjhh != null and zxjxjhh != ''">
+				and zxjxjhh = #{zxjxjhh}
+			</if>
+			<if test="kch != null and kch != ''">
+				and kch like concat(concat('%',#{kch}),'%')
+			</if>
+			<if test="kcmc != null and kcmc != ''">
+				and kcmc like concat(concat('%',#{kcmc}),'%')
+			</if>
 			<if test="kxh != null and kxh != ''">
-				and kxh = #{kxh}
+				and kxh like concat(concat('%',#{kxh}),'%')
 			</if>
 			<if test="xh != null and xh != ''">
 				and xh like  concat(concat('%',#{xh}),'%')
 			</if>
 			<if test="xm != null and xm != ''">
 				and xm like  concat(concat('%',#{xm}),'%')
+			</if>
+			<if test="bjh != null and bjh != ''">
+				and bjh like  concat(concat('%',#{bjh}),'%')
 			</if>
 			<if test="fbdj != null and fbdj != ''">
 				and fbdj = #{fbdj}
@@ -84,7 +117,13 @@
 	</select>
     <insert id="insert" parameterType="com.imust.newckbk.domain.CetStuYyfbcj" useGeneratedKeys="true" keyProperty="id">
 		insert into CET_STU_YYFBCJ
-		<trim prefix="(" suffix=")" suffixOverrides="," > 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh,
+			</if>
 			<if test=" kch != null and kch != ''">
 				kch,
 			</if>
@@ -111,6 +150,12 @@
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				#{zxjxjhh,jdbcType=VARCHAR},
+			</if>
 			<if test=" kch != null and kch != ''">
 				#{kch,jdbcType=VARCHAR},
 			</if>
@@ -140,6 +185,12 @@
     <update id="updateById" parameterType="com.imust.newckbk.domain.CetStuYyfbcj">
 		update CET_STU_YYFBCJ cetStuYyfbcj
 		<set>
+			<if test=" id != null and id != ''">
+				id = #{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" zxjxjhh != null and zxjxjhh != ''">
+				zxjxjhh = #{zxjxjhh,jdbcType=VARCHAR},
+			</if>
 			<if test=" kch != null and kch != ''">
 				kch = #{kch,jdbcType=VARCHAR},
 			</if>
