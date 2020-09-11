@@ -19,6 +19,10 @@ public class CET4TJExt extends Cet4Tjjl {
 
     private Cet4SecondTerm cet4SecondTerm;
 
+    public CET4TJExt() {
+
+    }
+
     public CET4TJExt(Cet4Tjjl cet4Tjjl) {
         super.setZxjxjhh(cet4Tjjl.getZxjxjhh());
         super.setFirstGrade(cet4Tjjl.getFirstGrade());

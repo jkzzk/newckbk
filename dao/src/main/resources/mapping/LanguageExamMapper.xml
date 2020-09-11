@@ -160,6 +160,7 @@
 			</if>
 		</where>
 	</select>
+
 	<select id="getAllByTerm" resultType="com.imust.newckbk.domain.LanguageExam">
 		select
 			row_number() over(order by id) as num,
@@ -169,6 +170,614 @@
 		where
 			languageExam.zxjxjhh = #{zxjxjhh}
 	</select>
+
+	<select id="generateCET4ForFirstGrade" resultType="com.imust.newckbk.domain.LanguageExam">
+		select distinct
+			'cet4' as type,
+			'15010' as xxdm,
+			XS_XJXXB_VIEW_KW.xm,
+			case XS_XJXXB_VIEW_KW.xb
+			WHEN '男' then '1'
+			WHEN '女' then '2'
+			ELSE '0' end as xb,
+			XS_XJXXB_VIEW_KW.xh,
+			'1' as zjlb,
+			XS_XJXXB_VIEW_KW.sfzh,
+			'20' as xl,
+			XSZYXXB.XZ as xz,
+			substr(XS_XJXXB_VIEW_KW.rxnj,3,2) as rxnf,
+			substr(XS_XJXXB_VIEW_KW.dqnj,3,2) as nj,
+			XS_XJXXB_VIEW_KW.xsm,
+			XS_XJXXB_VIEW_KW.zym,
+			XS_XJXXB_VIEW_KW.bjh,
+			'15010' as xjdm,
+			#{zxjxjhh} as zxjxjhh
+		from
+			XS_XJXXB_VIEW_KW
+			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+		where
+			XS_XJXXB_VIEW_KW.sfyxj = '是'
+			and dqnj = #{firstGrade}
+			and XS_XJXXB_VIEW_KW.XSLBDM in (3,1,8,2,7)
+		<if test="cet4Tytjjl.passedExam == 0">
+			and xh not in (
+				select distinct
+					xh
+				from
+					XS_XJXXB_VIEW_KW
+					left join CET_STUSCORE ON CET_STUSCORE.Ks_Xh = XS_XJXXB_VIEW_KW.xh
+				where
+					XS_XJXXB_VIEW_KW.sfyxj = '是'
+					and dqnj = #{firstGrade}
+					and CET_STUSCORE.KS_ZF &gt;= #{cet4PassScore}
+					and CET_STUSCORE.ks_yyjb = 'CET4'
+			)
+		</if>
+		<if test="cet4Tytjjl.missingExam == 1">
+			and xh not in  (
+				select distinct
+					ks_xh
+				from
+					CET_STUSCORE
+				where
+					(CET_STUSCORE.ks_qk = '缺考' or CET_STUSCORE.ks_wj = '违纪')
+					and CET_STUSCORE.ks_yyjb = 'CET4'
+					and CET_STUSCORE.ks_kssj = #{lastExamTerm}
+			)
+		</if>
+		<if test="cet4Tytjjl.isRussian == 0">
+			and xh not in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${cet4Tytjjl.russianKch})
+			)
+		</if>
+		<if test="cet4Tytjjl.isJapanese == 0">
+			and xh not in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${cet4Tytjjl.japaneseKch})
+			)
+		</if>
+		<if test="cet4Tytjjl.specialXsm != null and cet4Tytjjl.specialXsm != ''">
+			and XS_XJXXB_VIEW_KW.xsm not in (${cet4Tytjjl.specialXsm})
+		</if>
+		<if test="halfTerm == 1">
+			<!--<if test="cet4FirstTerm.classaMin == 0 and cet4FirstTerm.classaMax == 0">
+				and xh not in (select distinct xh from CET_STU_YYFBCJ where fbdj = 'A')
+			</if>-->
+			<!--<if test="cet4FirstTerm.classbMin == 0 and cet4FirstTerm.classbMax == 0">
+				and xh not in (select distinct xh from CET_STU_YYFBCJ where fbdj = 'B')
+			</if>-->
+			<!--<if test="cet4FirstTerm.classcMin == 0 and cet4FirstTerm.classcMax == 0">
+				and xh not in (select distinct xh from CET_STU_YYFBCJ where fbdj = 'C')
+			</if>-->
+			<if test="cet4FirstTerm.classaMin &gt;= 0 and cet4FirstTerm.classaMax &lt;= 100 and cet4FirstTerm.classaMax != 0">
+				and xh not in (select distinct xh from CET_STU_YYFBCJ where djcj &lt; #{cet4FirstTerm.classaMin} or djcj &gt; #{cet4FirstTerm.classaMax})
+			</if>
+			<if test="cet4FirstTerm.classbMin &gt;= 0 and cet4FirstTerm.classbMax &lt;= 100 and cet4FirstTerm.classbMax != 0">
+				and xh not in (select distinct xh from CET_STU_YYFBCJ where djcj &lt; #{cet4FirstTerm.classbMin} or djcj &gt; #{cet4FirstTerm.classbMax})
+			</if>
+			<if test="cet4FirstTerm.classcMin &gt;= 0 and cet4FirstTerm.classcMax &lt;= 100  and cet4FirstTerm.classcMax != 0">
+				and xh not in (select distinct xh from CET_STU_YYFBCJ where djcj &lt; #{cet4FirstTerm.classcMin} or djcj &gt; #{cet4FirstTerm.classcMax})
+			</if>
+		</if>
+		<if test="halfTerm == 2">
+			<!--<if test="cet4SecondTerm.classaEnglishMin == 0 and cet4SecondTerm.classaEnglishMax == 0">
+				and xh not in (
+					select
+						xs_xjxxb_view_kw.xh
+					from
+						xs_xjxxb_view_kw
+						left join cj_all_kw_view ON cj_all_kw_view.xh = xs_xjxxb_view_kw.xh
+					where
+						cj_all_kw_view.kch = #{cet4SecondTerm.englisthKch}
+						and xs_xjxxb_view_kw.sfyxj = '是'
+						and xs_xjxxb_view_kw.dqnj = #{firstGrade}
+						and cj_all_kw_view.zxjxjhh = #{cet4SecondTerm.englisthZxjxjhh}
+						and cj_all_kw_view.kxh in (${cet4SecondTerm.classaKxh})
+				)
+			</if>-->
+			<!--<if test="cet4SecondTerm.classbEnglishMin == 0 and cet4SecondTerm.classbEnglishMax == 0">
+				and xh not in (
+					select
+						xs_xjxxb_view_kw.xh
+					from
+						xs_xjxxb_view_kw
+						left join cj_all_kw_view ON cj_all_kw_view.xh = xs_xjxxb_view_kw.xh
+					where
+						cj_all_kw_view.kch = #{cet4SecondTerm.englisthKch}
+						and xs_xjxxb_view_kw.sfyxj = '是'
+						and xs_xjxxb_view_kw.dqnj = #{firstGrade}
+						and cj_all_kw_view.zxjxjhh = #{cet4SecondTerm.englisthZxjxjhh}
+						and cj_all_kw_view.kxh in (${cet4SecondTerm.classbKxh})
+				)
+			</if>-->
+			<!--<if test="cet4SecondTerm.classcEnglishMin == 0 and cet4SecondTerm.classcEnglishMax == 0">
+				and xh not in (
+					select
+						xs_xjxxb_view_kw.xh
+					from
+						xs_xjxxb_view_kw
+						left join cj_all_kw_view ON cj_all_kw_view.xh = xs_xjxxb_view_kw.xh
+					where
+						cj_all_kw_view.kch = #{cet4SecondTerm.englisthKch}
+						and xs_xjxxb_view_kw.sfyxj = '是'
+						and xs_xjxxb_view_kw.dqnj = #{firstGrade}
+						and cj_all_kw_view.zxjxjhh = #{cet4SecondTerm.englisthZxjxjhh}
+						and cj_all_kw_view.kxh in (${cet4SecondTerm.classcKxh})
+				)
+			</if>-->
+			<if test="cet4SecondTerm.classaEnglishMin &gt;= 0 and cet4SecondTerm.classaEnglishMax &lt;=100 and cet4SecondTerm.classaEnglishMax != 0">
+				and xh not in (
+					select
+						xs_xjxxb_view_kw.xh
+					from
+						xs_xjxxb_view_kw
+						left join cj_all_kw_view ON cj_all_kw_view.xh = xs_xjxxb_view_kw.xh
+					where
+						cj_all_kw_view.kch = #{cet4SecondTerm.englisthKch}
+						and xs_xjxxb_view_kw.sfyxj = '是'
+						and xs_xjxxb_view_kw.dqnj = #{firstGrade}
+						and cj_all_kw_view.zxjxjhh = #{cet4SecondTerm.englisthZxjxjhh}
+						and cj_all_kw_view.kxh in (${cet4SecondTerm.classaKxh})
+						and (cj_all_kw_view.kccj &lt; #{cet4SecondTerm.classaEnglishMin} or cj_all_kw_view.kccj &gt; #{cet4SecondTerm.classaEnglishMax})
+				)
+			</if>
+			<if test="cet4SecondTerm.classbEnglishMin &gt;= 0 and cet4SecondTerm.classbEnglishMax &lt;=100 and cet4SecondTerm.classbEnglishMax != 0">
+				and xh not in (
+				select
+					xs_xjxxb_view_kw.xh
+				from
+					xs_xjxxb_view_kw
+					left join cj_all_kw_view ON cj_all_kw_view.xh = xs_xjxxb_view_kw.xh
+				where
+					cj_all_kw_view.kch = #{cet4SecondTerm.englisthKch}
+					and xs_xjxxb_view_kw.sfyxj = '是'
+					and xs_xjxxb_view_kw.dqnj = #{firstGrade}
+					and cj_all_kw_view.zxjxjhh = #{cet4SecondTerm.englisthZxjxjhh}
+					and cj_all_kw_view.kxh in (${cet4SecondTerm.classbKxh})
+					and (cj_all_kw_view.kccj &lt; #{cet4SecondTerm.classbEnglishMin} or cj_all_kw_view.kccj &gt; #{cet4SecondTerm.classbEnglishMax})
+				)
+			</if>
+			<if test="cet4SecondTerm.classcEnglishMin &gt;= 0 and cet4SecondTerm.classcEnglishMax &lt;=100 and cet4SecondTerm.classcEnglishMax != 0">
+				and xh not in (
+				select
+					xs_xjxxb_view_kw.xh
+				from
+					xs_xjxxb_view_kw
+					left join cj_all_kw_view ON cj_all_kw_view.xh = xs_xjxxb_view_kw.xh
+				where
+					cj_all_kw_view.kch = #{cet4SecondTerm.englisthKch}
+					and xs_xjxxb_view_kw.sfyxj = '是'
+					and xs_xjxxb_view_kw.dqnj = #{firstGrade}
+					and cj_all_kw_view.zxjxjhh = #{cet4SecondTerm.englisthZxjxjhh}
+					and cj_all_kw_view.kxh in (${cet4SecondTerm.classcKxh})
+					and (cj_all_kw_view.kccj &lt; #{cet4SecondTerm.classcEnglishMin} or cj_all_kw_view.kccj &gt; #{cet4SecondTerm.classcEnglishMax})
+				)
+			</if>
+		</if>
+	</select>
+
+	<select id="generateCET4ForJunior" resultType="com.imust.newckbk.domain.LanguageExam">
+		select distinct
+			'cet4' as type,
+			'15010' as xxdm,
+			XS_XJXXB_VIEW_KW.xm,
+			case XS_XJXXB_VIEW_KW.xb
+			WHEN '男' then '1'
+			WHEN '女' then '2'
+			ELSE '0' end as xb,
+			XS_XJXXB_VIEW_KW.xh,
+			'1' as zjlb,
+			XS_XJXXB_VIEW_KW.sfzh,
+			'20' as xl,
+			XSZYXXB.XZ as xz,
+			substr(XS_XJXXB_VIEW_KW.rxnj,3,2) as rxnf,
+			substr(XS_XJXXB_VIEW_KW.dqnj,3,2) as nj,
+			XS_XJXXB_VIEW_KW.xsm,
+			XS_XJXXB_VIEW_KW.zym,
+			XS_XJXXB_VIEW_KW.bjh,
+			'15010' as xjdm,
+			#{zxjxjhh} as zxjxjhh
+			from
+			XS_XJXXB_VIEW_KW
+			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+		where
+			XS_XJXXB_VIEW_KW.sfyxj = '是'
+			and XS_XJXXB_VIEW_KW.XSLBDM in (6,12,4,5,9)
+			and xh in (
+				select distinct
+					ks_xh
+				from
+					CET_STUSCORE
+				where
+					CET_STUSCORE.ks_yyjb = 'PRETCO-B'
+					and CET_STUSCORE.KS_ZF &gt;= #{cet4Tytjjl.cet3Score})
+		<if test="cet4Tytjjl.passedExam == 0">
+			and xh in (
+				select distinct
+					xh
+				from
+					XS_XJXXB_VIEW_KW
+					left join CET_STUSCORE ON CET_STUSCORE.Ks_Xh = XS_XJXXB_VIEW_KW.xh
+				where
+					XS_XJXXB_VIEW_KW.sfyxj = '是'
+					and CET_STUSCORE.KS_ZF &lt; #{cet4PassScore}
+					and CET_STUSCORE.ks_yyjb = 'CET4'
+			)
+		</if>
+		<if test="cet4Tytjjl.missingExam == 1">
+			and xh not in  (
+				select distinct
+					ks_xh
+				from
+					CET_STUSCORE
+				where
+					(CET_STUSCORE.ks_qk = '缺考' or CET_STUSCORE.ks_wj = '违纪')
+					and CET_STUSCORE.ks_yyjb = 'CET4'
+					and CET_STUSCORE.ks_kssj = #{lastExamTerm}
+			)
+		</if>
+		<if test="cet4Tytjjl.isRussian == 0">
+			and xh not in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${cet4Tytjjl.russianKch})
+			)
+		</if>
+		<if test="cet4Tytjjl.isJapanese == 0">
+			and xh not in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${cet4Tytjjl.japaneseKch})
+			)
+		</if>
+		<if test="cet4Tytjjl.specialXsm != null and cet4Tytjjl.specialXsm != ''">
+			and XS_XJXXB_VIEW_KW.xsm not in (${cet4Tytjjl.specialXsm})
+		</if>
+	</select>
+
+	<select id="generateCET4ForOther" resultType="com.imust.newckbk.domain.LanguageExam">
+		select distinct
+			'cet4' as type,
+			'15010' as xxdm,
+			XS_XJXXB_VIEW_KW.xm,
+			case XS_XJXXB_VIEW_KW.xb
+			WHEN '男' then '1'
+			WHEN '女' then '2'
+			ELSE '0' end as xb,
+			XS_XJXXB_VIEW_KW.xh,
+			'1' as zjlb,
+			XS_XJXXB_VIEW_KW.sfzh,
+			'20' as xl,
+			XSZYXXB.XZ as xz,
+			substr(XS_XJXXB_VIEW_KW.rxnj,3,2) as rxnf,
+			substr(XS_XJXXB_VIEW_KW.dqnj,3,2) as nj,
+			XS_XJXXB_VIEW_KW.xsm,
+			XS_XJXXB_VIEW_KW.zym,
+			XS_XJXXB_VIEW_KW.bjh,
+			'15010' as xjdm,
+			#{zxjxjhh} as zxjxjhh
+		from
+			XS_XJXXB_VIEW_KW
+			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+		where
+			XS_XJXXB_VIEW_KW.sfyxj = '是'
+			and XS_XJXXB_VIEW_KW.XSLBDM in (3,1,8,2,7)
+			and dqnj != #{firstGrade}
+		<if test="cet4Tytjjl.passedExam == 0">
+			and xh in (
+				select distinct
+					xh
+				from
+					XS_XJXXB_VIEW_KW
+					left join CET_STUSCORE ON CET_STUSCORE.Ks_Xh = XS_XJXXB_VIEW_KW.xh
+				where
+					XS_XJXXB_VIEW_KW.sfyxj = '是'
+					and CET_STUSCORE.KS_ZF &lt; #{cet4PassScore}
+					and CET_STUSCORE.ks_yyjb = 'CET4'
+			)
+		</if>
+		<if test="cet4Tytjjl.missingExam == 1">
+			and xh not in  (
+				select distinct
+					ks_xh
+				from
+					CET_STUSCORE
+				where
+					(CET_STUSCORE.ks_qk = '缺考' or CET_STUSCORE.ks_wj = '违纪')
+					and CET_STUSCORE.ks_yyjb = 'CET4'
+					and CET_STUSCORE.ks_kssj = #{lastExamTerm}
+			)
+		</if>
+		<if test="cet4Tytjjl.isRussian == 0">
+			and xh not in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+					where kch in (${cet4Tytjjl.russianKch})
+			)
+		</if>
+		<if test="cet4Tytjjl.isJapanese == 0">
+			and xh not in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+					where kch in (${cet4Tytjjl.japaneseKch})
+			)
+		</if>
+		<if test="cet4Tytjjl.specialXsm != null and cet4Tytjjl.specialXsm != ''">
+			and XS_XJXXB_VIEW_KW.xsm not in (${cet4Tytjjl.specialXsm})
+		</if>
+	</select>
+
+	<select id="generateCET6ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
+		select distinct
+			'cet6' as type,
+			'15010' as xxdm,
+			XS_XJXXB_VIEW_KW.xm,
+			case XS_XJXXB_VIEW_KW.xb
+			WHEN '男' then '1'
+			WHEN '女' then '2'
+			ELSE '0' end as xb,
+			XS_XJXXB_VIEW_KW.xh,
+			'1' as zjlb,
+			XS_XJXXB_VIEW_KW.sfzh,
+			'20' as xl,
+			XSZYXXB.XZ as xz,
+			substr(XS_XJXXB_VIEW_KW.rxnj,3,2) as rxnf,
+			substr(XS_XJXXB_VIEW_KW.dqnj,3,2) as nj,
+			XS_XJXXB_VIEW_KW.xsm,
+			XS_XJXXB_VIEW_KW.zym,
+			XS_XJXXB_VIEW_KW.bjh,
+			'15010' as xjdm,
+			#{zxjxjhh} as zxjxjhh
+		from
+			XS_XJXXB_VIEW_KW
+			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+		where
+			XS_XJXXB_VIEW_KW.sfyxj = '是'
+			and xh in (
+				select distinct
+					xh
+				from
+					XS_XJXXB_VIEW_KW
+					left join CET_STUSCORE ON CET_STUSCORE.Ks_Xh = XS_XJXXB_VIEW_KW.xh
+				where
+					XS_XJXXB_VIEW_KW.sfyxj = '是'
+					and CET_STUSCORE.KS_ZF &gt;= #{cet4PassScore}
+					and CET_STUSCORE.ks_yyjb = 'CET4'
+			)
+		<if test="cet4Tytjjl.isRussian == 0">
+			and xh not in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${cet4Tytjjl.russianKch})
+			)
+		</if>
+		<if test="cet4Tytjjl.isJapanese == 0">
+			and xh not in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${cet4Tytjjl.japaneseKch})
+			)
+		</if>
+		<if test="cet4Tytjjl.specialXsm != null and cet4Tytjjl.specialXsm != ''">
+			and XS_XJXXB_VIEW_KW.xsm not in (${cet4Tytjjl.specialXsm})
+		</if>
+	</select>
+
+	<select id="generateCRT4ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
+		select distinct
+			'crt4' as type,
+			'15010' as xxdm,
+			XS_XJXXB_VIEW_KW.xm,
+			case XS_XJXXB_VIEW_KW.xb
+			WHEN '男' then '1'
+			WHEN '女' then '2'
+			ELSE '0' end as xb,
+			XS_XJXXB_VIEW_KW.xh,
+			'1' as zjlb,
+			XS_XJXXB_VIEW_KW.sfzh,
+			'20' as xl,
+			XSZYXXB.XZ as xz,
+			substr(XS_XJXXB_VIEW_KW.rxnj,3,2) as rxnf,
+			substr(XS_XJXXB_VIEW_KW.dqnj,3,2) as nj,
+			XS_XJXXB_VIEW_KW.xsm,
+			XS_XJXXB_VIEW_KW.zym,
+			XS_XJXXB_VIEW_KW.bjh,
+			'15010' as xjdm,
+			#{zxjxjhh} as zxjxjhh
+		from
+			XS_XJXXB_VIEW_KW
+			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+		where
+			XS_XJXXB_VIEW_KW.sfyxj = '是'
+			and xh in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${cet4Tytjjl.russianKch})
+			)
+			and xh in (
+				select distinct
+					xh
+				from
+					XS_XJXXB_VIEW_KW
+					left join CET_STUSCORE ON CET_STUSCORE.Ks_Xh = XS_XJXXB_VIEW_KW.xh
+				where
+					XS_XJXXB_VIEW_KW.sfyxj = '是'
+					and CET_STUSCORE.KS_ZF &lt; #{crt4PassScore}
+					and CET_STUSCORE.ks_yyjb = 'CRT4'
+			)
+			<if test="cet4Tytjjl.specialXsm != null and cet4Tytjjl.specialXsm != ''">
+				and XS_XJXXB_VIEW_KW.xsm not in (${cet4Tytjjl.specialXsm})
+			</if>
+	</select>
+
+	<select id="generateCRT6ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
+		select distinct
+			'crt6' as type,
+			'15010' as xxdm,
+			XS_XJXXB_VIEW_KW.xm,
+			case XS_XJXXB_VIEW_KW.xb
+			WHEN '男' then '1'
+			WHEN '女' then '2'
+			ELSE '0' end as xb,
+			XS_XJXXB_VIEW_KW.xh,
+			'1' as zjlb,
+			XS_XJXXB_VIEW_KW.sfzh,
+			'20' as xl,
+			XSZYXXB.XZ as xz,
+			substr(XS_XJXXB_VIEW_KW.rxnj,3,2) as rxnf,
+			substr(XS_XJXXB_VIEW_KW.dqnj,3,2) as nj,
+			XS_XJXXB_VIEW_KW.xsm,
+			XS_XJXXB_VIEW_KW.zym,
+			XS_XJXXB_VIEW_KW.bjh,
+			'15010' as xjdm,
+			#{zxjxjhh} as zxjxjhh
+		from
+			XS_XJXXB_VIEW_KW
+			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+		where
+			XS_XJXXB_VIEW_KW.sfyxj = '是'
+			and xh in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${cet4Tytjjl.russianKch})
+			)
+			and xh in (
+				select distinct
+					xh
+				from
+					XS_XJXXB_VIEW_KW
+					left join CET_STUSCORE ON CET_STUSCORE.Ks_Xh = XS_XJXXB_VIEW_KW.xh
+				where
+					XS_XJXXB_VIEW_KW.sfyxj = '是'
+					and CET_STUSCORE.KS_ZF &gt;= #{crt4PassScore}
+					and CET_STUSCORE.ks_yyjb = 'CRT4'
+			)
+			<if test="cet4Tytjjl.specialXsm != null and cet4Tytjjl.specialXsm != ''">
+				and XS_XJXXB_VIEW_KW.xsm not in (${cet4Tytjjl.specialXsm})
+			</if>
+	</select>
+
+	<select id="generateCJT4ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
+		select distinct
+			'cjt4' as type,
+			'15010' as xxdm,
+			XS_XJXXB_VIEW_KW.xm,
+			case XS_XJXXB_VIEW_KW.xb
+			WHEN '男' then '1'
+			WHEN '女' then '2'
+			ELSE '0' end as xb,
+			XS_XJXXB_VIEW_KW.xh,
+			'1' as zjlb,
+			XS_XJXXB_VIEW_KW.sfzh,
+			'20' as xl,
+			XSZYXXB.XZ as xz,
+			substr(XS_XJXXB_VIEW_KW.rxnj,3,2) as rxnf,
+			substr(XS_XJXXB_VIEW_KW.dqnj,3,2) as nj,
+			XS_XJXXB_VIEW_KW.xsm,
+			XS_XJXXB_VIEW_KW.zym,
+			XS_XJXXB_VIEW_KW.bjh,
+			'15010' as xjdm,
+			#{zxjxjhh} as zxjxjhh
+		from
+			XS_XJXXB_VIEW_KW
+			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+		where
+			XS_XJXXB_VIEW_KW.sfyxj = '是'
+			and xh in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${cet4Tytjjl.japaneseKch})
+			)
+		and xh in (
+			select distinct
+				xh
+			from
+				XS_XJXXB_VIEW_KW
+				left join CET_STUSCORE ON CET_STUSCORE.Ks_Xh = XS_XJXXB_VIEW_KW.xh
+			where
+				XS_XJXXB_VIEW_KW.sfyxj = '是'
+				and CET_STUSCORE.KS_ZF &lt; #{cjt4PassScore}
+				and CET_STUSCORE.ks_yyjb = 'CJT4'
+		)
+		<if test="cet4Tytjjl.specialXsm != null and cet4Tytjjl.specialXsm != ''">
+			and XS_XJXXB_VIEW_KW.xsm not in (${cet4Tytjjl.specialXsm})
+		</if>
+	</select>
+
+	<select id="generateCJT6ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
+		select distinct
+			'cjt6' as type,
+			'15010' as xxdm,
+			XS_XJXXB_VIEW_KW.xm,
+			case XS_XJXXB_VIEW_KW.xb
+			WHEN '男' then '1'
+			WHEN '女' then '2'
+			ELSE '0' end as xb,
+			XS_XJXXB_VIEW_KW.xh,
+			'1' as zjlb,
+			XS_XJXXB_VIEW_KW.sfzh,
+			'20' as xl,
+			XSZYXXB.XZ as xz,
+			substr(XS_XJXXB_VIEW_KW.rxnj,3,2) as rxnf,
+			substr(XS_XJXXB_VIEW_KW.dqnj,3,2) as nj,
+			XS_XJXXB_VIEW_KW.xsm,
+			XS_XJXXB_VIEW_KW.zym,
+			XS_XJXXB_VIEW_KW.bjh,
+			'15010' as xjdm,
+			#{zxjxjhh} as zxjxjhh
+		from
+			XS_XJXXB_VIEW_KW
+			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+		where
+			XS_XJXXB_VIEW_KW.sfyxj = '是'
+			and xh in (
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${cet4Tytjjl.japaneseKch})
+			)
+			and xh in (
+				select distinct
+					xh
+				from
+					XS_XJXXB_VIEW_KW
+					left join CET_STUSCORE ON CET_STUSCORE.Ks_Xh = XS_XJXXB_VIEW_KW.xh
+				where
+					XS_XJXXB_VIEW_KW.sfyxj = '是'
+					and CET_STUSCORE.KS_ZF &gt;= #{cjt4PassScore}
+					and CET_STUSCORE.ks_yyjb = 'CJT4'
+			)
+		<if test="cet4Tytjjl.specialXsm != null and cet4Tytjjl.specialXsm != ''">
+			and XS_XJXXB_VIEW_KW.xsm not in (${cet4Tytjjl.specialXsm})
+		</if>
+	</select>
+
 	<insert id="insert" parameterType="com.imust.newckbk.domain.LanguageExam" useGeneratedKeys="true" keyProperty="id">
 		insert into LANGUAGE_EXAM
 		<trim prefix="(" suffix=")" suffixOverrides="," > 
@@ -278,7 +887,17 @@
 			</if>
 		</trim>
 	</insert>
-    <update id="updateById" parameterType="com.imust.newckbk.domain.LanguageExam">
+
+	<insert id="insertBatch">
+		insert into LANGUAGE_EXAM
+			(id,type,xh,xm,xb,zylb,sfzh,xl,xz,rxnf,nj,xsm,zym,bjh,xjdm,xxdm,zxjxjhh)
+		<foreach collection="list" separator="," item="lang" open="" close="" >
+			(#{lang.id},#{lang.type},#{lang.xh},#{lang.xm},#{lang.xb},#{lang.zylb},#{lang.sfzh},#{lang.xl},#{lang.xz},#{lang.rxnf},
+			#{lang.nj},#{lang.xsm},#{lang.zym},#{lang.bjh},#{lang.xjdm},#{lang.xxdm},#{lang.zxjxjhh})
+		</foreach>
+	</insert>
+
+	<update id="updateById" parameterType="com.imust.newckbk.domain.LanguageExam">
 		update LANGUAGE_EXAM languageExam
 		<set>
 			<if test=" type != null and type != ''">

@@ -1,6 +1,10 @@
 package com.imust.newckbk.domain;
 
 public class Cet4SecondTerm {
+    private String englisthKch;
+
+    private String englisthZxjxjhh;
+
     private String classaEnglishMin;
 
     private String classaEnglishMax;
@@ -20,6 +24,22 @@ public class Cet4SecondTerm {
     private String classcKxh;
 
     private String id;
+
+    public String getEnglisthKch() {
+        return englisthKch;
+    }
+
+    public void setEnglisthKch(String englisthKch) {
+        this.englisthKch = englisthKch;
+    }
+
+    public String getEnglisthZxjxjhh() {
+        return englisthZxjxjhh;
+    }
+
+    public void setEnglisthZxjxjhh(String englisthZxjxjhh) {
+        this.englisthZxjxjhh = englisthZxjxjhh;
+    }
 
     public String getClassaEnglishMin() {
         return classaEnglishMin;

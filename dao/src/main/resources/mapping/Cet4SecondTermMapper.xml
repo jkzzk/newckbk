@@ -12,6 +12,8 @@
         <result property="classaKxh" column="classa_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="classbKxh" column="classb_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="classcKxh" column="classc_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="englisthKch" column="englisth_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="englisthZxjxjhh" column="englisth_zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="cols">
@@ -24,6 +26,8 @@
 		classa_kxh,
 		classb_kxh,
 		classc_kxh,
+		englisth_kch,
+		englisth_zxjxjhh,
 		id
 	</sql>
     <select id="getById" resultMap="cet4SecondTermMap" parameterType="java.lang.String">
@@ -92,6 +96,12 @@
 			<if test=" classcKxh != null and classcKxh != ''">
 				classc_kxh,
 			</if>
+			<if test=" englisthKch != null and englisthKch != ''">
+				englisth_kch,
+			</if>
+			<if test=" englisthZxjxjhh != null and englisthZxjxjhh != ''">
+				englisth_zxjxjhh,
+			</if>
 			<if test=" id != null and id != ''">
 				id
 			</if>
@@ -123,6 +133,12 @@
 			</if>
 			<if test=" classcKxh != null and classcKxh != ''">
 				#{classcKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthKch != null and englisthKch != ''">
+				#{englisthKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthZxjxjhh != null and englisthZxjxjhh != ''">
+				#{englisthZxjxjhh,jdbcType=VARCHAR},
 			</if>
 			<if test=" id != null and id != ''">
 				#{id,jdbcType=VARCHAR}
@@ -158,6 +174,12 @@
 			</if>
 			<if test=" classcKxh != null and classcKxh != ''">
 				classc_kxh = #{classcKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthKch != null and englisthKch != ''">
+				englisth_kch = #{englisthKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthZxjxjhh != null and englisthZxjxjhh != ''">
+				englisth_zxjxjhh = #{englisthZxjxjhh,jdbcType=VARCHAR},
 			</if>
 		</set>
 		 where id= #{id} 

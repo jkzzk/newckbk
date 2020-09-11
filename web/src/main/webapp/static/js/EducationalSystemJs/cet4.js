@@ -36,6 +36,8 @@ let saveParam = {
         classaKxh: "",
         classbKxh: "",
         classcKxh: "",
+        englisthKch: "",
+        englisthZxjxjhh: "",
     }
 }
 
@@ -55,6 +57,7 @@ function getTermInfo() {
                     options += "<option value='"+ res_data[i].zxjxjhh +"'>"+ res_data[i].zxjxjhm +"</option>";
                 }
                 $('#currentTerm').html(options);
+                $('#examTerm').html(options);
             }else {
                 console.log("/term/getAllTerm : 返回数据错误");
             }
@@ -131,6 +134,8 @@ function cleanUpData(data) {
         saveParam.cet4SecondTerm.classbEnglishMax = data.classbEnglishMax;
         saveParam.cet4SecondTerm.classcEnglishMin = data.classcEnglishMin;
         saveParam.cet4SecondTerm.classcEnglishMax = data.classcEnglishMax;
+        saveParam.cet4SecondTerm.englisthKch = data.englisthKch;
+        saveParam.cet4SecondTerm.englisthZxjxjhh = data.englisthZxjxjhh;
         saveParam.cet4SecondTerm.classaKxh = data.classaKxh.replace(regExp_trim,"").replace(regExp_comma,",");
         saveParam.cet4SecondTerm.classbKxh = data.classbKxh.replace(regExp_trim,"").replace(regExp_comma,",");
         saveParam.cet4SecondTerm.classcKxh = data.classcKxh.replace(regExp_trim,"").replace(regExp_comma,",");

@@ -207,6 +207,20 @@
             </div>
         </div>
         <div class="row cl form-item">
+            <label class="col-xs-3 col-sm-3 f-16 text-r">大学英语(1)课程号：</label>
+            <div class="formControls col-xs-3 col-sm-3">
+                <input type="text" name="englisthKch" id="englisthKch" placeholder="请输入课程号" class="input-text radius">
+            </div>
+            <label class="col-xs-3 col-sm-3 f-16 text-r">大学英语(1)筛选学期：</label>
+            <div class="formControls col-xs-3 col-sm-3">
+                <span class="select-box radius">
+                  <select class="select" size="1" name="englisthZxjxjhh" id="examTerm">
+                    <option value="" selected>请选择学期</option>
+                  </select>
+                </span>
+            </div>
+        </div>
+        <div class="row cl form-item">
             <label class="col-xs-3 col-sm-3 f-16 text-r">A班大英(1)最低成绩：</label>
             <div class="formControls col-xs-3 col-sm-3">
                 <input type="text" name="classaEnglishMin" id="classaEnglishMin" placeholder="请输入最低成绩" class="input-text radius">

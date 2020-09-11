@@ -112,10 +112,24 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		}
 
 		// 生成大一的英语四级数据
+		List<LanguageExam> languageExamsForFirstGrade = languageExamDao.generateCET4ForFirstGrade(currentAllCET4TJ);
 
 		// 生成专科的英语四级数据
+		List<LanguageExam> languageExamsForJunior = languageExamDao.generateCET4ForJunior(currentAllCET4TJ);
 
 		// 生成其他年级的英语四级数据
+		List<LanguageExam> languageExamsForOther = languageExamDao.generateCET4ForOther(currentAllCET4TJ);
+
+		languageExamsForFirstGrade.addAll(languageExamsForJunior);
+		languageExamsForFirstGrade.addAll(languageExamsForOther);
+
+		languageExamsForFirstGrade.forEach(item -> {
+			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+		});
+
+		if(!languageExamsForFirstGrade.isEmpty()) {
+			languageExamDao.insertBatch(languageExamsForFirstGrade);
+		}
 
 		return RespData.successMsg("英语四级名单生成成功！");
 	}
@@ -129,6 +143,15 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			return RespData.errorMsg("条件出错！");
 		}
 
+		List<LanguageExam> languageExamsCET6 = languageExamDao.generateCET6ForAll(currentAllCET4TJ);
+
+		languageExamsCET6.forEach(item -> {
+			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+		});
+
+		if(!languageExamsCET6.isEmpty()) {
+			languageExamDao.insertBatch(languageExamsCET6);
+		}
 
 		return RespData.successMsg("英语六级名单生成成功！");
 	}
@@ -142,6 +165,15 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			return RespData.errorMsg("条件出错！");
 		}
 
+		List<LanguageExam> languageExamsCRT4 = languageExamDao.generateCRT4ForAll(currentAllCET4TJ);
+
+		languageExamsCRT4.forEach(item -> {
+			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+		});
+
+		if(!languageExamsCRT4.isEmpty()) {
+			languageExamDao.insertBatch(languageExamsCRT4);
+		}
 
 		return RespData.successMsg("俄语四级名单生成成功！");
 	}
@@ -155,6 +187,15 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			return RespData.errorMsg("条件出错！");
 		}
 
+		List<LanguageExam> languageExamsCRT6 = languageExamDao.generateCRT6ForAll(currentAllCET4TJ);
+
+		languageExamsCRT6.forEach(item -> {
+			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+		});
+
+		if(!languageExamsCRT6.isEmpty()) {
+			languageExamDao.insertBatch(languageExamsCRT6);
+		}
 
 		return RespData.successMsg("俄语六级名单生成成功！");
 	}
@@ -168,6 +209,15 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			return RespData.errorMsg("条件出错！");
 		}
 
+		List<LanguageExam> languageExamsCJT4 = languageExamDao.generateCJT4ForAll(currentAllCET4TJ);
+
+		languageExamsCJT4.forEach(item -> {
+			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+		});
+
+		if(!languageExamsCJT4.isEmpty()) {
+			languageExamDao.insertBatch(languageExamsCJT4);
+		}
 
 		return RespData.successMsg("日语四级名单生成成功！");
 	}
@@ -181,6 +231,15 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			return RespData.errorMsg("条件出错！");
 		}
 
+		List<LanguageExam> languageExamsCJT6 = languageExamDao.generateCJT6ForAll(currentAllCET4TJ);
+
+		languageExamsCJT6.forEach(item -> {
+			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+		});
+
+		if(!languageExamsCJT6.isEmpty()) {
+			languageExamDao.insertBatch(languageExamsCJT6);
+		}
 
 		return RespData.successMsg("日语六级名单生成成功！");
 	}
