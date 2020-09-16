@@ -63,6 +63,7 @@
         <div><%@include file="../common/page.jsp"%></div>
     </div>
 </div>
+
 <script type="text/javascript">
     window.onload = function () {
         $('.getInfo').click(function (event) {

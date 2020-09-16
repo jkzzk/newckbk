@@ -164,8 +164,19 @@
         <div><%@include file="../common/page.jsp"%></div>
     </div>
 </div>
+
+<!-- 等待 -->
+<div id="loadingToast" style="display:none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-loading weui-icon_toast"></i>
+        <p class="weui-toast__content">生成中</p>
+    </div>
+</div>
+
 <script type="text/javascript">
     function generateLangExam(index) {
+        $('#loadingToast').show();
         $.request({
             url : '/langExam/generateLangExam?type='+index,
             type : "POST",
@@ -178,10 +189,12 @@
                     errMsg(result.msg);
                 }
                 setTimeout(function () {
+                    $('#loadingToast').hide();
                     $('#btn-refresh').click();
                 },1000)
             },
             error:function (message) {
+                $('#loadingToast').hide();
                 console.log(message);
                 errMsg("网络异常");
             }

@@ -186,6 +186,16 @@
         </div>
     </form>
 </article>
+
+<!-- 等待 -->
+<div id="loadingToast" style="display:none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-loading weui-icon_toast"></i>
+        <p class="weui-toast__content">生成中</p>
+    </div>
+</div>
+
 </body>
 <script type="text/javascript">
 
@@ -343,6 +353,7 @@
     $('#submit').click(function () {
         if(checkData()) {
             disposalData();
+            $('#loadingToast').show();
             $.request({
                 url : '/xszzyxxb/save',
                 type : "POST",
@@ -352,12 +363,14 @@
                 success : function(result) {
                     succMsg(result.msg);
                     setTimeout(function () {
+                        $('#loadingToast').hide();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.$('#btn-refresh').click();
                         parent.layer.close(index);
                     },1000)
                 },
                 error:function (message) {
+                    $('#loadingToast').hide();
                     console.log(message);
                     errMsg("网络异常");
                 }

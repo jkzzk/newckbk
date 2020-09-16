@@ -19,7 +19,7 @@
         <mybatis.version>3.2.4</mybatis.version>
         <!-- mybatis spring 关系jar 版本号 -->
         <mybatis.spring.version>1.2.2</mybatis.spring.version>
-        <shiro.version>1.2.2</shiro.version>
+        <shiro.version>1.6.0</shiro.version>
         <pagehelper.version>4.1.6</pagehelper.version>
     </properties>
     <dependencies>
