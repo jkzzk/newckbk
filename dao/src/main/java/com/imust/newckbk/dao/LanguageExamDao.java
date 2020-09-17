@@ -111,4 +111,11 @@ public interface LanguageExamDao extends BaseDao<LanguageExam, String>{
      * @return
      */
     int insertBatch(List<LanguageExam> languageExamsForFirstGrade);
+
+    /**
+     * 删除全部数据
+     *
+     * @return
+     */
+    int deleteAll();
 }

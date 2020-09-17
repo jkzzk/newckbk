@@ -244,7 +244,21 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		return RespData.successMsg("日语六级名单生成成功！");
 	}
 
-	private CET4TJExt getCurrentAllCET4TJ() {
+    @Override
+    public RespData clearMaupData() {
+		try {
+
+			languageExamDao.deleteAll();
+
+			return RespData.successMsg("清除成功！",1);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+    }
+
+    private CET4TJExt getCurrentAllCET4TJ() {
 		List<Cet4Tjjl> cet4Tjjls = cet4TjjlDao.getByStatus("1");
 
 		CET4TJExt cet4TJExt = null;

@@ -7,6 +7,7 @@ import com.imust.newckbk.base.PageEntity;
 import com.imust.newckbk.common.DefaultPage;
 import com.imust.newckbk.common.ExcelExportCommon;
 import com.imust.newckbk.common.RespData;
+import com.imust.newckbk.common.RetCode;
 import com.imust.newckbk.domain.Bkkcxxb;
 import com.imust.newckbk.domain.Cet4Tjjl;
 import com.imust.newckbk.domain.LanguageExam;
@@ -166,6 +167,23 @@ public class LanguageExamController {
             case 5: return languageExamService.generateCJT4();
             case 6: return languageExamService.generateCJT6();
             default: return RespData.errorMsg("未知的语言种类");
+        }
+    }
+
+    /**
+     * 清除全部数据
+     * @url /langExam/clear
+     *
+     * @return
+     */
+    @RequestMapping("/clear")
+    @ResponseBody
+    public RespData clear() {
+        try {
+            return languageExamService.clearMaupData();
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(RetCode.ACTIVE_EXCEPTION.getMsg() + "###################" + e.getMessage());
         }
     }
 }

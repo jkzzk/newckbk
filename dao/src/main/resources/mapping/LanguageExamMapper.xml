@@ -46,7 +46,10 @@
 			#{id}
 		</foreach>
 	</delete>
-	<select id="getById" resultMap="languageExamMap" parameterType="java.lang.String">
+    <delete id="deleteAll">
+		delete from LANGUAGE_EXAM
+	</delete>
+    <select id="getById" resultMap="languageExamMap" parameterType="java.lang.String">
 		select <include refid="cols"/> from LANGUAGE_EXAM  languageExam
 		 where id = #{id}
 	</select>

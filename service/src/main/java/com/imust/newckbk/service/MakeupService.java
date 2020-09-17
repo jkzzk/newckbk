@@ -114,4 +114,6 @@ public interface MakeupService {
      * @return
      */
     List<BkkcxxbExt> getExtraCourse(String xh);
+
+    RespData clearMaupData();
 }

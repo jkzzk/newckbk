@@ -110,4 +110,11 @@ public interface MakeupDao extends BaseDao<Makeup, String>{
      * @return
      */
     List<MakeupExt> getNoInsertData(@Param("xh") String xh, @Param("bkfs") Byte bkfs);
+
+    /**
+     * 删除全部数据
+     *
+     * @return
+     */
+    int deleteAll();
 }

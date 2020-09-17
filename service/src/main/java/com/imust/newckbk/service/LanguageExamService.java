@@ -99,4 +99,11 @@ public interface LanguageExamService extends BaseService<LanguageExam, String>{
      * @return
      */
     RespData generateCJT6();
+
+    /**
+     * 清除全部数据
+     *
+     * @return
+     */
+    RespData clearMaupData();
 }

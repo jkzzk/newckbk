@@ -62,6 +62,7 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
+            <a href="javascript:;" onclick="clearData('/makeup/clear')" class="btn btn-danger radius"><i class="Hui-iconfont f-18">&#xe60b;</i> 清除全部</a>
             <input class="input-text upload-url radius" placeholder="请输入学号，增加补考课程" type="text" name="add" id="add">
             <a href="javascript:;" onclick="addExtra()" class="btn btn-success radius"><i class="Hui-iconfont f-18">&#xe6dc;</i> 新增</a>
             <a href="javascript:;" onclick="inPay()" class="btn btn-success radius"><i class="Hui-iconfont f-18">&#xe6dc;</i> 缴费</a>

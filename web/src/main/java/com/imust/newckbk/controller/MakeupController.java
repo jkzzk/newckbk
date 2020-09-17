@@ -243,4 +243,21 @@ public class MakeupController {
             throw new CustomException(RetCode.ACTIVE_EXCEPTION.getMsg() + "###################" + e.getMessage());
         }
     }
+
+    /**
+     * 清除全部数据
+     * @url /makeup/clear
+     *
+     * @return
+     */
+    @RequestMapping("/clear")
+    @ResponseBody
+    public RespData clear() {
+        try {
+            return makeUpService.clearMaupData();
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(RetCode.ACTIVE_EXCEPTION.getMsg() + "###################" + e.getMessage());
+        }
+    }
 }

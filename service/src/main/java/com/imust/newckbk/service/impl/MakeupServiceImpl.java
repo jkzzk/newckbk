@@ -316,4 +316,18 @@ public class MakeupServiceImpl extends AbstractService<Makeup, String> implement
             throw e;
         }
     }
+
+    @Override
+    public RespData clearMaupData() {
+        try {
+
+            makeupDao.deleteAll();
+
+            return RespData.successMsg("清除成功！",1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 }

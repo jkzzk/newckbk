@@ -96,6 +96,7 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
+            <a href="javascript:;" onclick="clearData('/langExam/clear')" class="btn btn-danger radius"><i class="Hui-iconfont f-18">&#xe60b;</i> 清除全部</a>
             <a href="javascript:;" onclick="datadel('/langExam/delete')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
             <a href="javascript:;" onclick="add('新增资质名单','/langExam/edit','','600')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 新增</a>
             <a href="javascript:;" onclick="edit('修改资质名单','/langExam/edit','','600')" class="btn btn-warning radius"><i class="Hui-iconfont">&#xe60c;</i> 修改</a>

@@ -27,12 +27,15 @@
 		jxjhh
 	</sql>
 	<delete id="deleteByIdArr">
-		delete from MAKUP  makeup where id in
+		delete from MAKUP where id in
 		<foreach collection="array" open="(" close=")" item="id" separator=",">
 			#{id}
 		</foreach>
 	</delete>
-	<select id="getById" resultMap="makeupMap" parameterType="java.lang.String">
+    <delete id="deleteAll">
+		delete from MAKUP
+	</delete>
+    <select id="getById" resultMap="makeupMap" parameterType="java.lang.String">
 		select <include refid="cols"/> from MAKUP  makeup
 		 where id = #{id}
 	</select>
