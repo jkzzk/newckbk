@@ -23,6 +23,8 @@ public class Cet4Tjjl {
 
     private String cjt4PassScore;
 
+    private String firstIn;
+
     private String status;
 
     public String getId() {
@@ -111,6 +113,14 @@ public class Cet4Tjjl {
 
     public void setCjt4PassScore(String cjt4PassScore) {
         this.cjt4PassScore = cjt4PassScore;
+    }
+
+    public String getFirstIn() {
+        return firstIn;
+    }
+
+    public void setFirstIn(String firstIn) {
+        this.firstIn = firstIn;
     }
 
     public String getStatus() {

@@ -34,6 +34,7 @@ public class CET4TJExt extends Cet4Tjjl {
         super.setTyId(cet4Tjjl.getTyId());
         super.setFirstTermId(cet4Tjjl.getFirstTermId());
         super.setSecondTermId(cet4Tjjl.getSecondTermId());
+        super.setFirstIn(cet4Tjjl.getFirstIn());
     }
 
     public String getZxjxjhm() {

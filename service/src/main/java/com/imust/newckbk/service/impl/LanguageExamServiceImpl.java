@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.imust.newckbk.service.LanguageExamService;
 import com.imust.newckbk.base.AbstractService;
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -111,8 +112,11 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			return RespData.errorMsg("条件出错！");
 		}
 
-		// 生成大一的英语四级数据
-		List<LanguageExam> languageExamsForFirstGrade = languageExamDao.generateCET4ForFirstGrade(currentAllCET4TJ);
+		List<LanguageExam> languageExamsForFirstGrade = new ArrayList<>();
+		if(currentAllCET4TJ.getFirstIn().equals("1")) {
+			// 生成大一的英语四级数据
+			languageExamsForFirstGrade = languageExamDao.generateCET4ForFirstGrade(currentAllCET4TJ);
+		}
 
 		// 生成专科的英语四级数据
 		List<LanguageExam> languageExamsForJunior = languageExamDao.generateCET4ForJunior(currentAllCET4TJ);

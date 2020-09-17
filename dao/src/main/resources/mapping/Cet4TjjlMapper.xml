@@ -14,6 +14,7 @@
         <result property="cet4PassScore" column="cet4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="crt4PassScore" column="crt4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="cjt4PassScore" column="cjt4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="firstIn" column="first_in" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="status" column="status" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="cols">
@@ -28,6 +29,7 @@
 		cet4_pass_score,
 		crt4_pass_score,
 		cjt4_pass_score,
+		first_in,
 		status
 	</sql>
     <select id="getById" resultMap="cet4TjjlMap" parameterType="java.lang.String">
@@ -84,6 +86,7 @@
 			cet4Tjjl.cet4_pass_score,
 			cet4Tjjl.crt4_pass_score,
 			cet4Tjjl.cjt4_pass_score,
+			cet4Tjjl.first_in,
 			cet4Tjjl.status,
 			case cet4Tjjl.status
 			when '0' then '失效'
@@ -115,6 +118,7 @@
 			cet4Tjjl.cet4_pass_score,
 			cet4Tjjl.crt4_pass_score,
 			cet4Tjjl.cjt4_pass_score,
+			cet4Tjjl.first_in,
 			cet4Tjjl.status,
 			case cet4Tjjl.status
 			when '0' then '失效'
@@ -162,6 +166,9 @@
 			<if test=" cjt4PassScore != null and cjt4PassScore != ''">
 				cjt4_pass_score,
 			</if>
+			<if test=" firstIn != null and firstIn != ''">
+				first_in,
+			</if>
 			<if test=" status != null and status != ''">
 				status
 			</if>
@@ -200,6 +207,9 @@
 			<if test=" cjt4PassScore != null and cjt4PassScore != ''">
 				#{cjt4PassScore,jdbcType=VARCHAR},
 			</if>
+			<if test=" firstIn != null and firstIn != ''">
+				#{firstIn,jdbcType=VARCHAR},
+			</if>
 			<if test=" status != null and status != ''">
 				#{status,jdbcType=VARCHAR}
 			</if>
@@ -237,6 +247,9 @@
 			</if>
 			<if test=" cjt4PassScore != null and cjt4PassScore != ''">
 				cjt4_pass_score = #{cjt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" firstIn != null and firstIn != ''">
+				first_in = #{firstIn,jdbcType=VARCHAR},
 			</if>
 			<if test=" status != null and status != ''">
 				status = #{status,jdbcType=VARCHAR}

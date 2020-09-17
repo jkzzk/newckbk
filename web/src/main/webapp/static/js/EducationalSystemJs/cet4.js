@@ -7,6 +7,7 @@ let saveParam = {
     cet4PassScore: "",
     crt4PassScore: "",
     cjt4PassScore: "",
+    firstIn : "",
     status : "1",
     cet4Tytjjl : {
         missingExam : "",
@@ -106,6 +107,7 @@ function cleanUpData(data) {
     saveParam.cet4PassScore = data.cet4PassScore;
     saveParam.crt4PassScore = data.crt4PassScore;
     saveParam.cjt4PassScore = data.cjt4PassScore;
+    saveParam.firstIn = data.firstIn;
 
     saveParam.cet4Tytjjl.missingExam = data.missingExam;
     saveParam.cet4Tytjjl.passedExam = data.passedExam;
@@ -150,6 +152,11 @@ function verifyData() {
     }
     if(ifIsNull(saveParam.firstGrade) == '') {
         errMsg('请选择大一年级！');
+
+        return false;
+    }
+    if(ifIsNull(saveParam.firstIn) == '') {
+        errMsg('请选择大一是否考试！');
 
         return false;
     }

@@ -46,6 +46,19 @@
             </div>
         </div>
         <div class="row cl form-item">
+            <label class="col-xs-2 col-sm-2 f-16 text-r">大一能否考试：</label>
+            <div class="formControls col-xs-10 col-sm-10">
+                <div class="radio-box">
+                    <input type="radio" id="first-f" disabled <c:if test="${cet4tj.firstIn == '1'}">checked</c:if> name="firstIn">
+                    <label for="first-f">是</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="first-s" disabled <c:if test="${cet4tj.firstIn == '2'}">checked</c:if> name="firstIn">
+                    <label for="first-s">否</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl form-item">
             <label class="col-xs-2 col-sm-2 f-16 text-r">选择上下学期：</label>
             <div class="formControls col-xs-10 col-sm-10">
                 <div class="radio-box">
