@@ -197,7 +197,7 @@
 			#{zxjxjhh} as zxjxjhh
 		from
 			XS_XJXXB_VIEW_KW
-			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+			left join XSZYXXB ON XSZYXXB.zym = XS_XJXXB_VIEW_KW.zym
 		where
 			XS_XJXXB_VIEW_KW.sfyxj = '是'
 			and dqnj = #{firstGrade}
@@ -389,7 +389,7 @@
 			#{zxjxjhh} as zxjxjhh
 			from
 			XS_XJXXB_VIEW_KW
-			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+			left join XSZYXXB ON XSZYXXB.zym = XS_XJXXB_VIEW_KW.zym
 		where
 			XS_XJXXB_VIEW_KW.sfyxj = '是'
 			and XS_XJXXB_VIEW_KW.XSLBDM in (6,12,4,5,9)
@@ -472,7 +472,7 @@
 			#{zxjxjhh} as zxjxjhh
 		from
 			XS_XJXXB_VIEW_KW
-			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+			left join XSZYXXB ON XSZYXXB.zym = XS_XJXXB_VIEW_KW.zym
 		where
 			XS_XJXXB_VIEW_KW.sfyxj = '是'
 			and XS_XJXXB_VIEW_KW.XSLBDM in (3,1,8,2,7)
@@ -548,7 +548,7 @@
 			#{zxjxjhh} as zxjxjhh
 		from
 			XS_XJXXB_VIEW_KW
-			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+			left join XSZYXXB ON XSZYXXB.zym = XS_XJXXB_VIEW_KW.zym
 		where
 			XS_XJXXB_VIEW_KW.sfyxj = '是'
 			and xh in (
@@ -608,7 +608,7 @@
 			#{zxjxjhh} as zxjxjhh
 		from
 			XS_XJXXB_VIEW_KW
-			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+			left join XSZYXXB ON XSZYXXB.zym = XS_XJXXB_VIEW_KW.zym
 		where
 			XS_XJXXB_VIEW_KW.sfyxj = '是'
 			and xh in (
@@ -657,7 +657,7 @@
 			#{zxjxjhh} as zxjxjhh
 		from
 			XS_XJXXB_VIEW_KW
-			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+			left join XSZYXXB ON XSZYXXB.zym = XS_XJXXB_VIEW_KW.zym
 		where
 			XS_XJXXB_VIEW_KW.sfyxj = '是'
 			and xh in (
@@ -706,7 +706,7 @@
 			#{zxjxjhh} as zxjxjhh
 		from
 			XS_XJXXB_VIEW_KW
-			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+			left join XSZYXXB ON XSZYXXB.zym = XS_XJXXB_VIEW_KW.zym
 		where
 			XS_XJXXB_VIEW_KW.sfyxj = '是'
 			and xh in (
@@ -755,7 +755,7 @@
 			#{zxjxjhh} as zxjxjhh
 		from
 			XS_XJXXB_VIEW_KW
-			left join XSZYXXB ON XSZYXXB.xsm = XS_XJXXB_VIEW_KW.xsm
+			left join XSZYXXB ON XSZYXXB.zym = XS_XJXXB_VIEW_KW.zym
 		where
 			XS_XJXXB_VIEW_KW.sfyxj = '是'
 			and xh in (
@@ -894,9 +894,26 @@
 	<insert id="insertBatch">
 		insert into LANGUAGE_EXAM
 			(id,type,xh,xm,xb,zylb,sfzh,xl,xz,rxnf,nj,xsm,zym,bjh,xjdm,xxdm,zxjxjhh)
-		<foreach collection="list" separator="," item="lang" open="" close="" >
-			(#{lang.id},#{lang.type},#{lang.xh},#{lang.xm},#{lang.xb},#{lang.zylb},#{lang.sfzh},#{lang.xl},#{lang.xz},#{lang.rxnf},
-			#{lang.nj},#{lang.xsm},#{lang.zym},#{lang.bjh},#{lang.xjdm},#{lang.xxdm},#{lang.zxjxjhh})
+		<foreach collection="list" separator="union all" index="index" item="lang">
+				select
+					#{lang.id,jdbcType=VARCHAR},
+					#{lang.type,jdbcType=VARCHAR},
+					#{lang.xh,jdbcType=VARCHAR},
+					#{lang.xm,jdbcType=VARCHAR},
+					#{lang.xb,jdbcType=VARCHAR},
+					#{lang.zylb,jdbcType=VARCHAR},
+					#{lang.sfzh,jdbcType=VARCHAR},
+					#{lang.xl,jdbcType=VARCHAR},
+					#{lang.xz,jdbcType=VARCHAR},
+					#{lang.rxnf,jdbcType=VARCHAR},
+					#{lang.nj,jdbcType=VARCHAR},
+					#{lang.xsm,jdbcType=VARCHAR},
+					#{lang.zym,jdbcType=VARCHAR},
+					#{lang.bjh,jdbcType=VARCHAR},
+					#{lang.xjdm,jdbcType=VARCHAR},
+					#{lang.xxdm,jdbcType=VARCHAR},
+					#{lang.zxjxjhh,jdbcType=VARCHAR}
+				from dual
 		</foreach>
 	</insert>
 

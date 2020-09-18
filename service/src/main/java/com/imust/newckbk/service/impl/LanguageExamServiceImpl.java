@@ -132,7 +132,10 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		});
 
 		if(!languageExamsForFirstGrade.isEmpty()) {
-			languageExamDao.insertBatch(languageExamsForFirstGrade);
+//			languageExamDao.insertBatch(languageExamsForFirstGrade);
+			for (LanguageExam languageExam : languageExamsForFirstGrade) {
+				languageExamDao.insert(languageExam);
+			}
 		}
 
 		return RespData.successMsg("英语四级名单生成成功！");
