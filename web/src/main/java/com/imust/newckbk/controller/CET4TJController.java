@@ -118,4 +118,14 @@ public class CET4TJController {
             throw new CustomException("########" + e.getMessage());
         }
     }
+
+    /**
+     * 语种考试条件设置
+     *
+     * @return
+     */
+    @RequestMapping("/setting")
+    public String setting() {
+        return "cet4tj/setting";
+    }
 }

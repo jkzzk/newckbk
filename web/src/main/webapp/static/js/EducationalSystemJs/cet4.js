@@ -250,4 +250,6 @@ $(function () {
             });
         }
     });
+
+    $.Huifold("#Huifold1 .item h4","#Huifold1 .item .info","fast",3,"click");
 });
