@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<!-- css -->
+		<link rel="stylesheet" href="css/main.css">
+
+		<!-- js -->
+		<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+		<script src="js/myFoldpanel.js"></script>
+		<style type="text/css">
+			
+		</style>
+	</head>
+	<body>
+		<dl class="foldpanel" id="my-foldpanel">
+			<dt>语言</dt>
+			<dd>
+				<a>Java</a>
+				<a>javascript</a>
+				<a>python</a>
+			</dd>
+
+			<dt>运动</dt>
+			<dd>
+				<a>足球</a>
+				<a>羽毛球</a>
+				<a>篮球</a>
+			</dd>
+			
+			<dt>乐器</dt>
+			<dd>
+				<a>钢琴</a>
+				<a>手风琴</a>
+			</dd>
+			
+			<dt>男装</dt>
+			<dd>
+				<a>T恤</a>
+				<a>皮衣夹</a>
+				<a>西服套装</a>
+			</dd>
+			
+			<dt>配饰</dt>
+			<dd>
+				<a>女士围巾</a>
+				<a>大衣毛衣</a>
+			</dd>
+
+		</dl>
+		<script type="text/javascript">
+			$(function() {
+				$('dl#my-foldpanel').foldpanel({
+					init:false,     	 //是否开启初始化功能,默认关闭
+					init_index: 0, // 传的数字代表初始化展开的索引，0就是第一个
+					time: 400, // panel展开动画时间, 默认为 100ms
+					dbclose: false // 在此点击关闭, 默认为 true
+				});
+			})
+		</script>
+	</body>
+</html>

@@ -3,270 +3,487 @@
 <html>
 <head>
     <title>四六级条件设置</title>
+    <link rel="stylesheet" href="${ctx}/static/flod/css/main.css">
+    <style type="text/css">
+        .title {
+            font-weight: bold;
+            color: deepskyblue;
+        }
+        .check-box {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
 </head>
 <body>
     <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 语种考试条件设置 <a id="btn-refresh" onclick="refresh()" class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="###" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
     <article class="page-container">
-        <ul id="Huifold1" class="Huifold">
-            <li class="item">
-                <h4>标题<b>+</b></h4>
-                <div class="info"> 内容<br>很多内容 </div>
-            </li>
-            <li class="item">
-                <h4>标题<b>+</b></h4>
-                <div class="info"><img src="pic/2.png" ></div>
-            </li>
-            <li class="item">
-                <h4>标题<b>+</b></h4>
-                <div class="info"><img src="pic/1.png" ></div>
-            </li>
-        </ul>
         <form id="form-member-add">
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">本学期：</label>
-                <div class="formControls col-xs-10 col-sm-10">
-                <span class="select-box radius">
-                  <select class="select" size="1" name="zxjxjhh" id="currentTerm">
-                    <option value="" selected>请选择学期</option>
-                  </select>
-                </span>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">大一年级：</label>
-                <div class="formControls col-xs-10 col-sm-10">
-                <span class="select-box radius">
-                  <select class="select" size="1" name="firstGrade" id="firstGrade">
-                    <option value="" selected>请选择大一年级</option>
-                  </select>
-                </span>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">大一能否考试：</label>
-                <div class="formControls col-xs-10 col-sm-10">
-                    <div class="radio-box">
-                        <input type="radio" id="first-f" value="1" checked name="firstIn">
-                        <label for="first-f">是</label>
-                    </div>
-                    <div class="radio-box">
-                        <input type="radio" id="first-s" value="2" name="firstIn">
-                        <label for="first-s">否</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">选择上下学期：</label>
-                <div class="formControls col-xs-10 col-sm-10">
-                    <div class="radio-box">
-                        <input type="radio" id="term-f" value="1" checked name="halfTerm">
-                        <label for="term-f">上半学期</label>
-                    </div>
-                    <div class="radio-box">
-                        <input type="radio" id="term-s" value="2" name="halfTerm">
-                        <label for="term-s">下半学期</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-4 col-sm-4 f-16 text-r">CET4上一次考试时间(例:1902)：</label>
-                <div class="formControls col-xs-8 col-sm-8">
-                    <input type="text" name="lastExamTerm" id="lastExamTerm" placeholder="请输入考试时间" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-4 col-sm-4 f-16 text-r">CET4通过分数：</label>
-                <div class="formControls col-xs-8 col-sm-8">
-                    <input type="text" name="cet4PassScore" id="cet4PassScore" placeholder="请输入通过分数" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-4 col-sm-4 f-16 text-r">CRT4通过分数：</label>
-                <div class="formControls col-xs-8 col-sm-8">
-                    <input type="text" name="crt4PassScore" id="crt4PassScore" placeholder="请输入通过分数" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-4 col-sm-4 f-16 text-r">CJT4通过分数：</label>
-                <div class="formControls col-xs-8 col-sm-8">
-                    <input type="text" name="cjt4PassScore" id="cjt4PassScore" placeholder="请输入通过分数" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">缺考是否停考：</label>
-                <div class="formControls col-xs-10 col-sm-10">
-                    <div class="radio-box">
-                        <input type="radio" id="stop-y" value="1" checked name="missingExam">
-                        <label for="stop-y">是</label>
-                    </div>
-                    <div class="radio-box">
-                        <input type="radio" id="stop-n" value="0" name="missingExam">
-                        <label for="stop-n">否</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">是否可以刷考：</label>
-                <div class="formControls col-xs-10 col-sm-10">
-                    <div class="radio-box">
-                        <input type="radio" id="pass-y" value="1" checked name="passedExam">
-                        <label for="pass-y">是</label>
-                    </div>
-                    <div class="radio-box">
-                        <input type="radio" id="pass-n" value="0" name="passedExam">
-                        <label for="pass-n">否</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">学日语是否能考：</label>
-                <div class="formControls col-xs-10 col-sm-10">
-                    <div class="radio-box">
-                        <input type="radio" id="japa-y" value="1" checked name="isJapanese">
-                        <label for="japa-y">是</label>
-                    </div>
-                    <div class="radio-box">
-                        <input type="radio" id="japa-n" value="0" name="isJapanese">
-                        <label for="japa-n">否</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">日语课程号(用逗号隔开)：</label>
-                <div class="formControls col-xs-9 col-sm-9">
-                    <input type="text" name="japaneseKch" id="japaneseKch" placeholder="请输入日语课程号" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">学俄语是否能考：</label>
-                <div class="formControls col-xs-10 col-sm-10">
-                    <div class="radio-box">
-                        <input type="radio" id="russ-y" value="1" checked name="isRussian">
-                        <label for="russ-y">是</label>
-                    </div>
-                    <div class="radio-box">
-                        <input type="radio" id="russ-n" value="0" name="isRussian">
-                        <label for="russ-n">否</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">俄语课程号(用逗号隔开)：</label>
-                <div class="formControls col-xs-9 col-sm-9">
-                    <input type="text" name="russianKch" id="russianKch" placeholder="请输入俄语课程号" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">英语3级通过分数：</label>
-                <div class="formControls col-xs-9 col-sm-9">
-                    <input type="text" name="cet3Score" id="cet3Score" placeholder="请输入通过分数" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">不能参与考试的学院(使用逗号隔开)：</label>
-                <div class="formControls col-xs-9 col-sm-9">
-                    <input type="text" name="specialXsm" id="specialXsm" placeholder="请输入学院名称" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">A班最低成绩：</label>
-                <div class="formControls col-xs-4 col-sm-4">
-                    <input type="text" name="classaMin" id="classaMin" placeholder="请输入最低成绩" class="input-text radius">
-                </div>
-                <label class="col-xs-2 col-sm-2 f-16 text-r">A班最高成绩：</label>
-                <div class="formControls col-xs-4 col-sm-4">
-                    <input type="text" name="classaMax" id="classaMax" placeholder="请输入最高成绩" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">B班最低成绩：</label>
-                <div class="formControls col-xs-4 col-sm-4">
-                    <input type="text" name="classbMin" id="classbMin" placeholder="请输入最低成绩" class="input-text radius">
-                </div>
-                <label class="col-xs-2 col-sm-2 f-16 text-r">B班最高成绩：</label>
-                <div class="formControls col-xs-4 col-sm-4">
-                    <input type="text" name="classbMax" id="classbMax" placeholder="请输入最高成绩" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-2 col-sm-2 f-16 text-r">C班最低成绩：</label>
-                <div class="formControls col-xs-4 col-sm-4">
-                    <input type="text" name="classcMin" id="classcMin" placeholder="请输入最低成绩" class="input-text radius">
-                </div>
-                <label class="col-xs-2 col-sm-2 f-16 text-r">C班最高成绩：</label>
-                <div class="formControls col-xs-4 col-sm-4">
-                    <input type="text" name="classcMax" id="classcMax" placeholder="请输入最高成绩" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">A班英语课程号(用逗号隔开)：</label>
-                <div class="formControls col-xs-9 col-sm-9">
-                    <textarea class="textarea radius" name="classaKxh" id="classaKxh" placeholder="请输入课程号"></textarea>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">B班英语课程号(用逗号隔开)：</label>
-                <div class="formControls col-xs-9 col-sm-9">
-                    <textarea class="textarea radius" name="classbKxh" id="classbKxh" placeholder="请输入课程号"></textarea>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">C班英语课程号(用逗号隔开)：</label>
-                <div class="formControls col-xs-9 col-sm-9">
-                    <textarea class="textarea radius" name="classcKxh" id="classcKxh" placeholder="请输入课程号"></textarea>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">大学英语(1)课程号：</label>
-                <div class="formControls col-xs-3 col-sm-3">
-                    <input type="text" name="englisthKch" id="englisthKch" placeholder="请输入课程号" class="input-text radius">
-                </div>
-                <label class="col-xs-3 col-sm-3 f-16 text-r">大学英语(1)筛选学期：</label>
-                <div class="formControls col-xs-3 col-sm-3">
-                <span class="select-box radius">
-                  <select class="select" size="1" name="englisthZxjxjhh" id="examTerm">
-                    <option value="" selected>请选择学期</option>
-                  </select>
-                </span>
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">A班大英(1)最低成绩：</label>
-                <div class="formControls col-xs-3 col-sm-3">
-                    <input type="text" name="classaEnglishMin" id="classaEnglishMin" placeholder="请输入最低成绩" class="input-text radius">
-                </div>
-                <label class="col-xs-3 col-sm-3 f-16 text-r">A班大英(1)最高成绩：</label>
-                <div class="formControls col-xs-3 col-sm-3">
-                    <input type="text" name="classaEnglishMax" id="classaEnglishMax" placeholder="请输入最高成绩" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">B班大英(1)最低成绩：</label>
-                <div class="formControls col-xs-3 col-sm-3">
-                    <input type="text" name="classbEnglishMin" id="classbEnglishMin" placeholder="请输入最低成绩" class="input-text radius">
-                </div>
-                <label class="col-xs-3 col-sm-3 f-16 text-r">B班大英(1)最高成绩：</label>
-                <div class="formControls col-xs-3 col-sm-3">
-                    <input type="text" name="classbEnglishMax" id="classbEnglishMax" placeholder="请输入最高成绩" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl form-item">
-                <label class="col-xs-3 col-sm-3 f-16 text-r">C班大英(1)最低成绩：</label>
-                <div class="formControls col-xs-3 col-sm-3">
-                    <input type="text" name="classcEnglishMin" id="classcEnglishMin" placeholder="请输入最低成绩" class="input-text radius">
-                </div>
-                <label class="col-xs-3 col-sm-3 f-16 text-r">C班大英(1)最高成绩：</label>
-                <div class="formControls col-xs-3 col-sm-3">
-                    <input type="text" name="classcEnglishMax" id="classcEnglishMax" placeholder="请输入最高成绩" class="input-text radius">
-                </div>
-            </div>
-            <div class="row cl">
-                <div class="col-xs-7 col-sm-7 col-xs-offset-5 col-sm-offset-5 mt-10">
-                    <input type="button" id="submit" class="btn btn-primary radius" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-                </div>
-            </div>
+            <dl class="foldpanel" id="my-foldpanel">
+                <dt>语言级别条件</dt>
+                <dd>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="cet4" id="cet4">
+                                <label for="cet4">CET4</label>
+                            </div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="row cl form-item">
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">通过分数：</label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="cet4PassScore" id="cet4PassScore" placeholder="通过分数" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">上次考试时间：</label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="cet4PassScore" id="cet4LastExamTerm" placeholder="考试时间" class="input-text radius">
+                                    </div>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="checkbox" class="check-box" name="cet4MissingExam" id="cet4MissingExam">
+                                        <label for="cet4MissingExam">缺考停考</label>
+                                    </div>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="checkbox" class="check-box" name="cet4PassedExam" id="cet4PassedExam">
+                                        <label for="cet4MissingExam">通过刷考</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="cet6" id="cet6">
+                                <label for="cet6">CET6</label>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="crt4" id="crt4">
+                                <label for="crt4">CRT4</label>
+                            </div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="row cl form-item">
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">通过分数：</label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="crt4PassScore" id="crt4PassScore" placeholder="通过分数" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">上次考试时间：</label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="crt4LastExamTerm" id="crt4LastExamTerm" placeholder="考试时间" class="input-text radius">
+                                    </div>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="checkbox" class="check-box" name="crt4MissingExam" id="crt4MissingExam">
+                                        <label for="cet4MissingExam">缺考停考</label>
+                                    </div>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="checkbox" class="check-box" name="crt4PassedExam" id="crt4PassedExam">
+                                        <label for="cet4MissingExam">通过刷考</label>
+                                    </div>
+                                    <div class="formControls col-xs-2 col-sm-2">
+                                        <input type="checkbox" class="check-box" name="russJoinCet4" id="russJoinCet4">
+                                        <label for="cet4MissingExam">参加CET4</label>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">俄语课程号：</label>
+                                    <div class="formControls col-xs-10 col-sm-10">
+                                        <input type="text" name="russianKch" id="russianKch" placeholder="课程号" class="input-text radius">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="crt6" id="crt6">
+                                <label for="crt6">CRT6</label>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="cjt4" id="cjt4">
+                                <label for="cjt4">CJT4</label>
+                            </div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="row cl form-item">
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">通过分数：</label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="cjt4PassScore" id="cjt4PassScore" placeholder="通过分数" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">上次考试时间：</label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="cjt4LastExamTerm" id="cjt4LastExamTerm" placeholder="考试时间" class="input-text radius">
+                                    </div>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="checkbox" class="check-box" name="cjt4MissingExam" id="cjt4MissingExam">
+                                        <label for="cet4MissingExam">缺考停考</label>
+                                    </div>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="checkbox" class="check-box" name="cjt4PassedExam" id="cjt4PassedExam">
+                                        <label for="cet4MissingExam">通过刷考</label>
+                                    </div>
+                                    <div class="formControls col-xs-2 col-sm-2">
+                                        <input type="checkbox" class="check-box" name="japaJoinCet4" id="japaJoinCet4">
+                                        <label for="cet4MissingExam">参加CET4</label>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">日语课程号：</label>
+                                    <div class="formControls col-xs-10 col-sm-10">
+                                        <input type="text" name="japaneseKch" id="japaneseKch" placeholder="课程号" class="input-text radius">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="cjt6" id="cjt6">
+                                <label for="cjt6">CJT6</label>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="cgt4" id="cgt4">
+                                <label for="cgt4">CGT4</label>
+                            </div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="row cl form-item">
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">通过分数：</label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="cgt4PassScore" id="cgt4PassScore" placeholder="通过分数" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">上次考试时间：</label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="cgt4LastExamTerm" id="cgt4LastExamTerm" placeholder="考试时间" class="input-text radius">
+                                    </div>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="checkbox" class="check-box" name="cgt4MissingExam" id="cgt4MissingExam">
+                                        <label for="cet4MissingExam">缺考停考</label>
+                                    </div>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="checkbox" class="check-box" name="cgt4PassedExam" id="cgt4PassedExam">
+                                        <label for="cet4MissingExam">通过刷考</label>
+                                    </div>
+                                    <div class="formControls col-xs-2 col-sm-2">
+                                        <input type="checkbox" class="check-box" name="germanJoinCet4" id="germanJoinCet4">
+                                        <label for="cet4MissingExam">参加CET4</label>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">德语课程号：</label>
+                                    <div class="formControls col-xs-10 col-sm-10">
+                                        <input type="text" name="germanKch" id="germanKch" placeholder="课程号" class="input-text radius">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="cgt6" id="cgt6">
+                                <label for="cgt6">CGT6</label>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="pretco-b" id="pretco-b">
+                                <label for="pretco-b">PRETCO-B</label>
+                            </div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="row cl form-item">
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">通过分数：</label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="pretcoPassScore" id="pretcoPassScore" placeholder="通过分数" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-1 col-sm-1 f-14 text-r">上次考试时间：</label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="pretcoLastExamTerm" id="pretcoLastExamTerm" placeholder="考试时间" class="input-text radius">
+                                    </div>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="checkbox" class="check-box" name="pretcoMissingExam" id="pretcoMissingExam">
+                                        <label for="cet4MissingExam">缺考停考</label>
+                                    </div>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="checkbox" class="check-box" name="pretcoPassedExam" id="pretcoPassedExam">
+                                        <label for="cet4MissingExam">通过刷考</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </dd>
+                <dt>报考学生条件</dt>
+                <dd>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">本科学生年级</div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box" name="isFirstGrade" id="isFirstGrade">
+                                    <label for="cet4MissingExam">大一</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box" name="isSecondGrade" id="isSecondGrade">
+                                    <label for="cet4MissingExam">大二</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box" name="isThirdGrade" id="isThirdGrade">
+                                    <label for="cet4MissingExam">大三</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box" name="isFoGrade" id="isFoGrade">
+                                    <label for="cet4MissingExam">大四</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box" name="isFifthGrade" id="isFifthGrade">
+                                    <label for="cet4MissingExam">大五</label>
+                                </div>
+                                <label class="col-xs-1 col-sm-1 f-14 text-r"><span style="color: red;">*</span> 大一年级：</label>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="text" name="firstGrade" id="firstGrade" placeholder="大一年级" class="input-text radius">
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">本科学生类别</div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label >本科</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label >专升本</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label >成人专升本</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label >进修</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label >进修1</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label >进修单</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label >定向</label>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">专科学生年级</div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box" name="isJuniorFirstGrade" id="isJuniorFirstGrade">
+                                    <label for="cet4MissingExam">专一</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box" name="isJuniorSecondGrade" id="isJuniorSecondGrade">
+                                    <label for="cet4MissingExam">专二</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box" name="isJuniorThirdGrade" id="isJuniorThirdGrade">
+                                    <label for="cet4MissingExam">专三</label>
+                                </div>
+                                <label class="col-xs-1 col-sm-1 f-14 text-r"><span style="color: red;">*</span> 专一年级：</label>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="text" name="juniorFirstGrade" id="juniorFirstGrade" placeholder="大一年级" class="input-text radius">
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">专科学生类别</div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label>专科</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label>高职</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label>高职1</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label>成人专科</label>
+                                </div>
+                                <div class="formControls col-xs-1 col-sm-1">
+                                    <input type="checkbox" class="check-box">
+                                    <label>夜转白</label>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </dd>
+                <dt>特殊年级条件</dt>
+                <dd>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">大一</div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="row cl form-item">
+                                    <div class="formControls col-xs-2 col-sm-2">
+                                        <span class="select-box radius">
+                                          <select class="select" size="1" name="dataSource" id="dataSource">
+                                            <option value="0" selected>请选择筛选数据源</option>
+                                            <option value="1" selected>分班成绩</option>
+                                            <option value="2" selected>大学英语(1)成绩</option>
+                                          </select>
+                                        </span>
+                                    </div>
+                                    <label class="col-xs-2 col-sm-2 text-r">大学英语(1)课程号：</label>
+                                    <div class="formControls col-xs-2 col-sm-2">
+                                        <input type="text" name="englisthKch" id="englisthKch" placeholder="请输入课程号" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-2 col-sm-2 text-r">大学英语(1)筛选学期：</label>
+                                    <div class="formControls col-xs-2 col-sm-2">
+                                        <span class="select-box radius">
+                                          <select class="select" size="1" name="englisthZxjxjhh" id="examTerm">
+                                            <option value="" selected>请选择学期</option>
+                                          </select>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-2 col-sm-2 f-16 text-r">A班英语课程号(用逗号隔开)：</label>
+                                    <div class="formControls col-xs-9 col-sm-9">
+                                        <textarea class="textarea radius" name="classaKxh" id="classaKxh" placeholder="请输入课程号"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-2 col-sm-2 f-16 text-r">B班英语课程号(用逗号隔开)：</label>
+                                    <div class="formControls col-xs-9 col-sm-9">
+                                        <textarea class="textarea radius" name="classbKxh" id="classbKxh" placeholder="请输入课程号"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-2 col-sm-2 f-16 text-r">C班英语课程号(用逗号隔开)：</label>
+                                    <div class="formControls col-xs-9 col-sm-9">
+                                        <textarea class="textarea radius" name="classcKxh" id="classcKxh" placeholder="请输入课程号"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-1 col-sm-1 text-r">
+                                        <input type="checkbox" class="check-box" name="classA" id="classA">
+                                        A班成绩：
+                                    </label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="classaEnglish" id="classaEnglish" placeholder="请输入成绩" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-1 col-sm-1 text-r">
+                                        <input type="checkbox" class="check-box" name="classB" id="classB">
+                                        B班成绩：
+                                    </label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="classbEnglish" id="classbEnglish" placeholder="请输入成绩" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-1 col-sm-1 text-r">
+                                        <input type="checkbox" class="check-box" name="classC" id="classC">
+                                        C班成绩：
+                                    </label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="classcEnglish" id="classcEnglish" placeholder="请输入成绩" class="input-text radius">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a>
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">大二</div>
+                            <div class="col-xs-11 col-sm-11">
+                                <div class="row cl form-item">
+                                    <label class="col-xs-2 col-sm-2 text-r">大学英语(2)课程号：</label>
+                                    <div class="formControls col-xs-2 col-sm-2">
+                                        <input type="text" name="englisthSecondKch" id="englisthSecondKch" placeholder="请输入课程号" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-2 col-sm-2 text-r">大学英语(2)筛选学期：</label>
+                                    <div class="formControls col-xs-2 col-sm-2">
+                                        <span class="select-box radius">
+                                          <select class="select" size="1" name="englisthZxjxjhh" id="examSecondTerm">
+                                            <option value="" selected>请选择学期</option>
+                                          </select>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-2 col-sm-2 f-16 text-r">A班英语课程号(用逗号隔开)：</label>
+                                    <div class="formControls col-xs-9 col-sm-9">
+                                        <textarea class="textarea radius" name="classaSecondKxh" id="classaSecondKxh" placeholder="请输入课程号"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-2 col-sm-2 f-16 text-r">B班英语课程号(用逗号隔开)：</label>
+                                    <div class="formControls col-xs-9 col-sm-9">
+                                        <textarea class="textarea radius" name="classbSecondKxh" id="classbSecondKxh" placeholder="请输入课程号"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-2 col-sm-2 f-16 text-r">C班英语课程号(用逗号隔开)：</label>
+                                    <div class="formControls col-xs-9 col-sm-9">
+                                        <textarea class="textarea radius" name="classcSecondKxh" id="classcSecondKxh" placeholder="请输入课程号"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row cl form-item mt-10">
+                                    <label class="col-xs-1 col-sm-1 text-r">
+                                        <input type="checkbox" class="check-box" name="classSecondA" id="classSecondA">
+                                        A班成绩：
+                                    </label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="classaSecondEnglish" id="classaSecondEnglish" placeholder="请输入成绩" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-1 col-sm-1 text-r">
+                                        <input type="checkbox" class="check-box" name="classSecondB" id="classSecondB">
+                                        B班成绩：
+                                    </label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="classbSecondEnglish" id="classbSecondEnglish" placeholder="请输入成绩" class="input-text radius">
+                                    </div>
+                                    <label class="col-xs-1 col-sm-1 text-r">
+                                        <input type="checkbox" class="check-box" name="classSecondC" id="classSecondC">
+                                        C班成绩：
+                                    </label>
+                                    <div class="formControls col-xs-1 col-sm-1">
+                                        <input type="text" name="classcSecondEnglish" id="classcSecondEnglish" placeholder="请输入成绩" class="input-text radius">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </dd>
+            </dl>
         </form>
     </article>
+    <script type="text/javascript" src="${ctx}/static/flod/js/myFoldpanel.js"></script>
     <script type="text/javascript" src="${ctx}/static/js/EducationalSystemJs/cet4.js"></script>
 </body>
 </html>

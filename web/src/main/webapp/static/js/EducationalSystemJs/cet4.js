@@ -59,6 +59,7 @@ function getTermInfo() {
                 }
                 $('#currentTerm').html(options);
                 $('#examTerm').html(options);
+                $('#examSecondTerm').html(options);
             }else {
                 console.log("/term/getAllTerm : 返回数据错误");
             }
@@ -251,5 +252,10 @@ $(function () {
         }
     });
 
-    $.Huifold("#Huifold1 .item h4","#Huifold1 .item .info","fast",3,"click");
+    $('dl#my-foldpanel').foldpanel({
+        init:false,     	 //是否开启初始化功能,默认关闭
+        init_index: 0, // 传的数字代表初始化展开的索引，0就是第一个
+        time: 400, // panel展开动画时间, 默认为 100ms
+        dbclose: true // 在此点击关闭, 默认为 true
+    });
 });
