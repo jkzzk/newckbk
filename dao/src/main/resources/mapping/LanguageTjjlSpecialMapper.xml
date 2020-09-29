@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.LanguageTjjlSpecialDao">
+    <resultMap id="languageTjjlSpecialMap" type="com.imust.newckbk.domain.LanguageTjjlSpecial">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="dataSource" column="data_source" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="englisthKch" column="englisth_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="englisthZxjxjhh" column="englisth_zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classaKxh" column="classa_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classbKxh" column="classb_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classcKxh" column="classc_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classA" column="class_a" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classB" column="class_b" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classC" column="class_c" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classaEnglish" column="classa_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classbEnglish" column="classb_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classcEnglish" column="classc_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="englisthSecondKch" column="englisth_second_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="englisthSecondZxjxjhh" column="englisth_second_zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classaSecondKxh" column="classa_second_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classbSecondKxh" column="classb_second_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classcSecondKxh" column="classc_second_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classSecondA" column="class_second_a" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classSecondB" column="class_second_b" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classSecondC" column="class_second_c" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classaSecondEnglish" column="classa_second_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classbSecondEnglish" column="classb_second_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classcSecondEnglish" column="classc_second_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		data_source,
+		englisth_kch,
+		englisth_zxjxjhh,
+		classa_kxh,
+		classb_kxh,
+		classc_kxh,
+		class_a,
+		class_b,
+		class_c,
+		classa_english,
+		classb_english,
+		classc_english,
+		englisth_second_kch,
+		englisth_second_zxjxjhh,
+		classa_second_kxh,
+		classb_second_kxh,
+		classc_second_kxh,
+		class_second_a,
+		class_second_b,
+		class_second_c,
+		classa_second_english,
+		classb_second_english,
+		classc_second_english
+	</sql>
+    <select id="getById" resultMap="languageTjjlSpecialMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from LANGUAGE_TJJL_SPECIAL  languageTjjlSpecial
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="languageTjjlSpecialMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from LANGUAGE_TJJL_SPECIAL  languageTjjlSpecial
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="languageTjjlSpecialMap" parameterType="com.imust.newckbk.domain.LanguageTjjlSpecial">
+		select <include refid="cols"/> from LANGUAGE_TJJL_SPECIAL  languageTjjlSpecial
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="languageTjjlSpecialMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from LANGUAGE_TJJL_SPECIAL  languageTjjlSpecial
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_TJJL_SPECIAL  languageTjjlSpecial
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_TJJL_SPECIAL  languageTjjlSpecial
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_TJJL_SPECIAL  languageTjjlSpecial
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.LanguageTjjlSpecial" useGeneratedKeys="true" keyProperty="id">
+		insert into LANGUAGE_TJJL_SPECIAL
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" dataSource != null and dataSource != ''">
+				data_source,
+			</if>
+			<if test=" englisthKch != null and englisthKch != ''">
+				englisth_kch,
+			</if>
+			<if test=" englisthZxjxjhh != null and englisthZxjxjhh != ''">
+				englisth_zxjxjhh,
+			</if>
+			<if test=" classaKxh != null and classaKxh != ''">
+				classa_kxh,
+			</if>
+			<if test=" classbKxh != null and classbKxh != ''">
+				classb_kxh,
+			</if>
+			<if test=" classcKxh != null and classcKxh != ''">
+				classc_kxh,
+			</if>
+			<if test=" classA != null and classA != ''">
+				class_a,
+			</if>
+			<if test=" classB != null and classB != ''">
+				class_b,
+			</if>
+			<if test=" classC != null and classC != ''">
+				class_c,
+			</if>
+			<if test=" classaEnglish != null and classaEnglish != ''">
+				classa_english,
+			</if>
+			<if test=" classbEnglish != null and classbEnglish != ''">
+				classb_english,
+			</if>
+			<if test=" classcEnglish != null and classcEnglish != ''">
+				classc_english,
+			</if>
+			<if test=" englisthSecondKch != null and englisthSecondKch != ''">
+				englisth_second_kch,
+			</if>
+			<if test=" englisthSecondZxjxjhh != null and englisthSecondZxjxjhh != ''">
+				englisth_second_zxjxjhh,
+			</if>
+			<if test=" classaSecondKxh != null and classaSecondKxh != ''">
+				classa_second_kxh,
+			</if>
+			<if test=" classbSecondKxh != null and classbSecondKxh != ''">
+				classb_second_kxh,
+			</if>
+			<if test=" classcSecondKxh != null and classcSecondKxh != ''">
+				classc_second_kxh,
+			</if>
+			<if test=" classSecondA != null and classSecondA != ''">
+				class_second_a,
+			</if>
+			<if test=" classSecondB != null and classSecondB != ''">
+				class_second_b,
+			</if>
+			<if test=" classSecondC != null and classSecondC != ''">
+				class_second_c,
+			</if>
+			<if test=" classaSecondEnglish != null and classaSecondEnglish != ''">
+				classa_second_english,
+			</if>
+			<if test=" classbSecondEnglish != null and classbSecondEnglish != ''">
+				classb_second_english,
+			</if>
+			<if test=" classcSecondEnglish != null and classcSecondEnglish != ''">
+				classc_second_english
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" dataSource != null and dataSource != ''">
+				#{dataSource,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthKch != null and englisthKch != ''">
+				#{englisthKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthZxjxjhh != null and englisthZxjxjhh != ''">
+				#{englisthZxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaKxh != null and classaKxh != ''">
+				#{classaKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbKxh != null and classbKxh != ''">
+				#{classbKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcKxh != null and classcKxh != ''">
+				#{classcKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classA != null and classA != ''">
+				#{classA,jdbcType=VARCHAR},
+			</if>
+			<if test=" classB != null and classB != ''">
+				#{classB,jdbcType=VARCHAR},
+			</if>
+			<if test=" classC != null and classC != ''">
+				#{classC,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaEnglish != null and classaEnglish != ''">
+				#{classaEnglish,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbEnglish != null and classbEnglish != ''">
+				#{classbEnglish,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcEnglish != null and classcEnglish != ''">
+				#{classcEnglish,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthSecondKch != null and englisthSecondKch != ''">
+				#{englisthSecondKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthSecondZxjxjhh != null and englisthSecondZxjxjhh != ''">
+				#{englisthSecondZxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaSecondKxh != null and classaSecondKxh != ''">
+				#{classaSecondKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbSecondKxh != null and classbSecondKxh != ''">
+				#{classbSecondKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcSecondKxh != null and classcSecondKxh != ''">
+				#{classcSecondKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classSecondA != null and classSecondA != ''">
+				#{classSecondA,jdbcType=VARCHAR},
+			</if>
+			<if test=" classSecondB != null and classSecondB != ''">
+				#{classSecondB,jdbcType=VARCHAR},
+			</if>
+			<if test=" classSecondC != null and classSecondC != ''">
+				#{classSecondC,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaSecondEnglish != null and classaSecondEnglish != ''">
+				#{classaSecondEnglish,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbSecondEnglish != null and classbSecondEnglish != ''">
+				#{classbSecondEnglish,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcSecondEnglish != null and classcSecondEnglish != ''">
+				#{classcSecondEnglish,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.LanguageTjjlSpecial">
+		update LANGUAGE_TJJL_SPECIAL languageTjjlSpecial
+		<set>
+			<if test=" dataSource != null and dataSource != ''">
+				data_source = #{dataSource,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthKch != null and englisthKch != ''">
+				englisth_kch = #{englisthKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthZxjxjhh != null and englisthZxjxjhh != ''">
+				englisth_zxjxjhh = #{englisthZxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaKxh != null and classaKxh != ''">
+				classa_kxh = #{classaKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbKxh != null and classbKxh != ''">
+				classb_kxh = #{classbKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcKxh != null and classcKxh != ''">
+				classc_kxh = #{classcKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classA != null and classA != ''">
+				class_a = #{classA,jdbcType=VARCHAR},
+			</if>
+			<if test=" classB != null and classB != ''">
+				class_b = #{classB,jdbcType=VARCHAR},
+			</if>
+			<if test=" classC != null and classC != ''">
+				class_c = #{classC,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaEnglish != null and classaEnglish != ''">
+				classa_english = #{classaEnglish,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbEnglish != null and classbEnglish != ''">
+				classb_english = #{classbEnglish,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcEnglish != null and classcEnglish != ''">
+				classc_english = #{classcEnglish,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthSecondKch != null and englisthSecondKch != ''">
+				englisth_second_kch = #{englisthSecondKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" englisthSecondZxjxjhh != null and englisthSecondZxjxjhh != ''">
+				englisth_second_zxjxjhh = #{englisthSecondZxjxjhh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaSecondKxh != null and classaSecondKxh != ''">
+				classa_second_kxh = #{classaSecondKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbSecondKxh != null and classbSecondKxh != ''">
+				classb_second_kxh = #{classbSecondKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcSecondKxh != null and classcSecondKxh != ''">
+				classc_second_kxh = #{classcSecondKxh,jdbcType=VARCHAR},
+			</if>
+			<if test=" classSecondA != null and classSecondA != ''">
+				class_second_a = #{classSecondA,jdbcType=VARCHAR},
+			</if>
+			<if test=" classSecondB != null and classSecondB != ''">
+				class_second_b = #{classSecondB,jdbcType=VARCHAR},
+			</if>
+			<if test=" classSecondC != null and classSecondC != ''">
+				class_second_c = #{classSecondC,jdbcType=VARCHAR},
+			</if>
+			<if test=" classaSecondEnglish != null and classaSecondEnglish != ''">
+				classa_second_english = #{classaSecondEnglish,jdbcType=VARCHAR},
+			</if>
+			<if test=" classbSecondEnglish != null and classbSecondEnglish != ''">
+				classb_second_english = #{classbSecondEnglish,jdbcType=VARCHAR},
+			</if>
+			<if test=" classcSecondEnglish != null and classcSecondEnglish != ''">
+				classc_second_english = #{classcSecondEnglish,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update LANGUAGE_TJJL_SPECIAL  languageTjjlSpecial set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update LANGUAGE_TJJL_SPECIAL languageTjjlSpecial set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update LANGUAGE_TJJL_SPECIAL languageTjjlSpecial set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.LanguageTjjlSpecial">
+		update LANGUAGE_TJJL_SPECIAL languageTjjlSpecial set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

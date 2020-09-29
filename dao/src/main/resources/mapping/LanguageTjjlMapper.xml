@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.LanguageTjjlDao">
+    <resultMap id="languageTjjlMap" type="com.imust.newckbk.domain.LanguageTjjl">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cet4" column="cet4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cet4PassScore" column="cet4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cet4LastExamTerm" column="cet4_last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cet4MissingExam" column="cet4_missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cet4PassedExam" column="cet4_passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cet6" column="cet6" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="crt4" column="crt4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="crt4PassScore" column="crt4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="crt4LastExamTerm" column="crt4_last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="crt4MissingExam" column="crt4_missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="crt4PassedExam" column="crt4_passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="russJoinCet4" column="russ_join_cet4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="russianKch" column="russian_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="crt6" column="crt6" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cjt4" column="cjt4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cjt4PassScore" column="cjt4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cjt4LastExamTerm" column="cjt4_last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cjt4MissingExam" column="cjt4_missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cjt4PassedExam" column="cjt4_passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="japaJoinCet4" column="japa_join_cet4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="japaneseKch" column="japanese_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cjt6" column="cjt6" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cgt4" column="cgt4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cgt4PassScore" column="cgt4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cgt4LastExamTerm" column="cgt4_last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cgt4MissingExam" column="cgt4_missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cgt4PassedExam" column="cgt4_passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="germanJoinCet4" column="german_join_cet4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="germanKch" column="german_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="cgt6" column="cgt6" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="pretcoB" column="pretco_b" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="pretcoPassScore" column="pretco_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="pretcoLastExamTerm" column="pretco_last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="pretcoMissingExam" column="pretco_missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="pretcoPassedExam" column="pretco_passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="studentId" column="student_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="specialId" column="special_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		cet4,
+		cet4_pass_score,
+		cet4_last_exam_term,
+		cet4_missing_exam,
+		cet4_passed_exam,
+		cet6,
+		crt4,
+		crt4_pass_score,
+		crt4_last_exam_term,
+		crt4_missing_exam,
+		crt4_passed_exam,
+		russ_join_cet4,
+		russian_kch,
+		crt6,
+		cjt4,
+		cjt4_pass_score,
+		cjt4_last_exam_term,
+		cjt4_missing_exam,
+		cjt4_passed_exam,
+		japa_join_cet4,
+		japanese_kch,
+		cjt6,
+		cgt4,
+		cgt4_pass_score,
+		cgt4_last_exam_term,
+		cgt4_missing_exam,
+		cgt4_passed_exam,
+		german_join_cet4,
+		german_kch,
+		cgt6,
+		pretco_b,
+		pretco_pass_score,
+		pretco_last_exam_term,
+		pretco_missing_exam,
+		pretco_passed_exam,
+		student_id,
+		special_id
+	</sql>
+    <select id="getById" resultMap="languageTjjlMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from LANGUAGE_TJJL  languageTjjl
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="languageTjjlMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from LANGUAGE_TJJL  languageTjjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="languageTjjlMap" parameterType="com.imust.newckbk.domain.LanguageTjjl">
+		select <include refid="cols"/> from LANGUAGE_TJJL  languageTjjl
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="languageTjjlMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from LANGUAGE_TJJL  languageTjjl
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_TJJL  languageTjjl
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_TJJL  languageTjjl
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_TJJL  languageTjjl
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.LanguageTjjl" useGeneratedKeys="true" keyProperty="id">
+		insert into LANGUAGE_TJJL
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" cet4 != null and cet4 != ''">
+				cet4,
+			</if>
+			<if test=" cet4PassScore != null and cet4PassScore != ''">
+				cet4_pass_score,
+			</if>
+			<if test=" cet4LastExamTerm != null and cet4LastExamTerm != ''">
+				cet4_last_exam_term,
+			</if>
+			<if test=" cet4MissingExam != null and cet4MissingExam != ''">
+				cet4_missing_exam,
+			</if>
+			<if test=" cet4PassedExam != null and cet4PassedExam != ''">
+				cet4_passed_exam,
+			</if>
+			<if test=" cet6 != null and cet6 != ''">
+				cet6,
+			</if>
+			<if test=" crt4 != null and crt4 != ''">
+				crt4,
+			</if>
+			<if test=" crt4PassScore != null and crt4PassScore != ''">
+				crt4_pass_score,
+			</if>
+			<if test=" crt4LastExamTerm != null and crt4LastExamTerm != ''">
+				crt4_last_exam_term,
+			</if>
+			<if test=" crt4MissingExam != null and crt4MissingExam != ''">
+				crt4_missing_exam,
+			</if>
+			<if test=" crt4PassedExam != null and crt4PassedExam != ''">
+				crt4_passed_exam,
+			</if>
+			<if test=" russJoinCet4 != null and russJoinCet4 != ''">
+				russ_join_cet4,
+			</if>
+			<if test=" russianKch != null and russianKch != ''">
+				russian_kch,
+			</if>
+			<if test=" crt6 != null and crt6 != ''">
+				crt6,
+			</if>
+			<if test=" cjt4 != null and cjt4 != ''">
+				cjt4,
+			</if>
+			<if test=" cjt4PassScore != null and cjt4PassScore != ''">
+				cjt4_pass_score,
+			</if>
+			<if test=" cjt4LastExamTerm != null and cjt4LastExamTerm != ''">
+				cjt4_last_exam_term,
+			</if>
+			<if test=" cjt4MissingExam != null and cjt4MissingExam != ''">
+				cjt4_missing_exam,
+			</if>
+			<if test=" cjt4PassedExam != null and cjt4PassedExam != ''">
+				cjt4_passed_exam,
+			</if>
+			<if test=" japaJoinCet4 != null and japaJoinCet4 != ''">
+				japa_join_cet4,
+			</if>
+			<if test=" japaneseKch != null and japaneseKch != ''">
+				japanese_kch,
+			</if>
+			<if test=" cjt6 != null and cjt6 != ''">
+				cjt6,
+			</if>
+			<if test=" cgt4 != null and cgt4 != ''">
+				cgt4,
+			</if>
+			<if test=" cgt4PassScore != null and cgt4PassScore != ''">
+				cgt4_pass_score,
+			</if>
+			<if test=" cgt4LastExamTerm != null and cgt4LastExamTerm != ''">
+				cgt4_last_exam_term,
+			</if>
+			<if test=" cgt4MissingExam != null and cgt4MissingExam != ''">
+				cgt4_missing_exam,
+			</if>
+			<if test=" cgt4PassedExam != null and cgt4PassedExam != ''">
+				cgt4_passed_exam,
+			</if>
+			<if test=" germanJoinCet4 != null and germanJoinCet4 != ''">
+				german_join_cet4,
+			</if>
+			<if test=" germanKch != null and germanKch != ''">
+				german_kch,
+			</if>
+			<if test=" cgt6 != null and cgt6 != ''">
+				cgt6,
+			</if>
+			<if test=" pretcoB != null and pretcoB != ''">
+				pretco_b,
+			</if>
+			<if test=" pretcoPassScore != null and pretcoPassScore != ''">
+				pretco_pass_score,
+			</if>
+			<if test=" pretcoLastExamTerm != null and pretcoLastExamTerm != ''">
+				pretco_last_exam_term,
+			</if>
+			<if test=" pretcoMissingExam != null and pretcoMissingExam != ''">
+				pretco_missing_exam,
+			</if>
+			<if test=" pretcoPassedExam != null and pretcoPassedExam != ''">
+				pretco_passed_exam,
+			</if>
+			<if test=" studentId != null and studentId != ''">
+				student_id,
+			</if>
+			<if test=" specialId != null and specialId != ''">
+				special_id
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4 != null and cet4 != ''">
+				#{cet4,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4PassScore != null and cet4PassScore != ''">
+				#{cet4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4LastExamTerm != null and cet4LastExamTerm != ''">
+				#{cet4LastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4MissingExam != null and cet4MissingExam != ''">
+				#{cet4MissingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4PassedExam != null and cet4PassedExam != ''">
+				#{cet4PassedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet6 != null and cet6 != ''">
+				#{cet6,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4 != null and crt4 != ''">
+				#{crt4,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4PassScore != null and crt4PassScore != ''">
+				#{crt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4LastExamTerm != null and crt4LastExamTerm != ''">
+				#{crt4LastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4MissingExam != null and crt4MissingExam != ''">
+				#{crt4MissingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4PassedExam != null and crt4PassedExam != ''">
+				#{crt4PassedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" russJoinCet4 != null and russJoinCet4 != ''">
+				#{russJoinCet4,jdbcType=VARCHAR},
+			</if>
+			<if test=" russianKch != null and russianKch != ''">
+				#{russianKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt6 != null and crt6 != ''">
+				#{crt6,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4 != null and cjt4 != ''">
+				#{cjt4,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4PassScore != null and cjt4PassScore != ''">
+				#{cjt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4LastExamTerm != null and cjt4LastExamTerm != ''">
+				#{cjt4LastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4MissingExam != null and cjt4MissingExam != ''">
+				#{cjt4MissingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4PassedExam != null and cjt4PassedExam != ''">
+				#{cjt4PassedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" japaJoinCet4 != null and japaJoinCet4 != ''">
+				#{japaJoinCet4,jdbcType=VARCHAR},
+			</if>
+			<if test=" japaneseKch != null and japaneseKch != ''">
+				#{japaneseKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt6 != null and cjt6 != ''">
+				#{cjt6,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt4 != null and cgt4 != ''">
+				#{cgt4,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt4PassScore != null and cgt4PassScore != ''">
+				#{cgt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt4LastExamTerm != null and cgt4LastExamTerm != ''">
+				#{cgt4LastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt4MissingExam != null and cgt4MissingExam != ''">
+				#{cgt4MissingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt4PassedExam != null and cgt4PassedExam != ''">
+				#{cgt4PassedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" germanJoinCet4 != null and germanJoinCet4 != ''">
+				#{germanJoinCet4,jdbcType=VARCHAR},
+			</if>
+			<if test=" germanKch != null and germanKch != ''">
+				#{germanKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt6 != null and cgt6 != ''">
+				#{cgt6,jdbcType=VARCHAR},
+			</if>
+			<if test=" pretcoB != null and pretcoB != ''">
+				#{pretcoB,jdbcType=VARCHAR},
+			</if>
+			<if test=" pretcoPassScore != null and pretcoPassScore != ''">
+				#{pretcoPassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" pretcoLastExamTerm != null and pretcoLastExamTerm != ''">
+				#{pretcoLastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" pretcoMissingExam != null and pretcoMissingExam != ''">
+				#{pretcoMissingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" pretcoPassedExam != null and pretcoPassedExam != ''">
+				#{pretcoPassedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" studentId != null and studentId != ''">
+				#{studentId,jdbcType=VARCHAR},
+			</if>
+			<if test=" specialId != null and specialId != ''">
+				#{specialId,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.LanguageTjjl">
+		update LANGUAGE_TJJL languageTjjl
+		<set>
+			<if test=" cet4 != null and cet4 != ''">
+				cet4 = #{cet4,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4PassScore != null and cet4PassScore != ''">
+				cet4_pass_score = #{cet4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4LastExamTerm != null and cet4LastExamTerm != ''">
+				cet4_last_exam_term = #{cet4LastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4MissingExam != null and cet4MissingExam != ''">
+				cet4_missing_exam = #{cet4MissingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet4PassedExam != null and cet4PassedExam != ''">
+				cet4_passed_exam = #{cet4PassedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" cet6 != null and cet6 != ''">
+				cet6 = #{cet6,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4 != null and crt4 != ''">
+				crt4 = #{crt4,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4PassScore != null and crt4PassScore != ''">
+				crt4_pass_score = #{crt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4LastExamTerm != null and crt4LastExamTerm != ''">
+				crt4_last_exam_term = #{crt4LastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4MissingExam != null and crt4MissingExam != ''">
+				crt4_missing_exam = #{crt4MissingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt4PassedExam != null and crt4PassedExam != ''">
+				crt4_passed_exam = #{crt4PassedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" russJoinCet4 != null and russJoinCet4 != ''">
+				russ_join_cet4 = #{russJoinCet4,jdbcType=VARCHAR},
+			</if>
+			<if test=" russianKch != null and russianKch != ''">
+				russian_kch = #{russianKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" crt6 != null and crt6 != ''">
+				crt6 = #{crt6,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4 != null and cjt4 != ''">
+				cjt4 = #{cjt4,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4PassScore != null and cjt4PassScore != ''">
+				cjt4_pass_score = #{cjt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4LastExamTerm != null and cjt4LastExamTerm != ''">
+				cjt4_last_exam_term = #{cjt4LastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4MissingExam != null and cjt4MissingExam != ''">
+				cjt4_missing_exam = #{cjt4MissingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt4PassedExam != null and cjt4PassedExam != ''">
+				cjt4_passed_exam = #{cjt4PassedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" japaJoinCet4 != null and japaJoinCet4 != ''">
+				japa_join_cet4 = #{japaJoinCet4,jdbcType=VARCHAR},
+			</if>
+			<if test=" japaneseKch != null and japaneseKch != ''">
+				japanese_kch = #{japaneseKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" cjt6 != null and cjt6 != ''">
+				cjt6 = #{cjt6,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt4 != null and cgt4 != ''">
+				cgt4 = #{cgt4,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt4PassScore != null and cgt4PassScore != ''">
+				cgt4_pass_score = #{cgt4PassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt4LastExamTerm != null and cgt4LastExamTerm != ''">
+				cgt4_last_exam_term = #{cgt4LastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt4MissingExam != null and cgt4MissingExam != ''">
+				cgt4_missing_exam = #{cgt4MissingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt4PassedExam != null and cgt4PassedExam != ''">
+				cgt4_passed_exam = #{cgt4PassedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" germanJoinCet4 != null and germanJoinCet4 != ''">
+				german_join_cet4 = #{germanJoinCet4,jdbcType=VARCHAR},
+			</if>
+			<if test=" germanKch != null and germanKch != ''">
+				german_kch = #{germanKch,jdbcType=VARCHAR},
+			</if>
+			<if test=" cgt6 != null and cgt6 != ''">
+				cgt6 = #{cgt6,jdbcType=VARCHAR},
+			</if>
+			<if test=" pretcoB != null and pretcoB != ''">
+				pretco_b = #{pretcoB,jdbcType=VARCHAR},
+			</if>
+			<if test=" pretcoPassScore != null and pretcoPassScore != ''">
+				pretco_pass_score = #{pretcoPassScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" pretcoLastExamTerm != null and pretcoLastExamTerm != ''">
+				pretco_last_exam_term = #{pretcoLastExamTerm,jdbcType=VARCHAR},
+			</if>
+			<if test=" pretcoMissingExam != null and pretcoMissingExam != ''">
+				pretco_missing_exam = #{pretcoMissingExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" pretcoPassedExam != null and pretcoPassedExam != ''">
+				pretco_passed_exam = #{pretcoPassedExam,jdbcType=VARCHAR},
+			</if>
+			<if test=" studentId != null and studentId != ''">
+				student_id = #{studentId,jdbcType=VARCHAR},
+			</if>
+			<if test=" specialId != null and specialId != ''">
+				special_id = #{specialId,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update LANGUAGE_TJJL  languageTjjl set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update LANGUAGE_TJJL languageTjjl set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update LANGUAGE_TJJL languageTjjl set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.LanguageTjjl">
+		update LANGUAGE_TJJL languageTjjl set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

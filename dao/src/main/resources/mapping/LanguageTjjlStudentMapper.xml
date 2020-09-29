@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.LanguageTjjlStudentDao">
+    <resultMap id="languageTjjlStudentMap" type="com.imust.newckbk.domain.LanguageTjjlStudent">
+        <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isFirstGrade" column="is_first_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isSecondGrade" column="is_second_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isThirdGrade" column="is_third_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isFoGrade" column="is_fo_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isFifthGrade" column="is_fifth_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="firstGrade" column="first_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="benkeType" column="benke_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="specialXsm" column="special_xsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isJuniorFirstGrade" column="is_junior_first_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isJuniorSecondGrade" column="is_junior_second_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isJuniorThirdGrade" column="is_junior_third_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="juniorFirstGrade" column="junior_first_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="juniorType" column="junior_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		id,
+		is_first_grade,
+		is_second_grade,
+		is_third_grade,
+		is_fo_grade,
+		is_fifth_grade,
+		first_grade,
+		benke_type,
+		special_xsm,
+		is_junior_first_grade,
+		is_junior_second_grade,
+		is_junior_third_grade,
+		junior_first_grade,
+		junior_type
+	</sql>
+    <select id="getById" resultMap="languageTjjlStudentMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from LANGUAGE_TJJL_STUDENT  languageTjjlStudent
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="languageTjjlStudentMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from LANGUAGE_TJJL_STUDENT  languageTjjlStudent
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="languageTjjlStudentMap" parameterType="com.imust.newckbk.domain.LanguageTjjlStudent">
+		select <include refid="cols"/> from LANGUAGE_TJJL_STUDENT  languageTjjlStudent
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="languageTjjlStudentMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from LANGUAGE_TJJL_STUDENT  languageTjjlStudent
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_TJJL_STUDENT  languageTjjlStudent
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_TJJL_STUDENT  languageTjjlStudent
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from LANGUAGE_TJJL_STUDENT  languageTjjlStudent
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <insert id="insert" parameterType="com.imust.newckbk.domain.LanguageTjjlStudent" useGeneratedKeys="true" keyProperty="id">
+		insert into LANGUAGE_TJJL_STUDENT
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" id != null and id != ''">
+				id,
+			</if>
+			<if test=" isFirstGrade != null and isFirstGrade != ''">
+				is_first_grade,
+			</if>
+			<if test=" isSecondGrade != null and isSecondGrade != ''">
+				is_second_grade,
+			</if>
+			<if test=" isThirdGrade != null and isThirdGrade != ''">
+				is_third_grade,
+			</if>
+			<if test=" isFoGrade != null and isFoGrade != ''">
+				is_fo_grade,
+			</if>
+			<if test=" isFifthGrade != null and isFifthGrade != ''">
+				is_fifth_grade,
+			</if>
+			<if test=" firstGrade != null and firstGrade != ''">
+				first_grade,
+			</if>
+			<if test=" benkeType != null and benkeType != ''">
+				benke_type,
+			</if>
+			<if test=" specialXsm != null and specialXsm != ''">
+				special_xsm,
+			</if>
+			<if test=" isJuniorFirstGrade != null and isJuniorFirstGrade != ''">
+				is_junior_first_grade,
+			</if>
+			<if test=" isJuniorSecondGrade != null and isJuniorSecondGrade != ''">
+				is_junior_second_grade,
+			</if>
+			<if test=" isJuniorThirdGrade != null and isJuniorThirdGrade != ''">
+				is_junior_third_grade,
+			</if>
+			<if test=" juniorFirstGrade != null and juniorFirstGrade != ''">
+				junior_first_grade,
+			</if>
+			<if test=" juniorType != null and juniorType != ''">
+				junior_type
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test=" isFirstGrade != null and isFirstGrade != ''">
+				#{isFirstGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isSecondGrade != null and isSecondGrade != ''">
+				#{isSecondGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isThirdGrade != null and isThirdGrade != ''">
+				#{isThirdGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isFoGrade != null and isFoGrade != ''">
+				#{isFoGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isFifthGrade != null and isFifthGrade != ''">
+				#{isFifthGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" firstGrade != null and firstGrade != ''">
+				#{firstGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" benkeType != null and benkeType != ''">
+				#{benkeType,jdbcType=VARCHAR},
+			</if>
+			<if test=" specialXsm != null and specialXsm != ''">
+				#{specialXsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" isJuniorFirstGrade != null and isJuniorFirstGrade != ''">
+				#{isJuniorFirstGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isJuniorSecondGrade != null and isJuniorSecondGrade != ''">
+				#{isJuniorSecondGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isJuniorThirdGrade != null and isJuniorThirdGrade != ''">
+				#{isJuniorThirdGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" juniorFirstGrade != null and juniorFirstGrade != ''">
+				#{juniorFirstGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" juniorType != null and juniorType != ''">
+				#{juniorType,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.LanguageTjjlStudent">
+		update LANGUAGE_TJJL_STUDENT languageTjjlStudent
+		<set>
+			<if test=" isFirstGrade != null and isFirstGrade != ''">
+				is_first_grade = #{isFirstGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isSecondGrade != null and isSecondGrade != ''">
+				is_second_grade = #{isSecondGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isThirdGrade != null and isThirdGrade != ''">
+				is_third_grade = #{isThirdGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isFoGrade != null and isFoGrade != ''">
+				is_fo_grade = #{isFoGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isFifthGrade != null and isFifthGrade != ''">
+				is_fifth_grade = #{isFifthGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" firstGrade != null and firstGrade != ''">
+				first_grade = #{firstGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" benkeType != null and benkeType != ''">
+				benke_type = #{benkeType,jdbcType=VARCHAR},
+			</if>
+			<if test=" specialXsm != null and specialXsm != ''">
+				special_xsm = #{specialXsm,jdbcType=VARCHAR},
+			</if>
+			<if test=" isJuniorFirstGrade != null and isJuniorFirstGrade != ''">
+				is_junior_first_grade = #{isJuniorFirstGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isJuniorSecondGrade != null and isJuniorSecondGrade != ''">
+				is_junior_second_grade = #{isJuniorSecondGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" isJuniorThirdGrade != null and isJuniorThirdGrade != ''">
+				is_junior_third_grade = #{isJuniorThirdGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" juniorFirstGrade != null and juniorFirstGrade != ''">
+				junior_first_grade = #{juniorFirstGrade,jdbcType=VARCHAR},
+			</if>
+			<if test=" juniorType != null and juniorType != ''">
+				junior_type = #{juniorType,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update LANGUAGE_TJJL_STUDENT  languageTjjlStudent set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update LANGUAGE_TJJL_STUDENT languageTjjlStudent set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update LANGUAGE_TJJL_STUDENT languageTjjlStudent set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.LanguageTjjlStudent">
+		update LANGUAGE_TJJL_STUDENT languageTjjlStudent set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>
