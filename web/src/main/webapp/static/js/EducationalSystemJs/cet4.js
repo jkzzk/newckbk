@@ -3,51 +3,51 @@ let saveParam = {
     languageTjjl : {
         cet4 : '0',
         cet4PassScore : '',
-        cet4LastExamTerm : '',
-        cet4MissingExam : '',
-        cet4PassedExam : '',
-        cet6 : '',
+        cet4LastExamTerm : '0',
+        cet4MissingExam : '0',
+        cet4PassedExam : '0',
+        cet6 : '0',
         crt4 : '0',
         crt4PassScore : '',
         crt4LastExamTerm : '',
-        crt4MissingExam : '',
-        crt4PassedExam : '',
-        russJoinCet4 : '',
+        crt4MissingExam : '0',
+        crt4PassedExam : '0',
+        russJoinCet4 : '0',
         russianKch : '',
-        crt6 : '',
+        crt6 : '0',
         cjt4 : '0',
         cjt4PassScore : '',
         cjt4LastExamTerm : '',
-        cjt4MissingExam : '',
-        cjt4PassedExam : '',
-        japaJoinCet4 : '',
+        cjt4MissingExam : '0',
+        cjt4PassedExam : '0',
+        japaJoinCet4 : '0',
         japaneseKch : '',
-        cjt6 : '',
+        cjt6 : '0',
         cgt4 : '0',
         cgt4PassScore : '',
         cgt4LastExamTerm : '',
-        cgt4MissingExam : '',
-        cgt4PassedExam : '',
-        germanJoinCet4 : '',
+        cgt4MissingExam : '0',
+        cgt4PassedExam : '0',
+        germanJoinCet4 : '0',
         germanKch : '',
-        cgt6 : '',
+        cgt6 : '0',
         pretcoB : '0',
         pretcoPassScore : '',
         pretcoLastExamTerm : '',
-        pretcoMissingExam : '',
-        pretcoPassedExam : ''
+        pretcoMissingExam : '0',
+        pretcoPassedExam : '0'
     },
     languageTjjlStudent : {
-        isFirstGrade : '',
-        isSecondGrade : '',
-        isThirdGrade : '',
-        isFoGrade : '',
-        isFifthGrade : '',
+        isFirstGrade : '0',
+        isSecondGrade : '0',
+        isThirdGrade : '0',
+        isFoGrade : '0',
+        isFifthGrade : '0',
         firstGrade : '',
         benkeType : '',
-        isJuniorFirstGrade : '',
-        isJuniorSecondGrade : '',
-        isJuniorThirdGrade : '',
+        isJuniorFirstGrade : '0',
+        isJuniorSecondGrade : '0',
+        isJuniorThirdGrade : '0',
         juniorFirstGrade : '',
         juniorType : '',
         specialXsm : ''
@@ -59,9 +59,9 @@ let saveParam = {
         classaKxh : '',
         classbKxh : '',
         classcKxh : '',
-        classA : '',
-        classB : '',
-        classC : '',
+        classA : '0',
+        classB : '0',
+        classC : '0',
         classaEnglish : '',
         classbEnglish : '',
         classcEnglish : '',
@@ -70,9 +70,9 @@ let saveParam = {
         classaSecondKxh : '',
         classbSecondKxh : '',
         classcSecondKxh : '',
-        classSecondA : '',
-        classSecondB : '',
-        classSecondC : '',
+        classSecondA : '0',
+        classSecondB : '0',
+        classSecondC : '0',
         classaSecondEnglish : '',
         classbSecondEnglish : '',
         classcSecondEnglish : ''
@@ -132,122 +132,124 @@ function getGradeInfo() {
         }
     });
 }
+// 获取所有特殊学院
+function getSpecialXy() {
+    $.request({
+        url : '/specialxy/getAll',
+        type : "POST",
+        contentType: 'application/json;charset=UTF-8',
+        dataType: 'json',
+        success : function(result) {
+            var res_data = result.data;
+            if(Array.isArray(res_data) && res_data.length != 0) {
+                var options = "";
+                for(var i = 0; i < res_data.length; i++) {
+                    options += '<div class="formControls col-xs-1 col-sm-1 mt-10">\n' +
+                        '<input type="checkbox" class="check-box" value="\'' + res_data[i].xyName + '\'" name="specialXsm">\n' +
+                        '<label>' + res_data[i].xyName + '</label>\n' +
+                        '</div>';
+                }
+                $('#specialxyContent').append(options);
+            }else {
+                $('#specialxyTab').attr("style","display:none;")
+            }
+        },
+        error:function (message) {
+            console.log(message);
+            errMsg("网络异常");
+        }
+    });
+}
+// 获取所有本科学生类别
+function getXsType(index) {
+    $.request({
+        url : '/xstype/getAll?typeAttr='+index,
+        type : "POST",
+        contentType: 'application/json;charset=UTF-8',
+        dataType: 'json',
+        success : function(result) {
+            let _typeName = "";
+            if(index == 1) {
+                _typeName = "benkeType";
+            }else {
+                _typeName = "juniorType";
+            }
+            var res_data = result.data;
+            if(Array.isArray(res_data) && res_data.length != 0) {
+                var options = "";
+                for(var i = 0; i < res_data.length; i++) {
+                    options += '<div class="formControls col-xs-1 col-sm-1 mt-10">\n' +
+                        '<input type="checkbox" class="check-box" name="' + _typeName + '" value="'+ res_data[i].typeId +'" checked>\n' +
+                        '<label >' + res_data[i].typeName + '</label>\n' +
+                        '</div>'
+                }
+                if(index == 1) {
+                    $('#benkeTypeContent').append(options);
+                }else {
+                    $('#juniorTypeContent').append(options);
+                }
+            }else {
+                $('#specialxyTab').attr("style","display:none;")
+            }
+        },
+        error:function (message) {
+            console.log(message);
+            errMsg("网络异常");
+        }
+    });
+}
 // 整理保存参数数据
 function cleanUpData(data) {
 
     let regExp_trim = /\s*/g;
     let regExp_comma = /，/g;
 
-    saveParam.zxjxjhh = data.zxjxjhh;
-    saveParam.firstGrade = data.firstGrade;
-    saveParam.halfTerm = data.halfTerm;
-    saveParam.lastExamTerm = data.lastExamTerm;
-    saveParam.cet4PassScore = data.cet4PassScore;
-    saveParam.crt4PassScore = data.crt4PassScore;
-    saveParam.cjt4PassScore = data.cjt4PassScore;
-    saveParam.firstIn = data.firstIn;
+    // 将表单数据整理成后台所需格式数据(变形拷贝)
+    for(let propName in data) {
+        if(saveParam.languageTjjl.hasOwnProperty(propName)) {
+            saveParam.languageTjjl[propName] = data[propName];
+        }else if(saveParam.languageTjjlSpecial.hasOwnProperty(propName)) {
+            saveParam.languageTjjlSpecial[propName] = data[propName];
+        }else if(saveParam.languageTjjlStudent.hasOwnProperty(propName)) {
+            saveParam.languageTjjlStudent[propName] = data[propName];
+        }
+    }
 
-    saveParam.cet4Tytjjl.missingExam = data.missingExam;
-    saveParam.cet4Tytjjl.passedExam = data.passedExam;
-    saveParam.cet4Tytjjl.isJapanese = data.isJapanese;
-    saveParam.cet4Tytjjl.isRussian = data.isRussian;
-    saveParam.cet4Tytjjl.japaneseKch = data.japaneseKch.replace(regExp_trim,"").replace(regExp_comma,",");
-    saveParam.cet4Tytjjl.russianKch = data.russianKch.replace(regExp_trim,"").replace(regExp_comma,",");
-    saveParam.cet4Tytjjl.specialXsm = data.specialXsm.replace(regExp_trim,"").replace(regExp_comma,",");
-    saveParam.cet4Tytjjl.cet3Score = data.cet3Score;
-
-    if(data.halfTerm == "1") {
-        saveParam.cet4FirstTerm.classaMin = data.classaMin;
-        saveParam.cet4FirstTerm.classaMax = data.classaMax;
-        saveParam.cet4FirstTerm.classbMin = data.classbMin;
-        saveParam.cet4FirstTerm.classbMax = data.classbMax;
-        saveParam.cet4FirstTerm.classcMin = data.classcMin;
-        saveParam.cet4FirstTerm.classcMax = data.classcMax;
-
-        saveParam.cet4SecondTerm = null;
-    }else if(data.halfTerm == "2") {
-        saveParam.cet4FirstTerm = null;
-
-        saveParam.cet4SecondTerm.classaEnglishMin = data.classaEnglishMin;
-        saveParam.cet4SecondTerm.classaEnglishMax = data.classaEnglishMax;
-        saveParam.cet4SecondTerm.classbEnglishMin = data.classbEnglishMin;
-        saveParam.cet4SecondTerm.classbEnglishMax = data.classbEnglishMax;
-        saveParam.cet4SecondTerm.classcEnglishMin = data.classcEnglishMin;
-        saveParam.cet4SecondTerm.classcEnglishMax = data.classcEnglishMax;
-        saveParam.cet4SecondTerm.englisthKch = data.englisthKch;
-        saveParam.cet4SecondTerm.englisthZxjxjhh = data.englisthZxjxjhh;
-        saveParam.cet4SecondTerm.classaKxh = data.classaKxh.replace(regExp_trim,"").replace(regExp_comma,",");
-        saveParam.cet4SecondTerm.classbKxh = data.classbKxh.replace(regExp_trim,"").replace(regExp_comma,",");
-        saveParam.cet4SecondTerm.classcKxh = data.classcKxh.replace(regExp_trim,"").replace(regExp_comma,",");
+    // 将输入逗号分隔的字符串，统一替换为英文逗号
+    saveParam.languageTjjl.japaneseKch = saveParam.languageTjjl.japaneseKch.replace(regExp_trim,"").replace(regExp_comma,",");
+    saveParam.languageTjjl.russianKch = saveParam.languageTjjl.russianKch.replace(regExp_trim,"").replace(regExp_comma,",");
+    saveParam.languageTjjl.germanKch = saveParam.languageTjjl.germanKch.replace(regExp_trim,"").replace(regExp_comma,",");
+    saveParam.languageTjjlSpecial.classaKxh = saveParam.languageTjjlSpecial.classaKxh.replace(regExp_trim,"").replace(regExp_comma,",");
+    saveParam.languageTjjlSpecial.classbKxh = saveParam.languageTjjlSpecial.classbKxh.replace(regExp_trim,"").replace(regExp_comma,",");
+    saveParam.languageTjjlSpecial.classcKxh = saveParam.languageTjjlSpecial.classcKxh.replace(regExp_trim,"").replace(regExp_comma,",");
+    saveParam.languageTjjlSpecial.classaSecondKxh = saveParam.languageTjjlSpecial.classaSecondKxh.replace(regExp_trim,"").replace(regExp_comma,",");
+    saveParam.languageTjjlSpecial.classbSecondKxh = saveParam.languageTjjlSpecial.classbSecondKxh.replace(regExp_trim,"").replace(regExp_comma,",");
+    saveParam.languageTjjlSpecial.classcSecondKxh = saveParam.languageTjjlSpecial.classcSecondKxh.replace(regExp_trim,"").replace(regExp_comma,",");
+    // 将输入为数组形式的值，统一改为由逗号分隔的字符串
+    if(ifIsNull(saveParam.languageTjjlStudent.specialXsm) != '' && Array.isArray(saveParam.languageTjjlStudent.specialXsm)) {
+        saveParam.languageTjjlStudent.specialXsm = saveParam.languageTjjlStudent.specialXsm.join(",");
+    }
+    if(ifIsNull(saveParam.languageTjjlStudent.benkeType) != '' && Array.isArray(saveParam.languageTjjlStudent.benkeType)) {
+        saveParam.languageTjjlStudent.benkeType = saveParam.languageTjjlStudent.benkeType.join(",");
+    }
+    if(ifIsNull(saveParam.languageTjjlStudent.juniorType) != '' && Array.isArray(saveParam.languageTjjlStudent.juniorType)) {
+        saveParam.languageTjjlStudent.juniorType = saveParam.languageTjjlStudent.juniorType.join(",");
     }
 }
 // 校验保存参数
 function verifyData() {
-    if(ifIsNull(saveParam.zxjxjhh) == '') {
-        errMsg('请选择学期！');
 
+    if(ifIsNull(saveParam.languageTjjl.japaneseKch) == '') {
+        errMsg("日语课程号为空！");
         return false;
     }
-    if(ifIsNull(saveParam.firstGrade) == '') {
-        errMsg('请选择大一年级！');
-
+    if(ifIsNull(saveParam.languageTjjl.russianKch) == '') {
+        errMsg("俄语课程号为空！");
         return false;
     }
-    if(ifIsNull(saveParam.firstIn) == '') {
-        errMsg('请选择大一是否考试！');
-
+    if(ifIsNull(saveParam.languageTjjl.germanKch) == '') {
+        errMsg("德语课程号为空！");
         return false;
-    }
-    if(ifIsNull(saveParam.halfTerm) == '') {
-        errMsg('请选择上下学期！');
-
-        return false;
-    }
-    if(ifIsNull(saveParam.lastExamTerm) == '') {
-        errMsg('请填写上一次考试时间！');
-
-        return false;
-    }
-    if(ifIsNull(saveParam.cet4PassScore) == '') {
-        errMsg('请填写英语四级通过分数！');
-
-        return false;
-    }
-    if(ifIsNull(saveParam.crt4PassScore) == '') {
-        errMsg('请填写俄语四级通过分数！');
-
-        return false;
-    }
-    if(ifIsNull(saveParam.cjt4PassScore) == '') {
-        errMsg('请填写日语四级通过分数！');
-
-        return false;
-    }
-
-    for (let cet4TytjjlKey in saveParam.cet4Tytjjl) {
-        if(ifIsNull(saveParam.cet4Tytjjl[cet4TytjjlKey]) == '') {
-            errMsg('通用条件不能为空！');
-
-            return false;
-        }
-    }
-
-    if(saveParam.halfTerm == 1) {
-        for (let cet4FirstTermKey in saveParam.cet4FirstTerm) {
-            if(ifIsNull(saveParam.cet4FirstTerm[cet4FirstTermKey]) == '') {
-                errMsg('上学期条件不能为空！');
-
-                return false;
-            }
-        }
-    }else {
-        for (let cet4SecondTermKey in saveParam.cet4SecondTerm) {
-            if(ifIsNull(saveParam.cet4SecondTerm[cet4SecondTermKey]) == '') {
-                errMsg('上学期条件不能为空！');
-
-                return false;
-            }
-        }
     }
 
     return true;
@@ -370,16 +372,18 @@ $(function () {
         }
     });
 
-    // 选择大一考试特殊条件
+    // 选择大一考试筛选数据源
     $('#dataSource').click(function () {
         let dataSourceSelectValue = $('#dataSource').val();
         if(dataSourceSelectValue == 2) {
             $('#englisthKch').removeAttr("disabled");
+            $('#examTerm').removeAttr("disabled");
             $('#classaKxh').removeAttr("disabled");
             $('#classbKxh').removeAttr("disabled");
             $('#classcKxh').removeAttr("disabled");
         }else {
             $('#englisthKch').attr("disabled",true);
+            $('#examTerm').attr("disabled",true);
             $('#classaKxh').attr("disabled",true);
             $('#classbKxh').attr("disabled",true);
             $('#classcKxh').attr("disabled",true);
@@ -451,14 +455,19 @@ $(function () {
     getTermInfo();
     // 获取所有年级
     getGradeInfo();
+    // 获取所有特殊学院
+    getSpecialXy();
+    // 获取本科学生类别数据
+    getXsType(1);
+    getXsType(2);
     // 提交保存
     $('#saveCondition').click(function () {
         let serializeObject = $('#form-member-add').serializeObject();
-        console.log("serializeObject",serializeObject);
-/*        cleanUpData(serializeObject);
+        cleanUpData(serializeObject);
         if(verifyData()) {
+            console.log("saveParam",saveParam);
             $.request({
-                url : '/cet4tj/save',
+                url : '/languageTj/save',
                 type : "POST",
                 data : JSON.stringify(saveParam),
                 contentType: 'application/json;charset=UTF-8',
@@ -480,6 +489,6 @@ $(function () {
                     errMsg("网络异常");
                 }
             });
-        }*/
+        }
     });
 });

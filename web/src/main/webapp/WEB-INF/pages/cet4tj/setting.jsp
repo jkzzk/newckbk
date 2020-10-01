@@ -41,7 +41,7 @@
                                     </div>
                                     <label class="col-xs-1 col-sm-1 f-12 text-r">上次考试时间：</label>
                                     <div class="formControls col-xs-1 col-sm-1">
-                                        <input type="text" name="cet4PassScore" id="cet4LastExamTerm" disabled placeholder="考试时间" class="input-text radius">
+                                        <input type="text" name="cet4LastExamTerm" id="cet4LastExamTerm" disabled placeholder="考试时间" class="input-text radius">
                                     </div>
                                     <div class="formControls col-xs-1 col-sm-1">
                                         <input type="checkbox" class="check-box" value="1" checked name="cet4MissingExam" disabled id="cet4MissingExam">
@@ -267,11 +267,22 @@
                             </div>
                         </div>
                     </a>
+                    <a id="specialxyTab">
+                        <div class="row cl form-item">
+                            <div class="col-xs-1 col-sm-1 text-c title">特殊学院</div>
+                            <div class="col-xs-11 col-sm-11" id="specialxyContent">
+                                <!--<div class="formControls col-xs-1 col-sm-1 mt-10">
+                                    <input type="checkbox" class="check-box" value="包铁道" name="specialXsm">
+                                    <label for="isFirstGrade">包铁道</label>
+                                </div>-->
+                            </div>
+                        </div>
+                    </a>
                     <a>
                         <div class="row cl form-item">
                             <div class="col-xs-1 col-sm-1 text-c title">本科学生类别</div>
-                            <div class="col-xs-11 col-sm-11">
-                                <div class="formControls col-xs-1 col-sm-1">
+                            <div class="col-xs-11 col-sm-11" id="benkeTypeContent">
+                                <!--<div class="formControls col-xs-1 col-sm-1 mt-10">
                                     <input type="checkbox" class="check-box" name="benkeType" value="3" checked>
                                     <label >本科</label>
                                 </div>
@@ -282,7 +293,7 @@
                                 <div class="formControls col-xs-1 col-sm-1">
                                     <input type="checkbox" class="check-box" name="benkeType" value="8" checked>
                                     <label >进修1</label>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </a>
@@ -316,11 +327,11 @@
                     <a>
                         <div class="row cl form-item">
                             <div class="col-xs-1 col-sm-1 text-c title">专科学生类别</div>
-                            <div class="col-xs-11 col-sm-11">
-                                <div class="formControls col-xs-1 col-sm-1">
+                            <div class="col-xs-11 col-sm-11" id="juniorTypeContent">
+                                <!--div class="formControls col-xs-1 col-sm-1">
                                     <input type="checkbox" class="check-box" name="juniorType" value="5"  checked>
                                     <label>高职</label>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </a>
