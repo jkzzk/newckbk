@@ -18,3 +18,4 @@ common/common.iml
 domain/domain.iml
 dao/src/main/java/com/imust/newckbk/generator/Code.java
 dao/src/main/resources/generatorConfig.xml
+web/pom.xml
