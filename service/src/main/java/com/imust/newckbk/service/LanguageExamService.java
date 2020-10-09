@@ -5,8 +5,11 @@ import com.imust.newckbk.base.PageEntity;
 import com.imust.newckbk.common.RespData;
 import com.imust.newckbk.domain.LanguageExam;
 import com.imust.newckbk.base.BaseService;
+import com.imust.newckbk.domain.ext.LangStisticExt;
 import com.imust.newckbk.domain.ext.LanguageExamExt;
+import com.imust.newckbk.domain.ext.QueryTreeExt;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -106,4 +109,57 @@ public interface LanguageExamService extends BaseService<LanguageExam, String>{
      * @return
      */
     RespData clearMaupData();
+
+    /**
+     * 获取所有考试时间
+     *
+     * @return
+     */
+    RespData getAllExamDate();
+
+    /**
+     * 获取在校年级
+     *
+     * @return
+     */
+    RespData getGradeInSchool();
+
+    /**
+     * 获取所有学院数据
+     *
+     * @param queryTreeExt
+     * @return
+     */
+    RespData getAcademy(QueryTreeExt queryTreeExt);
+
+    /**
+     * 获取所有班级数据
+     *
+     * @param queryTreeExt
+     * @return
+     */
+    RespData getMajor(QueryTreeExt queryTreeExt);
+
+    /**
+     * 获取所有班级数据
+     *
+     * @param queryTreeExt
+     * @return
+     */
+    RespData getClasses(QueryTreeExt queryTreeExt);
+
+    /**
+     * 统计报表
+     *
+     * @param langStisticExt
+     * @return
+     */
+    RespData statisticReport(LangStisticExt langStisticExt);
+
+    /**
+     * 导出统计报表
+     *
+     * @param response
+     */
+    void exportStatistic(HttpServletResponse response);
 }

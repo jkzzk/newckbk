@@ -56,6 +56,7 @@
 				/unit/save = anon
 				/common/queryLevelBase = anon
 				/common/queryRegionBase = anon
+				/langExam/exportStatistic = anon
 				/login = anon
 				/mobile/login = anon
 				/validateCode = anon

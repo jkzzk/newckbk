@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.LangStisticExtDao">
+    <resultMap id="langStisticExtMap" type="com.imust.newckbk.domain.ext.LangStisticExt">
+        <result property="dataSource" column="data_source" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="langType" column="lang_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="examDate" column="exam_date" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="grade" column="grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="academy" column="academy" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="major" column="major" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classes" column="classes" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		data_source,
+		lang_type,
+		exam_date,
+		grade,
+		academy,
+		major,
+		classes
+	</sql>
+	<delete id="deleteAll">
+		delete from LANG_STISTIC_EXT
+	</delete>
+	<select id="getById" resultMap="langStisticExtMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from LANG_STISTIC_EXT  langStisticExt
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="langStisticExtMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from LANG_STISTIC_EXT  langStisticExt
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="langStisticExtMap" parameterType="com.imust.newckbk.domain.ext.LangStisticExt">
+		select <include refid="cols"/> from LANG_STISTIC_EXT  langStisticExt
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="langStisticExtMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from LANG_STISTIC_EXT  langStisticExt
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from LANG_STISTIC_EXT  langStisticExt
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from LANG_STISTIC_EXT  langStisticExt
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from LANG_STISTIC_EXT  langStisticExt
+		<!--新建if语句新建过滤条件-->
+	</select>
+	<select id="getOne" resultType="com.imust.newckbk.domain.ext.LangStisticExt">
+		select <include refid="cols"/> from LANG_STISTIC_EXT  langStisticExt
+	</select>
+	<insert id="insert" parameterType="com.imust.newckbk.domain.ext.LangStisticExt" useGeneratedKeys="true" keyProperty="id">
+		insert into LANG_STISTIC_EXT
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" dataSource != null and dataSource != ''">
+				data_source,
+			</if>
+			<if test=" langType != null and langType != ''">
+				lang_type,
+			</if>
+			<if test=" examDate != null and examDate != ''">
+				exam_date,
+			</if>
+			<if test=" grade != null and grade != ''">
+				grade,
+			</if>
+			<if test=" academy != null and academy != ''">
+				academy,
+			</if>
+			<if test=" major != null and major != ''">
+				major,
+			</if>
+			<if test=" classes != null and classes != ''">
+				classes
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" dataSource != null and dataSource != ''">
+				#{dataSource,jdbcType=VARCHAR},
+			</if>
+			<if test=" langType != null and langType != ''">
+				#{langType,jdbcType=VARCHAR},
+			</if>
+			<if test=" examDate != null and examDate != ''">
+				#{examDate,jdbcType=VARCHAR},
+			</if>
+			<if test=" grade != null and grade != ''">
+				#{grade,jdbcType=VARCHAR},
+			</if>
+			<if test=" academy != null and academy != ''">
+				#{academy,jdbcType=VARCHAR},
+			</if>
+			<if test=" major != null and major != ''">
+				#{major,jdbcType=VARCHAR},
+			</if>
+			<if test=" classes != null and classes != ''">
+				#{classes,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.ext.LangStisticExt">
+		update LANG_STISTIC_EXT langStisticExt
+		<set>
+			<if test=" dataSource != null and dataSource != ''">
+				data_source = #{dataSource,jdbcType=VARCHAR},
+			</if>
+			<if test=" langType != null and langType != ''">
+				lang_type = #{langType,jdbcType=VARCHAR},
+			</if>
+			<if test=" examDate != null and examDate != ''">
+				exam_date = #{examDate,jdbcType=VARCHAR},
+			</if>
+			<if test=" grade != null and grade != ''">
+				grade = #{grade,jdbcType=VARCHAR},
+			</if>
+			<if test=" academy != null and academy != ''">
+				academy = #{academy,jdbcType=VARCHAR},
+			</if>
+			<if test=" major != null and major != ''">
+				major = #{major,jdbcType=VARCHAR},
+			</if>
+			<if test=" classes != null and classes != ''">
+				classes = #{classes,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update LANG_STISTIC_EXT  langStisticExt set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update LANG_STISTIC_EXT langStisticExt set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update LANG_STISTIC_EXT langStisticExt set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.ext.LangStisticExt">
+		update LANG_STISTIC_EXT langStisticExt set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

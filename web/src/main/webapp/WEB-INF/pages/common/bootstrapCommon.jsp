@@ -45,7 +45,7 @@
 <script type="text/javascript" src="${ctx}/static/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="${ctx}/static/js/laydate/laydate.js"></script>
 <script type="text/javascript" src="${ctx}/lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="${ctx}/static/dist/jstree.min.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/jstree.js"></script>
 <script type="text/javascript" src="${ctx}/static/h-ui/js/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="${ctx}/static/h-ui/js/jquery.form.min.js"></script>
 <script type="text/javascript" src="${ctx}/static/js/bootstrap3.min.js"></script>

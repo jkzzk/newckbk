@@ -150,8 +150,6 @@ function getSpecialXy() {
                         '</div>';
                 }
                 $('#specialxyContent').append(options);
-            }else {
-                $('#specialxyTab').attr("style","display:none;")
             }
         },
         error:function (message) {

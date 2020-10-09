@@ -267,7 +267,7 @@
                             </div>
                         </div>
                     </a>
-                    <a id="specialxyTab">
+                    <a>
                         <div class="row cl form-item">
                             <div class="col-xs-1 col-sm-1 text-c title">特殊学院</div>
                             <div class="col-xs-11 col-sm-11" id="specialxyContent">

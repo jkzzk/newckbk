@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.imust.newckbk.dao.LanguageTjjlDao">
-    <resultMap id="languageTjjlMap" type="com.imust.newckbk.domain.LanguageTjjl">
+
+	<resultMap id="languageTjjlMap" type="com.imust.newckbk.domain.LanguageTjjl">
         <result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="cet4" column="cet4" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="cet4PassScore" column="cet4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
@@ -42,6 +43,84 @@
         <result property="studentId" column="student_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="specialId" column="special_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
+
+	<resultMap id="languageInfoMap" type="com.imust.newckbk.domain.ext.LanguageInfoExt">
+		<result property="id" column="id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cet4" column="cet4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cet4PassScore" column="cet4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cet4LastExamTerm" column="cet4_last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cet4MissingExam" column="cet4_missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cet4PassedExam" column="cet4_passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cet6" column="cet6" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="crt4" column="crt4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="crt4PassScore" column="crt4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="crt4LastExamTerm" column="crt4_last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="crt4MissingExam" column="crt4_missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="crt4PassedExam" column="crt4_passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="russJoinCet4" column="russ_join_cet4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="russianKch" column="russian_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="crt6" column="crt6" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cjt4" column="cjt4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cjt4PassScore" column="cjt4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cjt4LastExamTerm" column="cjt4_last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cjt4MissingExam" column="cjt4_missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cjt4PassedExam" column="cjt4_passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="japaJoinCet4" column="japa_join_cet4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="japaneseKch" column="japanese_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cjt6" column="cjt6" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cgt4" column="cgt4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cgt4PassScore" column="cgt4_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cgt4LastExamTerm" column="cgt4_last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cgt4MissingExam" column="cgt4_missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cgt4PassedExam" column="cgt4_passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="germanJoinCet4" column="german_join_cet4" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="germanKch" column="german_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="cgt6" column="cgt6" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="pretcoB" column="pretco_b" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="pretcoPassScore" column="pretco_pass_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="pretcoLastExamTerm" column="pretco_last_exam_term" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="pretcoMissingExam" column="pretco_missing_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="pretcoPassedExam" column="pretco_passed_exam" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="studentId" column="student_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="specialId" column="special_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="dataSource" column="data_source" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="englisthKch" column="englisth_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="englisthZxjxjhh" column="englisth_zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classaKxh" column="classa_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classbKxh" column="classb_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classcKxh" column="classc_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classA" column="class_a" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classB" column="class_b" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classC" column="class_c" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classaEnglish" column="classa_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classbEnglish" column="classb_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classcEnglish" column="classc_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="englisthSecondKch" column="englisth_second_kch" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="englisthSecondZxjxjhh" column="englisth_second_zxjxjhh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classaSecondKxh" column="classa_second_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classbSecondKxh" column="classb_second_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classcSecondKxh" column="classc_second_kxh" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classSecondA" column="class_second_a" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classSecondB" column="class_second_b" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classSecondC" column="class_second_c" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classaSecondEnglish" column="classa_second_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classbSecondEnglish" column="classb_second_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="classcSecondEnglish" column="classc_second_english" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="isFirstGrade" column="is_first_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="isSecondGrade" column="is_second_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="isThirdGrade" column="is_third_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="isFoGrade" column="is_fo_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="isFifthGrade" column="is_fifth_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="firstGrade" column="first_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="benkeType" column="benke_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="specialXsm" column="special_xsm" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="isJuniorFirstGrade" column="is_junior_first_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="isJuniorSecondGrade" column="is_junior_second_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="isJuniorThirdGrade" column="is_junior_third_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="juniorFirstGrade" column="junior_first_grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result property="juniorType" column="junior_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	</resultMap>
+
     <sql id="cols">
 		id,
 		cet4,
@@ -117,6 +196,16 @@
     <select id="getCountByEntity" resultType="java.lang.Integer">
 		select count(1) from LANGUAGE_TJJL  languageTjjl
 		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getAllTj" resultMap="languageInfoMap">
+		select
+			languageTjjl.*,
+			languageTjjlSpecial.*,
+			languageTjjlStudent.*
+		from
+			LANGUAGE_TJJL  languageTjjl
+			left join LANGUAGE_TJJL_SPECIAL  languageTjjlSpecial on languageTjjlSpecial.id = languageTjjl.special_id
+			left join LANGUAGE_TJJL_STUDENT  languageTjjlStudent on languageTjjlStudent.id = languageTjjl.student_id
 	</select>
     <insert id="insert" parameterType="com.imust.newckbk.domain.LanguageTjjl" useGeneratedKeys="true" keyProperty="id">
 		insert into LANGUAGE_TJJL

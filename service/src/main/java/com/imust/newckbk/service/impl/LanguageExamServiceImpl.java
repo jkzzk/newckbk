@@ -7,18 +7,30 @@ import com.imust.newckbk.dao.*;
 import com.imust.newckbk.domain.Cet4Tjjl;
 import com.imust.newckbk.domain.LanguageExam;
 
-import com.imust.newckbk.domain.ext.CET4TJExt;
-import com.imust.newckbk.domain.ext.LanguageExamExt;
+import com.imust.newckbk.domain.excel.StatisticReport;
+import com.imust.newckbk.domain.excel.StatisticReportExcel;
+import com.imust.newckbk.domain.ext.*;
+import com.imust.newckbk.exception.CustomException;
 import com.imust.newckbk.utils.SnowRakeIdGenerator;
+import com.imust.newckbk.utils.easypoi.ExcelUtiles;
+import org.apache.ibatis.annotations.Lang;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.imust.newckbk.service.LanguageExamService;
 import com.imust.newckbk.base.AbstractService;
+
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.*;
 
 
 /**
@@ -39,6 +51,16 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 	private Cet4FirstTermDao cet4FirstTermDao;
 	@Autowired
 	private Cet4SecondTermDao cet4SecondTermDao;
+	@Autowired
+	private LanguageTjjlDao languageTjjlDao;
+	@Autowired
+	private CetStuscoreDao cetStuscoreDao;
+	@Autowired
+	private XsXjxxbViewKwDao xsXjxxbViewKwDao;
+	@Autowired
+	private StatisticReportDao statisticReportDao;
+	@Autowired
+	private LangStisticExtDao langStisticExtDao;
 
 	@Autowired
 	private SnowRakeIdGenerator snowRakeIdGenerator;
@@ -106,39 +128,20 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 	@Override
 	public RespData generateCET4() {
 
-		CET4TJExt currentAllCET4TJ = this.getCurrentAllCET4TJ();
+		LanguageInfoExt languageInfoExt = languageTjjlDao.getAllTj();
 
-		if(currentAllCET4TJ == null) {
-			return RespData.errorMsg("条件出错！");
+		boolean cet4 = languageInfoExt.getCet4().equals("1");
+		if(cet4) {
+
+			// 分年级筛选，本科类型与特殊学院置于sql语句中
+
+			// 大一年级单独做筛选
+
+			return RespData.successMsg("英语四级名单生成成功！");
+		}else {
+
+			return RespData.errorMsg("条件中没有设置CET4考试！");
 		}
-
-		List<LanguageExam> languageExamsForFirstGrade = new ArrayList<>();
-		if(currentAllCET4TJ.getFirstIn().equals("1")) {
-			// 生成大一的英语四级数据
-			languageExamsForFirstGrade = languageExamDao.generateCET4ForFirstGrade(currentAllCET4TJ);
-		}
-
-		// 生成专科的英语四级数据
-		List<LanguageExam> languageExamsForJunior = languageExamDao.generateCET4ForJunior(currentAllCET4TJ);
-
-		// 生成其他年级的英语四级数据
-		List<LanguageExam> languageExamsForOther = languageExamDao.generateCET4ForOther(currentAllCET4TJ);
-
-		languageExamsForFirstGrade.addAll(languageExamsForJunior);
-		languageExamsForFirstGrade.addAll(languageExamsForOther);
-
-		languageExamsForFirstGrade.forEach(item -> {
-			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
-		});
-
-		if(!languageExamsForFirstGrade.isEmpty()) {
-//			languageExamDao.insertBatch(languageExamsForFirstGrade);
-			for (LanguageExam languageExam : languageExamsForFirstGrade) {
-				languageExamDao.insert(languageExam);
-			}
-		}
-
-		return RespData.successMsg("英语四级名单生成成功！");
 	}
 
 	@Override
@@ -265,7 +268,512 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		}
     }
 
-    private CET4TJExt getCurrentAllCET4TJ() {
+    @Override
+    public RespData getAllExamDate() {
+		try {
+
+			return RespData.successMsg("查询成功",cetStuscoreDao.getAllExamDate());
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	/**
+	 *  获取在校年级
+	 *
+	 * @return
+	 */
+    public RespData getGradeInSchool() {
+		try {
+
+			int year = LocalDate.now().getYear();
+			int month = LocalDate.now().getMonth().getValue();
+			List<TreeExt> grades = new ArrayList<>();
+			int index = 0;
+			if(month > 9) {
+				index = year;
+			}else {
+				index = year-1;
+			}
+
+			for (int i = index; i > index-5; i--) {
+				TreeExt treeExt = new TreeExt();
+				treeExt.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+				treeExt.setText(String.valueOf(i));
+				treeExt.setLevel("0");
+				grades.add(treeExt);
+			}
+
+			return RespData.successMsg("查询成功",grades);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public RespData getAcademy(QueryTreeExt queryTreeExt) {
+		try {
+			List<String> academys = xsXjxxbViewKwDao.getAcademy(queryTreeExt.getGrade() + "级");
+			List<TreeExt> treeExts = new ArrayList<>();
+
+			for (String academy : academys) {
+				TreeExt treeExt = new TreeExt();
+				treeExt.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+				treeExt.setText(academy);
+				treeExt.setLevel("1");
+				treeExts.add(treeExt);
+			}
+
+			return RespData.successMsg("",treeExts);
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public RespData getMajor(QueryTreeExt queryTreeExt) {
+		try {
+			List<String> academys = xsXjxxbViewKwDao.getMajor(queryTreeExt.getGrade() + "级",queryTreeExt.getAcademy());
+			List<TreeExt> treeExts = new ArrayList<>();
+
+			for (String academy : academys) {
+				TreeExt treeExt = new TreeExt();
+				treeExt.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+				treeExt.setText(academy);
+				treeExt.setLevel("2");
+				treeExts.add(treeExt);
+			}
+
+			return RespData.successMsg("",treeExts);
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public RespData getClasses(QueryTreeExt queryTreeExt) {
+		try {
+			List<String> academys = xsXjxxbViewKwDao.getClasses(queryTreeExt.getGrade() + "级",queryTreeExt.getAcademy(),queryTreeExt.getMajor());
+			List<TreeExt> treeExts = new ArrayList<>();
+
+			for (String academy : academys) {
+				TreeExt treeExt = new TreeExt();
+				treeExt.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+				treeExt.setText(academy);
+				treeExt.setLevel("3");
+				treeExts.add(treeExt);
+			}
+
+			return RespData.successMsg("",treeExts);
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+    @Override
+    public RespData statisticReport(LangStisticExt langStisticExt) {
+		try {
+
+			// 删除旧数据
+			langStisticExtDao.deleteAll();
+			// 插入新数据
+			langStisticExtDao.insert(langStisticExt);
+
+			List<StatisticReport> schoolBaseNumber = null;
+			if(langStisticExt.getGrade() != null && !langStisticExt.getGrade().equals("")) {
+				String[] gradeArr = langStisticExt.getGrade().split(",");
+				String newGradeStr = "";
+				for (String grade : gradeArr) {
+					newGradeStr += grade + "级" + ",";
+				}
+				langStisticExt.setGrade(newGradeStr.substring(0,newGradeStr.length()-1));
+			}
+			schoolBaseNumber = cetStuscoreDao.statisticBaseNumberRegister(langStisticExt);
+
+			List<StatisticReport> baseNumber = null;
+			if(langStisticExt.getGrade() != null && !langStisticExt.getGrade().equals("")) {
+				String[] gradeArr = langStisticExt.getGrade().split(",");
+				String newGradeStr = "";
+				for (String grade : gradeArr) {
+					newGradeStr += grade.substring(0,2) + ",";
+				}
+				langStisticExt.setGrade(newGradeStr.substring(0,newGradeStr.length()-1));
+			}
+			baseNumber = cetStuscoreDao.statisticBaseNumberEnter(langStisticExt);
+
+			List<StatisticReport> missingNumber = null;
+			missingNumber = cetStuscoreDao.statisticMissingNumber(langStisticExt);
+
+			List<StatisticReport> passNumber = null;
+			passNumber = cetStuscoreDao.statisticPassNumber(langStisticExt);
+
+			List<StatisticReport> avgScore = null;
+			avgScore = cetStuscoreDao.statisticAvgScore(langStisticExt);
+
+			List<StatisticReport> maxScore = null;
+			maxScore = cetStuscoreDao.statisticMaxScore(langStisticExt);
+
+			for (StatisticReport statisticReportMax : maxScore) {
+				for (StatisticReport statisticReportAvg : avgScore) {
+					if(statisticReportAvg.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportAvg.getMajor().equals(statisticReportMax.getMajor())
+					&& statisticReportAvg.getGrade().equals(statisticReportMax.getGrade()) && statisticReportAvg.getClasses().equals(statisticReportMax.getClasses())) {
+						statisticReportMax.setAvgScore(statisticReportAvg.getAvgScore());
+					}
+				}
+				for (StatisticReport statisticReportPass : passNumber) {
+					if(statisticReportPass.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportPass.getMajor().equals(statisticReportMax.getMajor())
+							&& statisticReportPass.getGrade().equals(statisticReportMax.getGrade()) && statisticReportPass.getClasses().equals(statisticReportMax.getClasses())) {
+						statisticReportMax.setPassNumber(statisticReportPass.getPassNumber());
+					}
+				}
+				for (StatisticReport statisticReportMissing : missingNumber) {
+					if(statisticReportMissing.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportMissing.getMajor().equals(statisticReportMax.getMajor())
+							&& statisticReportMissing.getGrade().equals(statisticReportMax.getGrade()) && statisticReportMissing.getClasses().equals(statisticReportMax.getClasses())) {
+						statisticReportMax.setMissingNumber(statisticReportMissing.getMissingNumber());
+					}
+				}
+				for (StatisticReport statisticReportBase: baseNumber) {
+					if(statisticReportBase.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportBase.getMajor().equals(statisticReportMax.getMajor())
+							&& statisticReportBase.getGrade().equals(statisticReportMax.getGrade()) && statisticReportBase.getClasses().equals(statisticReportMax.getClasses())) {
+						statisticReportMax.setBaseNumber(statisticReportBase.getBaseNumber());
+					}
+				}
+				if(null != schoolBaseNumber) {
+					for (StatisticReport statisticReportSchool: schoolBaseNumber) {
+						if(statisticReportSchool.getClasses().equals(statisticReportMax.getClasses())) {
+							statisticReportMax.setSchoolNumber(statisticReportSchool.getSchoolNumber());
+						}
+					}
+				}
+			}
+
+			for (StatisticReport statisticReport : maxScore) {
+				statisticReport.setActualNumber(statisticReport.getBaseNumber()-statisticReport.getMissingNumber());
+				statisticReport.setMissingRate(new BigDecimal(statisticReport.getMissingNumber().doubleValue()/statisticReport.getBaseNumber().doubleValue()).setScale(4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+				statisticReport.setPassRate(new BigDecimal(statisticReport.getPassNumber().doubleValue()/statisticReport.getBaseNumber().doubleValue()).setScale(4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+				if(langStisticExt.getDataSource().equals("1")) {
+					statisticReport.setSchoolPassRate(new BigDecimal(statisticReport.getPassNumber().doubleValue()/statisticReport.getSchoolNumber().doubleValue()).setScale(4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+				}
+			}
+
+			statisticReportDao.deleteAll();
+			for (StatisticReport statisticReport : maxScore) {
+				statisticReportDao.insert(statisticReport);
+			}
+
+			return RespData.successMsg("统计成功！",1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+    @Override
+    public void exportStatistic(HttpServletResponse response) {
+        try {
+
+			// 查询统计好的数据
+			List<StatisticReportExcel> statisticReportExcels = statisticReportDao.getAll();
+
+			List<LangStisticExt> langStisticExts = langStisticExtDao.getOne();
+
+			// 分组合计
+			statisticReportExcels = this.getSumList(statisticReportExcels);
+
+			LangStisticExt langStisticExt = null;
+			if(langStisticExts != null && langStisticExts.size() >= 0) {
+				langStisticExt = langStisticExts.get(0);
+			}
+
+			Workbook workbook = this.getExcelWorkBook(statisticReportExcels,langStisticExt);
+
+			if(workbook == null) {
+				throw new CustomException("创建workbook失败!");
+			}
+
+			ExcelUtiles.baseExportExcel("语种考试统计报表.xlsx",response,workbook);
+		}catch (Exception e) {
+        	e.printStackTrace();
+        	throw e;
+		}
+    }
+
+	private List<StatisticReportExcel> getSumList(List<StatisticReportExcel> statisticReportExcels) {
+    	// 按语种类别合计
+		List<StatisticReportExcel> statisticReportExcelsByLangType = statisticReportDao.sumByLangType();
+		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByLangType) {
+			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4,BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setMissingRate(missingRate.toString());
+			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
+			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setPassRate(passRate.toString());
+		}
+		// 按学院合计
+		List<StatisticReportExcel> statisticReportExcelsByAcademy = statisticReportDao.sumByAcademy();
+		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByAcademy) {
+			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4,BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setMissingRate(missingRate.toString());
+			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
+			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setPassRate(passRate.toString());
+		}
+		// 按专业合计
+		List<StatisticReportExcel> statisticReportExcelsByMajor = statisticReportDao.sumByMajor();
+		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByMajor) {
+			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4,BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setMissingRate(missingRate.toString());
+			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
+			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setPassRate(passRate.toString());
+		}
+		// 按年级合计
+		List<StatisticReportExcel> statisticReportExcelsByGrade = statisticReportDao.sumByGrade();
+		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByGrade) {
+			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4,BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setMissingRate(missingRate.toString());
+			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
+			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			statisticReportExcel.setPassRate(passRate.toString());
+		}
+
+		Map<String,List<StatisticReportExcel>> mapByLangType = new HashMap<>();
+		for (StatisticReportExcel statisticReportExcel : statisticReportExcels) {
+			String key = statisticReportExcel.getLangType();
+			if(mapByLangType.containsKey(key)) {
+				mapByLangType.get(key).add(statisticReportExcel);
+			}else {
+				List<StatisticReportExcel> tempList = new ArrayList<>();
+				tempList.add(statisticReportExcel);
+				mapByLangType.put(key,tempList);
+			}
+		}
+
+		for (String key : mapByLangType.keySet()) {
+			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByLangType) {
+				if(statisticReportExcel.getLangType().equals(key)) {
+					mapByLangType.get(key).add(statisticReportExcel);
+				}
+			}
+		}
+
+		List<StatisticReportExcel> sumByLangType = new ArrayList<>();
+		for (String key : mapByLangType.keySet()) {
+			sumByLangType.addAll(mapByLangType.get(key));
+		}
+
+		Map<String,List<StatisticReportExcel>> mapByAcademy = new HashMap<>();
+		for (StatisticReportExcel statisticReportExcel : sumByLangType) {
+			String key = statisticReportExcel.getLangType()+statisticReportExcel.getAcademy();
+			if(mapByAcademy.containsKey(key)) {
+				mapByAcademy.get(key).add(statisticReportExcel);
+			}else {
+				List<StatisticReportExcel> tempList = new ArrayList<>();
+				tempList.add(statisticReportExcel);
+				mapByAcademy.put(key,tempList);
+			}
+		}
+
+		for (String key : mapByAcademy.keySet()) {
+			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByAcademy) {
+				if((statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()).equals(key)) {
+					mapByAcademy.get(key).add(statisticReportExcel);
+				}
+			}
+		}
+
+		List<StatisticReportExcel> sumByAcademy = new ArrayList<>();
+		for (String key : mapByAcademy.keySet()) {
+			sumByAcademy.addAll(mapByAcademy.get(key));
+		}
+
+		Map<String,List<StatisticReportExcel>> mapByMajor = new HashMap<>();
+		for (StatisticReportExcel statisticReportExcel : sumByAcademy) {
+			String key = statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()+statisticReportExcel.getMajor();
+			if(mapByMajor.containsKey(key)) {
+				mapByMajor.get(key).add(statisticReportExcel);
+			}else {
+				List<StatisticReportExcel> tempList = new ArrayList<>();
+				tempList.add(statisticReportExcel);
+				mapByMajor.put(key,tempList);
+			}
+		}
+
+		for (String key : mapByMajor.keySet()) {
+			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByMajor) {
+				if((statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()+statisticReportExcel.getMajor()).equals(key)) {
+					mapByMajor.get(key).add(statisticReportExcel);
+				}
+			}
+		}
+
+		List<StatisticReportExcel> sumByMajor = new ArrayList<>();
+		for (String key : mapByMajor.keySet()) {
+			sumByMajor.addAll(mapByMajor.get(key));
+		}
+
+		Map<String,List<StatisticReportExcel>> mapByGrade = new HashMap<>();
+		for (StatisticReportExcel statisticReportExcel : sumByMajor) {
+			String key = statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()+statisticReportExcel.getMajor()+statisticReportExcel.getGrade();
+			if(mapByGrade.containsKey(key)) {
+				mapByGrade.get(key).add(statisticReportExcel);
+			}else {
+				List<StatisticReportExcel> tempList = new ArrayList<>();
+				tempList.add(statisticReportExcel);
+				mapByGrade.put(key,tempList);
+			}
+		}
+
+		for (String key : mapByGrade.keySet()) {
+			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByGrade) {
+				if((statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()+statisticReportExcel.getMajor()+statisticReportExcel.getGrade()).equals(key)) {
+					mapByGrade.get(key).add(statisticReportExcel);
+				}
+			}
+		}
+
+		List<StatisticReportExcel> sumByGrade = new ArrayList<>();
+		for (String key : mapByGrade.keySet()) {
+			sumByGrade.addAll(mapByGrade.get(key));
+		}
+
+		return sumByGrade;
+	}
+
+	private Workbook getExcelWorkBook(List<StatisticReportExcel> statisticReportExcels, LangStisticExt langStisticExt) {
+		Workbook workbook = new SXSSFWorkbook();
+
+		if(langStisticExt == null) {
+			return null;
+		}
+
+		Sheet statisticSheet = workbook.createSheet("报表");
+
+		int column = 0;
+		if(langStisticExt.getDataSource().equals("1,2")) {
+			column = 15;
+		}else if(langStisticExt.getDataSource().equals("1")) {
+			column = 14;
+		}else if(langStisticExt.getDataSource().equals("2")) {
+			column = 13;
+		}
+
+		for (int i = 0; i < statisticReportExcels.size(); i++) {
+			Row row = statisticSheet.createRow(i);
+			for (int j = 0; j < column; j++) {
+				Cell cell = row.createCell(j);
+				if(0 == j) {
+					cell.setCellValue(statisticReportExcels.get(i).getLangType());
+				}
+				if(1 == j) {
+					cell.setCellValue(statisticReportExcels.get(i).getAcademy());
+				}
+				if(2 == j) {
+					cell.setCellValue(statisticReportExcels.get(i).getMajor());
+				}
+				if(3 == j) {
+					cell.setCellValue(statisticReportExcels.get(i).getGrade());
+				}
+				if(4 == j) {
+					cell.setCellValue(statisticReportExcels.get(i).getClasses());
+				}
+				if(5 == j) {
+					if(column == 15 || column == 14) {
+						cell.setCellValue(statisticReportExcels.get(i).getSchoolNumber());
+					}else {
+						cell.setCellValue(statisticReportExcels.get(i).getBaseNumber());
+					}
+				}
+				if(6 == j) {
+					if(column == 15 || column == 14) {
+						cell.setCellValue(statisticReportExcels.get(i).getBaseNumber());
+					}else {
+						cell.setCellValue(statisticReportExcels.get(i).getActualNumber());
+					}
+				}
+				if(7 == j) {
+					if(column == 15 || column == 14) {
+						cell.setCellValue(statisticReportExcels.get(i).getActualNumber());
+					}else {
+						cell.setCellValue(statisticReportExcels.get(i).getMissingNumber());
+					}
+				}
+				if(8 == j) {
+					if(column == 15 || column == 14) {
+						cell.setCellValue(statisticReportExcels.get(i).getMissingNumber());
+					}else {
+						cell.setCellValue(statisticReportExcels.get(i).getMissingRate()+"%");
+					}
+				}
+				if(9 == j) {
+					if(column == 15 || column == 14) {
+						cell.setCellValue(statisticReportExcels.get(i).getMissingRate()+"%");
+					}else {
+						cell.setCellValue(statisticReportExcels.get(i).getPassNumber());
+					}
+				}
+				if(10 == j) {
+					if(column == 15 || column == 14) {
+						cell.setCellValue(statisticReportExcels.get(i).getPassNumber());
+					}else {
+						if(column == 13) {
+							cell.setCellValue(statisticReportExcels.get(i).getPassRate() + "%");
+						}else {
+							cell.setCellValue(statisticReportExcels.get(i).getAvgScore());
+						}
+					}
+				}
+				if(11 == j) {
+					if(column == 15 || column == 14) {
+						cell.setCellValue(statisticReportExcels.get(i).getSchoolPassRate() + "%");
+					}else {
+						if(column == 13) {
+							cell.setCellValue(statisticReportExcels.get(i).getAvgScore());
+						}else {
+							cell.setCellValue(statisticReportExcels.get(i).getMaxScore());
+						}
+					}
+				}
+				if(12 == j) {
+					if(column == 15) {
+						cell.setCellValue(statisticReportExcels.get(i).getPassRate() + "%");
+					}else {
+						if(column == 13) {
+							cell.setCellValue(statisticReportExcels.get(i).getMaxScore());
+						}else {
+							cell.setCellValue(statisticReportExcels.get(i).getAvgScore());
+						}
+					}
+				}
+				if(13 == j) {
+					if(column == 15) {
+						cell.setCellValue(statisticReportExcels.get(i).getAvgScore());
+					}else if(column == 14) {
+						cell.setCellValue(statisticReportExcels.get(i).getMaxScore());
+					}
+				}
+				if(14 == j) {
+					if(column == 15) {
+						cell.setCellValue(statisticReportExcels.get(i).getMaxScore());
+					}
+				}
+			}
+		}
+
+		return workbook;
+	}
+
+	private CET4TJExt getCurrentAllCET4TJ() {
 		List<Cet4Tjjl> cet4Tjjls = cet4TjjlDao.getByStatus("1");
 
 		CET4TJExt cet4TJExt = null;

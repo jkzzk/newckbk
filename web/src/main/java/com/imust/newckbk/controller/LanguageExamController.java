@@ -8,11 +8,11 @@ import com.imust.newckbk.common.DefaultPage;
 import com.imust.newckbk.common.ExcelExportCommon;
 import com.imust.newckbk.common.RespData;
 import com.imust.newckbk.common.RetCode;
-import com.imust.newckbk.domain.Bkkcxxb;
 import com.imust.newckbk.domain.Cet4Tjjl;
 import com.imust.newckbk.domain.LanguageExam;
-import com.imust.newckbk.domain.ext.BkkcxxbExt;
+import com.imust.newckbk.domain.ext.LangStisticExt;
 import com.imust.newckbk.domain.ext.LanguageExamExt;
+import com.imust.newckbk.domain.ext.QueryTreeExt;
 import com.imust.newckbk.exception.CustomException;
 import com.imust.newckbk.service.Cet4TjjlService;
 import com.imust.newckbk.service.CodeZxjxjhxnxqxxService;
@@ -184,6 +184,132 @@ public class LanguageExamController {
         }catch (Exception e) {
             e.printStackTrace();
             throw new CustomException(RetCode.ACTIVE_EXCEPTION.getMsg() + "###################" + e.getMessage());
+        }
+    }
+
+    /**
+     * 统计报表
+     * url : langExam/statistic
+     *
+     * @return
+     */
+    @RequestMapping("/statistic")
+    public String langStatistic() {
+        return "langExam/langStatistical";
+    }
+
+    /**
+     * 查询所有考试时间
+     * url : /langExam/getAllExamDate
+     *
+     * @return
+     */
+    @RequestMapping("/getAllExamDate")
+    public @ResponseBody RespData getAllExamDate() {
+        try {
+            return languageExamService.getAllExamDate();
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(RetCode.ACTIVE_EXCEPTION.getMsg() + "###################" + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取所有在校年级数据
+     *
+     * @return
+     */
+    @RequestMapping("/getGradeInSchool")
+    public @ResponseBody
+    RespData getGradeInSchool() {
+        try {
+            return languageExamService.getGradeInSchool();
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(RetCode.ACTIVE_EXCEPTION.getMsg() + "###################" + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取所有在校学院
+     *
+     * @param queryTreeExt
+     * @return
+     */
+    @RequestMapping("/getAcademy")
+    public @ResponseBody
+    RespData getAcademy(@RequestBody QueryTreeExt queryTreeExt) {
+        try {
+            return languageExamService.getAcademy(queryTreeExt);
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(RetCode.ACTIVE_EXCEPTION.getMsg() + "###################" + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取所有在校专业
+     *
+     * @param queryTreeExt
+     * @return
+     */
+    @RequestMapping("/getMajor")
+    public @ResponseBody
+    RespData getMajor(@RequestBody QueryTreeExt queryTreeExt) {
+        try {
+            return languageExamService.getMajor(queryTreeExt);
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(RetCode.ACTIVE_EXCEPTION.getMsg() + "###################" + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取所有在校班级
+     *
+     * @param queryTreeExt
+     * @return
+     */
+    @RequestMapping("/getClasses")
+    public @ResponseBody
+    RespData getClasses(@RequestBody QueryTreeExt queryTreeExt) {
+        try {
+            return languageExamService.getClasses(queryTreeExt);
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(RetCode.ACTIVE_EXCEPTION.getMsg() + "###################" + e.getMessage());
+        }
+    }
+
+    /**
+     * 统计数据
+     *
+     * @param langStisticExt
+     * @return
+     */
+    @RequestMapping("/statisticReport")
+    public @ResponseBody
+    RespData statisticReport(@RequestBody LangStisticExt langStisticExt) {
+        try {
+            return languageExamService.statisticReport(langStisticExt);
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(RetCode.ACTIVE_EXCEPTION.getMsg() + "###################" + e.getMessage());
+        }
+    }
+
+    /**
+     * 导出excel
+     * @Url /langExam/exportStatistic
+     *
+     * @param response
+     */
+    @RequestMapping("/exportStatistic")
+    public void exportStatistic(HttpServletResponse response) {
+        try {
+            languageExamService.exportStatistic(response);
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

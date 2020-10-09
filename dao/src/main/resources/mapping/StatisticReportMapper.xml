@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/WEB-INF/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imust.newckbk.dao.StatisticReportDao">
+    <resultMap id="statisticReportMap" type="com.imust.newckbk.domain.excel.StatisticReport">
+        <result property="langType" column="lang_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="academy" column="academy" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="major" column="major" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="grade" column="grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="classes" column="classes" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="schoolNumber" column="school_number" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="baseNumber" column="base_number" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="actualNumber" column="actual_number" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="missingNumber" column="missing_number" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="missingRate" column="missing_rate" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="passNumber" column="pass_number" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="schoolPassRate" column="school_pass_rate" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="passRate" column="pass_rate" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="avgScore" column="avg_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="maxScore" column="max_score" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="cols">
+		lang_type,
+		academy,
+		major,
+		grade,
+		classes,
+		school_number,
+		base_number,
+		actual_number,
+		missing_number,
+		missing_rate,
+		pass_number,
+		school_pass_rate,
+		pass_rate,
+		avg_score,
+		max_score
+	</sql>
+    <delete id="deleteAll">
+		delete from STATISTIC_REPORT
+	</delete>
+    <select id="getById" resultMap="statisticReportMap" parameterType="java.lang.String">
+		select <include refid="cols"/> from STATISTIC_REPORT  statisticReport
+		 where id = #{id}
+	</select>
+    <select id="getByMap" resultMap="statisticReportMap" parameterType="java.util.Map">
+		select <include refid="cols"/> from STATISTIC_REPORT  statisticReport
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByEntity" resultMap="statisticReportMap" parameterType="com.imust.newckbk.domain.excel.StatisticReport">
+		select <include refid="cols"/> from STATISTIC_REPORT  statisticReport
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getByPage" resultMap="statisticReportMap" parameterType="com.imust.newckbk.page.Page">
+		select <include refid="cols"/> from STATISTIC_REPORT  statisticReport
+		<if test="p != null and p.whereSql != null and p.whereSql != ''" >
+			<![CDATA[${p.whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(1) from STATISTIC_REPORT  statisticReport
+	</select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+		select count(1) from STATISTIC_REPORT  statisticReport
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</select>
+    <select id="getCountByEntity" resultType="java.lang.Integer">
+		select count(1) from STATISTIC_REPORT  statisticReport
+		<!--新建if语句新建过滤条件-->
+	</select>
+    <select id="getAll" resultType="com.imust.newckbk.domain.excel.StatisticReportExcel">
+		select <include refid="cols"/> from STATISTIC_REPORT  statisticReport order by lang_type,academy,major,grade,classes
+	</select>
+    <select id="sumByLangType" resultType="com.imust.newckbk.domain.excel.StatisticReportExcel">
+		select
+			lang_type as langType,
+			'合计' as academy,
+			sum(school_number) as schoolNumber,
+			sum(base_number) as baseNumber,
+			sum(actual_number) as actualNumber,
+			sum(missing_number) as missingNumber,
+			sum(pass_number) as passNumber,
+			avg(avg_score) as avgScore,
+			max(max_score) as maxScore
+		from
+			STATISTIC_REPORT  statisticReport
+		group by lang_type
+	</select>
+	<select id="sumByAcademy" resultType="com.imust.newckbk.domain.excel.StatisticReportExcel">
+		select
+			lang_type as langType,
+			academy as academy,
+			'合计' as major,
+			sum(school_number) as schoolNumber,
+			sum(base_number) as baseNumber,
+			sum(actual_number) as actualNumber,
+			sum(missing_number) as missingNumber,
+			sum(pass_number) as passNumber,
+			avg(avg_score) as avgScore,
+			max(max_score) as maxScore
+		from
+			STATISTIC_REPORT  statisticReport
+		group by lang_type,academy
+	</select>
+	<select id="sumByMajor" resultType="com.imust.newckbk.domain.excel.StatisticReportExcel">
+		select
+			lang_type as langType,
+			academy as academy,
+			major as major,
+			'合计' as grade,
+			sum(school_number) as schoolNumber,
+			sum(base_number) as baseNumber,
+			sum(actual_number) as actualNumber,
+			sum(missing_number) as missingNumber,
+			sum(pass_number) as passNumber,
+			avg(avg_score) as avgScore,
+			max(max_score) as maxScore
+		from
+			STATISTIC_REPORT  statisticReport
+		group by lang_type,academy,major
+	</select>
+	<select id="sumByGrade" resultType="com.imust.newckbk.domain.excel.StatisticReportExcel">
+		select
+			lang_type as langType,
+			academy as academy,
+			major as major,
+			grade as grade,
+			'合计' as classes,
+			sum(school_number) as schoolNumber,
+			sum(base_number) as baseNumber,
+			sum(actual_number) as actualNumber,
+			sum(missing_number) as missingNumber,
+			sum(pass_number) as passNumber,
+			avg(avg_score) as avgScore,
+			max(max_score) as maxScore
+		from
+			STATISTIC_REPORT  statisticReport
+		group by lang_type,academy,major,grade
+	</select>
+	<insert id="insert" parameterType="com.imust.newckbk.domain.excel.StatisticReport" useGeneratedKeys="true" keyProperty="id">
+		insert into STATISTIC_REPORT
+		<trim prefix="(" suffix=")" suffixOverrides="," > 
+			<if test=" langType != null and langType != ''">
+				lang_type,
+			</if>
+			<if test=" academy != null and academy != ''">
+				academy,
+			</if>
+			<if test=" major != null and major != ''">
+				major,
+			</if>
+			<if test=" grade != null and grade != ''">
+				grade,
+			</if>
+			<if test=" classes != null and classes != ''">
+				classes,
+			</if>
+			<if test=" schoolNumber != null">
+				school_number,
+			</if>
+			<if test=" baseNumber != null">
+				base_number,
+			</if>
+			<if test=" actualNumber != null">
+				actual_number,
+			</if>
+			<if test=" missingNumber != null">
+				missing_number,
+			</if>
+			<if test=" missingRate != null">
+				missing_rate,
+			</if>
+			<if test=" passNumber != null">
+				pass_number,
+			</if>
+			<if test=" schoolPassRate != null">
+				school_pass_rate,
+			</if>
+			<if test=" passRate != null">
+				pass_rate,
+			</if>
+			<if test=" avgScore != null">
+				avg_score,
+			</if>
+			<if test=" maxScore != null">
+				max_score
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" langType != null and langType != ''">
+				#{langType,jdbcType=VARCHAR},
+			</if>
+			<if test=" academy != null and academy != ''">
+				#{academy,jdbcType=VARCHAR},
+			</if>
+			<if test=" major != null and major != ''">
+				#{major,jdbcType=VARCHAR},
+			</if>
+			<if test=" grade != null and grade != ''">
+				#{grade,jdbcType=VARCHAR},
+			</if>
+			<if test=" classes != null and classes != ''">
+				#{classes,jdbcType=VARCHAR},
+			</if>
+			<if test=" schoolNumber != null">
+				#{schoolNumber,jdbcType=VARCHAR},
+			</if>
+			<if test=" baseNumber != null">
+				#{baseNumber,jdbcType=VARCHAR},
+			</if>
+			<if test=" actualNumber != null">
+				#{actualNumber,jdbcType=VARCHAR},
+			</if>
+			<if test=" missingNumber != null">
+				#{missingNumber,jdbcType=VARCHAR},
+			</if>
+			<if test=" missingRate != null">
+				#{missingRate,jdbcType=VARCHAR},
+			</if>
+			<if test=" passNumber != null">
+				#{passNumber,jdbcType=VARCHAR},
+			</if>
+			<if test=" schoolPassRate != null">
+				#{schoolPassRate,jdbcType=VARCHAR},
+			</if>
+			<if test=" passRate != null">
+				#{passRate,jdbcType=VARCHAR},
+			</if>
+			<if test=" avgScore != null">
+				#{avgScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" maxScore != null">
+				#{maxScore,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+    <update id="updateById" parameterType="com.imust.newckbk.domain.excel.StatisticReport">
+		update STATISTIC_REPORT statisticReport
+		<set>
+			<if test=" langType != null and langType != ''">
+				lang_type = #{langType,jdbcType=VARCHAR},
+			</if>
+			<if test=" academy != null and academy != ''">
+				academy = #{academy,jdbcType=VARCHAR},
+			</if>
+			<if test=" major != null and major != ''">
+				major = #{major,jdbcType=VARCHAR},
+			</if>
+			<if test=" grade != null and grade != ''">
+				grade = #{grade,jdbcType=VARCHAR},
+			</if>
+			<if test=" classes != null and classes != ''">
+				classes = #{classes,jdbcType=VARCHAR},
+			</if>
+			<if test=" schoolNumber != null and schoolNumber != ''">
+				school_number = #{schoolNumber,jdbcType=VARCHAR},
+			</if>
+			<if test=" baseNumber != null and baseNumber != ''">
+				base_number = #{baseNumber,jdbcType=VARCHAR},
+			</if>
+			<if test=" actualNumber != null and actualNumber != ''">
+				actual_number = #{actualNumber,jdbcType=VARCHAR},
+			</if>
+			<if test=" missingNumber != null and missingNumber != ''">
+				missing_number = #{missingNumber,jdbcType=VARCHAR},
+			</if>
+			<if test=" missingRate != null and missingRate != ''">
+				missing_rate = #{missingRate,jdbcType=VARCHAR},
+			</if>
+			<if test=" passNumber != null and passNumber != ''">
+				pass_number = #{passNumber,jdbcType=VARCHAR},
+			</if>
+			<if test=" schoolPassRate != null and schoolPassRate != ''">
+				school_pass_rate = #{schoolPassRate,jdbcType=VARCHAR},
+			</if>
+			<if test=" passRate != null and passRate != ''">
+				pass_rate = #{passRate,jdbcType=VARCHAR},
+			</if>
+			<if test=" avgScore != null and avgScore != ''">
+				avg_score = #{avgScore,jdbcType=VARCHAR},
+			</if>
+			<if test=" maxScore != null and maxScore != ''">
+				max_score = #{maxScore,jdbcType=VARCHAR}
+			</if>
+		</set>
+		 where id= #{id} 
+	</update>
+    <update id="updateByMap">
+		update STATISTIC_REPORT  statisticReport set 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建查询条件属性 -->
+	</update>
+    <update id="deleteById" parameterType="java.lang.Integer">
+		update STATISTIC_REPORT statisticReport set deleted=1
+		where id=#{id}
+	</update>
+    <update id="deleteByMap" parameterType="java.util.Map">
+		update STATISTIC_REPORT statisticReport set deleted=1 
+		<if test="whereSql != null and whereSql != ''" >
+			<![CDATA[${whereSql}]]>
+		</if>
+		<!-- 新建条件属性 -->
+	</update>
+    <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.excel.StatisticReport">
+		update STATISTIC_REPORT statisticReport set deleted=1 
+		where id=#{id}
+	</update>
+</mapper>

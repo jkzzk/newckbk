@@ -11,6 +11,8 @@ public class CetStuscore {
 
     private String ksQk;
 
+    private String ksWj;
+
     public String getKsKssj() {
         return ksKssj;
     }
@@ -49,5 +51,13 @@ public class CetStuscore {
 
     public void setKsQk(String ksQk) {
         this.ksQk = ksQk == null ? null : ksQk.trim();
+    }
+
+    public String getKsWj() {
+        return ksWj;
+    }
+
+    public void setKsWj(String ksWj) {
+        this.ksWj = ksWj == null ? null : ksWj.trim();
     }
 }

@@ -52,7 +52,218 @@
 		select count(1) from CET_STUSCORE  cetStuscore
 		<!--新建if语句新建过滤条件-->
 	</select>
-    <insert id="insert" parameterType="com.imust.newckbk.domain.CetStuscore" useGeneratedKeys="true" keyProperty="id">
+    <select id="getAllExamDate" resultType="java.lang.String">
+		select distinct ks_kssj from CET_STUSCORE cetStuscore order by ks_kssj desc
+	</select>
+
+	<select id="statisticBaseNumberRegister" resultType="com.imust.newckbk.domain.excel.StatisticReport">
+		select
+			xsm as academy,
+			zym as major,
+			substr(dqnj,3,2) as grade,
+			bjh as classes,
+			count(*) as schoolNumber
+		from
+			xs_xjxxb_view_kw
+		<where>
+			SFYXJ = '是'
+			<if test="grade != null and grade != ''">
+				and dqnj not in (#{grade})
+			</if>
+			<if test="academy != null and academy != ''">
+				and xsm not in (#{academy})
+			</if>
+			<if test="major != null and major != ''">
+				and zym not in (#{major})
+			</if>
+			<if test="classes != null and classes != ''">
+				and dqnj not in (#{classes})
+			</if>
+			group by xsm,zym,dqnj,bjh
+			order by bjh
+		</where>
+	</select>
+	<select id="statisticBaseNumberEnter" resultType="com.imust.newckbk.domain.excel.StatisticReport">
+		select
+			ks_yyjb as langType,
+			ks_xymc as academy,
+			ks_zymc as major,
+			ks_nj as grade,
+			ks_bjmc as classes,
+			count(*) as baseNumber
+		from
+			cet_stuscore
+			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
+		<where>
+			xs_xjxxb_view_kw.SFYXJ = '是'
+			<if test="grade != null and grade != ''">
+				and dqnj not in (${grade})
+			</if>
+			<if test="academy != null and academy != ''">
+				and xsm not in (${academy})
+			</if>
+			<if test="major != null and major != ''">
+				and zym not in (${major})
+			</if>
+			<if test="classes != null and classes != ''">
+				and dqnj not in (${classes})
+			</if>
+			<if test="examDate != null and examDate != ''">
+				and ks_kssj in (${examDate})
+			</if>
+			<if test="langType != null and langType != ''">
+				and ks_yyjb in upper((${langType}))
+			</if>
+			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
+			order by ks_yyjb
+		</where>
+	</select>
+
+	<!-- 缺考人数 -->
+    <select id="statisticMissingNumber" resultType="com.imust.newckbk.domain.excel.StatisticReport">
+		select
+			ks_yyjb as langType,
+			ks_xymc as academy,
+			ks_zymc as major,
+			ks_nj as grade,
+			ks_bjmc as classes,
+			count(*) as missingNumber
+		from
+			cet_stuscore
+			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
+		<where>
+			xs_xjxxb_view_kw.SFYXJ = '是' and ks_qk = '缺考'
+			<if test="grade != null and grade != ''">
+				and dqnj not in (${grade})
+			</if>
+			<if test="academy != null and academy != ''">
+				and xsm not in (${academy})
+			</if>
+			<if test="major != null and major != ''">
+				and zym not in (${major})
+			</if>
+			<if test="classes != null and classes != ''">
+				and dqnj not in (${classes})
+			</if>
+			<if test="examDate != null and examDate != ''">
+				and ks_kssj in (${examDate})
+			</if>
+			<if test="langType != null and langType != ''">
+				and ks_yyjb in upper((${langType}))
+			</if>
+			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
+			order by ks_yyjb
+		</where>
+	</select>
+	<select id="statisticPassNumber" resultType="com.imust.newckbk.domain.excel.StatisticReport">
+		select
+			ks_yyjb as langType,
+			ks_xymc as academy,
+			ks_zymc as major,
+			ks_nj as grade,
+			ks_bjmc as classes,
+			count(*) as passNumber
+		from
+			cet_stuscore
+			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
+		<where>
+			xs_xjxxb_view_kw.SFYXJ = '是' and ks_zf >= 425
+			<if test="grade != null and grade != ''">
+				and dqnj not in (${grade})
+			</if>
+			<if test="academy != null and academy != ''">
+				and xsm not in (${academy})
+			</if>
+			<if test="major != null and major != ''">
+				and zym not in (${major})
+			</if>
+			<if test="classes != null and classes != ''">
+				and dqnj not in (${classes})
+			</if>
+			<if test="examDate != null and examDate != ''">
+				and ks_kssj in (${examDate})
+			</if>
+			<if test="langType != null and langType != ''">
+				and ks_yyjb in upper((${langType}))
+			</if>
+			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
+			order by ks_yyjb
+		</where>
+	</select>
+
+	<select id="statisticAvgScore" resultType="com.imust.newckbk.domain.excel.StatisticReport">
+		select
+			ks_yyjb as langType,
+			ks_xymc as academy,
+			ks_zymc as major,
+			ks_nj as grade,
+			ks_bjmc as classes,
+			round(avg(ks_zf),2) as avgScore
+		from
+			cet_stuscore
+			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
+		<where>
+			xs_xjxxb_view_kw.SFYXJ = '是'
+			<if test="grade != null and grade != ''">
+				and dqnj not in (${grade})
+			</if>
+			<if test="academy != null and academy != ''">
+				and xsm not in (${academy})
+			</if>
+			<if test="major != null and major != ''">
+				and zym not in (${major})
+			</if>
+			<if test="classes != null and classes != ''">
+				and dqnj not in (${classes})
+			</if>
+			<if test="examDate != null and examDate != ''">
+				and ks_kssj in (${examDate})
+			</if>
+			<if test="langType != null and langType != ''">
+				and ks_yyjb in upper((${langType}))
+			</if>
+			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
+			order by ks_yyjb
+		</where>
+	</select>
+
+	<select id="statisticMaxScore" resultType="com.imust.newckbk.domain.excel.StatisticReport">
+		select
+			ks_yyjb as langType,
+			ks_xymc as academy,
+			ks_zymc as major,
+			ks_nj as grade,
+			ks_bjmc as classes,
+			max(ks_zf) as maxScore
+		from
+			cet_stuscore
+			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
+		<where>
+			xs_xjxxb_view_kw.SFYXJ = '是'
+			<if test="grade != null and grade != ''">
+				and dqnj not in (${grade})
+			</if>
+			<if test="academy != null and academy != ''">
+				and xsm not in (${academy})
+			</if>
+			<if test="major != null and major != ''">
+				and zym not in (${major})
+			</if>
+			<if test="classes != null and classes != ''">
+				and dqnj not in (${classes})
+			</if>
+			<if test="examDate != null and examDate != ''">
+				and ks_kssj in (${examDate})
+			</if>
+			<if test="langType != null and langType != ''">
+				and ks_yyjb in upper((${langType}))
+			</if>
+			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
+			order by ks_yyjb
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="com.imust.newckbk.domain.CetStuscore" useGeneratedKeys="true" keyProperty="id">
 		insert into CET_STUSCORE
 		<trim prefix="(" suffix=")" suffixOverrides="," > 
 			<if test=" ksKssj != null and ksKssj != ''">
@@ -129,7 +340,6 @@
 		<!-- 新建条件属性 -->
 	</update>
     <update id="deleteByEntity" parameterType="com.imust.newckbk.domain.CetStuscore">
-		update CET_STUSCORE cetStuscore set deleted=1 
-		where id=#{id}
+		update CET_STUSCORE cetStuscore set deleted=1 where id=#{id}
 	</update>
 </mapper>

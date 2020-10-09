@@ -152,7 +152,16 @@
 			</if>
 		</where>
 	</select>
-    <insert id="insert" parameterType="com.imust.newckbk.domain.XsXjxxbViewKw" useGeneratedKeys="true" keyProperty="id">
+    <select id="getAcademy" resultType="java.lang.String">
+		select distinct xsm from XS_XJXXB_VIEW_KW  xsXjxxbViewKw where sfyxj = '是' and dqnj = #{grade}
+	</select>
+	<select id="getMajor" resultType="java.lang.String">
+		select distinct zym from XS_XJXXB_VIEW_KW  xsXjxxbViewKw where sfyxj = '是' and dqnj = #{grade} and xsm = #{academy}
+	</select>
+	<select id="getClasses" resultType="java.lang.String">
+		select distinct bjh from XS_XJXXB_VIEW_KW  xsXjxxbViewKw where sfyxj = '是' and dqnj = #{grade} and xsm = #{academy} and zym = #{major}
+	</select>
+	<insert id="insert" parameterType="com.imust.newckbk.domain.XsXjxxbViewKw" useGeneratedKeys="true" keyProperty="id">
 		insert into XS_XJXXB_VIEW_KW
 		<trim prefix="(" suffix=")" suffixOverrides="," > 
 			<if test=" xh != null and xh != ''">
