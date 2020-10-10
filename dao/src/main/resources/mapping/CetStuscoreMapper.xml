@@ -68,16 +68,16 @@
 		<where>
 			SFYXJ = '是'
 			<if test="grade != null and grade != ''">
-				and dqnj not in (#{grade})
+				and dqnj not in (${grade})
 			</if>
 			<if test="academy != null and academy != ''">
-				and xsm not in (#{academy})
+				and xsm not in (${academy})
 			</if>
 			<if test="major != null and major != ''">
-				and zym not in (#{major})
+				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and dqnj not in (#{classes})
+				and dqnj not in (${classes})
 			</if>
 			group by xsm,zym,dqnj,bjh
 			order by bjh
@@ -112,7 +112,7 @@
 				and ks_kssj in (${examDate})
 			</if>
 			<if test="langType != null and langType != ''">
-				and ks_yyjb in upper((${langType}))
+				and ks_yyjb in (${langType})
 			</if>
 			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
 			order by ks_yyjb
@@ -149,7 +149,7 @@
 				and ks_kssj in (${examDate})
 			</if>
 			<if test="langType != null and langType != ''">
-				and ks_yyjb in upper((${langType}))
+				and ks_yyjb in (${langType})
 			</if>
 			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
 			order by ks_yyjb
@@ -184,7 +184,7 @@
 				and ks_kssj in (${examDate})
 			</if>
 			<if test="langType != null and langType != ''">
-				and ks_yyjb in upper((${langType}))
+				and ks_yyjb in (${langType})
 			</if>
 			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
 			order by ks_yyjb
@@ -220,7 +220,7 @@
 				and ks_kssj in (${examDate})
 			</if>
 			<if test="langType != null and langType != ''">
-				and ks_yyjb in upper((${langType}))
+				and ks_yyjb in (${langType})
 			</if>
 			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
 			order by ks_yyjb
@@ -256,7 +256,7 @@
 				and ks_kssj in (${examDate})
 			</if>
 			<if test="langType != null and langType != ''">
-				and ks_yyjb in upper((${langType}))
+				and ks_yyjb in (${langType})
 			</if>
 			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
 			order by ks_yyjb

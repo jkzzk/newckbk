@@ -35,7 +35,7 @@
                             </div>
                             <div class="col-xs-2 col-sm-2 text-c">
                                 <input type="checkbox" class="check-box" name="dataSource" id="enterData" value="2">
-                                <label for="registerData">报考人数</label>
+                                <label for="enterData">报考人数</label>
                             </div>
                         </div>
                     </a>
@@ -71,9 +71,14 @@
                             <div class="col-xs-1 col-sm-1 text-c title">
                                 <input type="checkbox" class="check-box" name="langType" id="cgt4" value="'CGT4'">
                                 <label for="cgt4">CGT4</label>
-                            </div>                            <div class="col-xs-1 col-sm-1 text-c title">
+                            </div>
+                            <div class="col-xs-1 col-sm-1 text-c title">
                                 <input type="checkbox" class="check-box" name="langType" id="cgt6" value="'CGT6'">
                                 <label for="cgt6">CGT6</label>
+                            </div>
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="langType" id="pretcob" value="'PRETCO-B'">
+                                <label for="pretcob">PRETCO-B</label>
                             </div>
                         </div>
                     </a>

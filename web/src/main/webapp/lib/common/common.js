@@ -308,6 +308,45 @@ function ifIsNull(data, str){
     else
         return data;
 }
+
+/*
+*   保存jsTree原始数据，去重连接
+* */
+function concatNoRepeat(mainArr,concatArray) {
+
+    if(!Array.isArray(mainArr) || !Array.isArray(concatArray)) {
+        return [];
+    }
+
+    for(let i = 0; i < mainArr.length; i++) {
+        for(let j = 0; j < concatArray.length; j++) {
+            if(mainArr[i].text == concatArray[j].text) {
+                concatArray.splice(j,1);
+                break;
+            }
+        }
+    }
+
+    return mainArr.concat(concatArray);
+}
+
+function get_unCheckNodes(checkNodes,allNodes) {
+
+    if(!Array.isArray(checkNodes) || !Array.isArray(allNodes)) {
+        return [];
+    }
+
+    for(let i = 0; i < checkNodes.length; i++){
+        for(let j = 0; j < allNodes.length; j++) {
+            if (allNodes[j].text == checkNodes[i].text) {
+                allNodes.splice(j,1);
+                break;
+            }
+        }
+    }
+
+    return allNodes;
+}
 /**
  * 时间格式化
  * 作者：闫慧彬

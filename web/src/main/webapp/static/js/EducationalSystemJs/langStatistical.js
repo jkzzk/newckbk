@@ -19,6 +19,8 @@ var statisticParam = {
     classes : ''
 }
 
+var treeOriginArr = [];
+
 // 查询树数据
 function querytreeData(obj,cb){
     $.ajax({
@@ -29,6 +31,8 @@ function querytreeData(obj,cb){
         dataType:"json",
         success:function (res) {
             let items = res.data;
+            let assignTmpNodeObj = Object.assign([], items);
+            treeOriginArr = concatNoRepeat(treeOriginArr,assignTmpNodeObj);
             cb.call(this, items);
         },error:function (error) {
         }
@@ -108,6 +112,8 @@ function loadChilrenNode(url) {
             }else {
                 childredNode = [];
             }
+            let assignTmpNodeObj = Object.assign([], childredNode);
+            treeOriginArr = concatNoRepeat(treeOriginArr,assignTmpNodeObj);
         },
         error:function (message) {
             console.log(message);
@@ -119,19 +125,22 @@ function loadChilrenNode(url) {
 function cleanUpParam() {
     let initParam = $('#form-member-add').serializeObject();
     let checkNodes = $('#infoTree').jstree(true).get_selected(true);
+    let undeterminedNodes = $('#infoTree').jstree(true).get_undetermined(true);
+    let assignOrigin = Object.assign([],treeOriginArr);
+    let uncheckNodes = get_unCheckNodes(checkNodes.concat(undeterminedNodes),assignOrigin);
     let grade = [];
     let academy = [];
     let major = [];
     let classes = [];
-    for(let i = 0; i < checkNodes.length; i++) {
-        if(checkNodes[i].original.level == "0") {
-            grade.push(checkNodes[i].text);
-        }else if(checkNodes[i].original.level == "1") {
-            academy.push(checkNodes[i].text);
-        }else if(checkNodes[i].original.level == "2") {
-            major.push(checkNodes[i].text);
-        }else if(checkNodes[i].original.level == "3") {
-            classes.push(checkNodes[i].text);
+    for(let i = 0; i < uncheckNodes.length; i++) {
+        if(uncheckNodes[i].level == "0") {
+            grade.push("'" + uncheckNodes[i].text + "'");
+        }else if(uncheckNodes[i].level == "1") {
+            academy.push("'" + uncheckNodes[i].text + "'");
+        }else if(uncheckNodes[i].level == "2") {
+            major.push("'" + uncheckNodes[i].text + "'");
+        }else if(uncheckNodes[i].level == "3") {
+            classes.push("'" + uncheckNodes[i].text + "'");
         }
     }
 
@@ -141,9 +150,16 @@ function cleanUpParam() {
         }else {
             statisticParam.dataSource = initParam.dataSource;
         }
+    }else {
+        errMsg("请选择数据基数！");
+        return false;
     }
     if(ifIsNull(initParam.langType) != '') {
-        statisticParam.langType = initParam.langType;
+        if(Array.isArray(initParam.langType)) {
+            statisticParam.langType = initParam.langType.join(",");
+        }else {
+            statisticParam.langType = initParam.langType;
+        }
     }else {
         errMsg("请选择语种类别！");
         return false;
@@ -212,13 +228,13 @@ $(function () {
     // 统计并导出
     $('#statisticAndExport').click(function () {
         if(cleanUpParam()) {
-            console.log("statisticParam",statisticParam);
+            // console.log("statisticParam",statisticParam);
             $('#loadingToast').show();
-            setTimeout(function () {
+            /*setTimeout(function () {
                 window.open("/langExam/exportStatistic");
                 $('#loadingToast').hide();
-            },1000)
-            /*$.request({
+            },1000);*/
+            $.request({
                 async : false,
                 url : '/langExam/statisticReport',
                 data : JSON.stringify(statisticParam),
@@ -230,7 +246,8 @@ $(function () {
                         // 导出excel
                         window.open("/langExam/exportStatistic");
                     }else {
-
+                        // 导出失败
+                        errMsg("统计失败！");
                     }
                     setTimeout(function () {
                         $('#loadingToast').hide();
@@ -241,7 +258,7 @@ $(function () {
                     console.log(message);
                     errMsg("网络异常");
                 }
-            });*/
+            });
         }
     });
 });

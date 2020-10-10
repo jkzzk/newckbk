@@ -87,7 +87,7 @@
 			sum(actual_number) as actualNumber,
 			sum(missing_number) as missingNumber,
 			sum(pass_number) as passNumber,
-			avg(avg_score) as avgScore,
+			round(avg(avg_score)) as avgScore,
 			max(max_score) as maxScore
 		from
 			STATISTIC_REPORT  statisticReport
@@ -103,7 +103,7 @@
 			sum(actual_number) as actualNumber,
 			sum(missing_number) as missingNumber,
 			sum(pass_number) as passNumber,
-			avg(avg_score) as avgScore,
+			round(avg(avg_score)) as avgScore,
 			max(max_score) as maxScore
 		from
 			STATISTIC_REPORT  statisticReport
@@ -120,7 +120,7 @@
 			sum(actual_number) as actualNumber,
 			sum(missing_number) as missingNumber,
 			sum(pass_number) as passNumber,
-			avg(avg_score) as avgScore,
+			round(avg(avg_score)) as avgScore,
 			max(max_score) as maxScore
 		from
 			STATISTIC_REPORT  statisticReport
@@ -138,7 +138,7 @@
 			sum(actual_number) as actualNumber,
 			sum(missing_number) as missingNumber,
 			sum(pass_number) as passNumber,
-			avg(avg_score) as avgScore,
+			round(avg(avg_score)) as avgScore,
 			max(max_score) as maxScore
 		from
 			STATISTIC_REPORT  statisticReport

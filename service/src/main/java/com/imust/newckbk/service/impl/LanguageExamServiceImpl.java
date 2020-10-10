@@ -7,8 +7,10 @@ import com.imust.newckbk.dao.*;
 import com.imust.newckbk.domain.Cet4Tjjl;
 import com.imust.newckbk.domain.LanguageExam;
 
+import com.imust.newckbk.domain.excel.LanTypeCalc;
 import com.imust.newckbk.domain.excel.StatisticReport;
 import com.imust.newckbk.domain.excel.StatisticReportExcel;
+import com.imust.newckbk.domain.excel.StatisticStruct;
 import com.imust.newckbk.domain.ext.*;
 import com.imust.newckbk.exception.CustomException;
 import com.imust.newckbk.utils.SnowRakeIdGenerator;
@@ -505,149 +507,55 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		}
     }
 
+    // 分组合计并插入
 	private List<StatisticReportExcel> getSumList(List<StatisticReportExcel> statisticReportExcels) {
-    	// 按语种类别合计
+
+		// 按语种类别合计
 		List<StatisticReportExcel> statisticReportExcelsByLangType = statisticReportDao.sumByLangType();
 		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByLangType) {
-			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4,BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
 			statisticReportExcel.setMissingRate(missingRate.toString());
-			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setPassRate(passRate.toString());
 		}
 		// 按学院合计
 		List<StatisticReportExcel> statisticReportExcelsByAcademy = statisticReportDao.sumByAcademy();
 		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByAcademy) {
-			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4,BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
 			statisticReportExcel.setMissingRate(missingRate.toString());
-			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setPassRate(passRate.toString());
 		}
 		// 按专业合计
 		List<StatisticReportExcel> statisticReportExcelsByMajor = statisticReportDao.sumByMajor();
 		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByMajor) {
-			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4,BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
 			statisticReportExcel.setMissingRate(missingRate.toString());
-			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setPassRate(passRate.toString());
 		}
 		// 按年级合计
 		List<StatisticReportExcel> statisticReportExcelsByGrade = statisticReportDao.sumByGrade();
 		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByGrade) {
-			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4,BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
 			statisticReportExcel.setMissingRate(missingRate.toString());
-			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100));
+			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setPassRate(passRate.toString());
 		}
 
-		Map<String,List<StatisticReportExcel>> mapByLangType = new HashMap<>();
-		for (StatisticReportExcel statisticReportExcel : statisticReportExcels) {
-			String key = statisticReportExcel.getLangType();
-			if(mapByLangType.containsKey(key)) {
-				mapByLangType.get(key).add(statisticReportExcel);
-			}else {
-				List<StatisticReportExcel> tempList = new ArrayList<>();
-				tempList.add(statisticReportExcel);
-				mapByLangType.put(key,tempList);
-			}
-		}
+		StatisticStruct statisticStruct = new StatisticStruct(statisticReportExcels,statisticReportExcelsByLangType,statisticReportExcelsByAcademy,statisticReportExcelsByMajor,statisticReportExcelsByGrade);
 
-		for (String key : mapByLangType.keySet()) {
-			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByLangType) {
-				if(statisticReportExcel.getLangType().equals(key)) {
-					mapByLangType.get(key).add(statisticReportExcel);
-				}
-			}
-		}
+		List<StatisticReportExcel> statisticReportExcelsCalc = statisticStruct.getStatisticStruct().insertCalcStatisticStruct().getCalcStatisticStruct().getStatisticReportExcelsCalc();
 
-		List<StatisticReportExcel> sumByLangType = new ArrayList<>();
-		for (String key : mapByLangType.keySet()) {
-			sumByLangType.addAll(mapByLangType.get(key));
-		}
-
-		Map<String,List<StatisticReportExcel>> mapByAcademy = new HashMap<>();
-		for (StatisticReportExcel statisticReportExcel : sumByLangType) {
-			String key = statisticReportExcel.getLangType()+statisticReportExcel.getAcademy();
-			if(mapByAcademy.containsKey(key)) {
-				mapByAcademy.get(key).add(statisticReportExcel);
-			}else {
-				List<StatisticReportExcel> tempList = new ArrayList<>();
-				tempList.add(statisticReportExcel);
-				mapByAcademy.put(key,tempList);
-			}
-		}
-
-		for (String key : mapByAcademy.keySet()) {
-			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByAcademy) {
-				if((statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()).equals(key)) {
-					mapByAcademy.get(key).add(statisticReportExcel);
-				}
-			}
-		}
-
-		List<StatisticReportExcel> sumByAcademy = new ArrayList<>();
-		for (String key : mapByAcademy.keySet()) {
-			sumByAcademy.addAll(mapByAcademy.get(key));
-		}
-
-		Map<String,List<StatisticReportExcel>> mapByMajor = new HashMap<>();
-		for (StatisticReportExcel statisticReportExcel : sumByAcademy) {
-			String key = statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()+statisticReportExcel.getMajor();
-			if(mapByMajor.containsKey(key)) {
-				mapByMajor.get(key).add(statisticReportExcel);
-			}else {
-				List<StatisticReportExcel> tempList = new ArrayList<>();
-				tempList.add(statisticReportExcel);
-				mapByMajor.put(key,tempList);
-			}
-		}
-
-		for (String key : mapByMajor.keySet()) {
-			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByMajor) {
-				if((statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()+statisticReportExcel.getMajor()).equals(key)) {
-					mapByMajor.get(key).add(statisticReportExcel);
-				}
-			}
-		}
-
-		List<StatisticReportExcel> sumByMajor = new ArrayList<>();
-		for (String key : mapByMajor.keySet()) {
-			sumByMajor.addAll(mapByMajor.get(key));
-		}
-
-		Map<String,List<StatisticReportExcel>> mapByGrade = new HashMap<>();
-		for (StatisticReportExcel statisticReportExcel : sumByMajor) {
-			String key = statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()+statisticReportExcel.getMajor()+statisticReportExcel.getGrade();
-			if(mapByGrade.containsKey(key)) {
-				mapByGrade.get(key).add(statisticReportExcel);
-			}else {
-				List<StatisticReportExcel> tempList = new ArrayList<>();
-				tempList.add(statisticReportExcel);
-				mapByGrade.put(key,tempList);
-			}
-		}
-
-		for (String key : mapByGrade.keySet()) {
-			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByGrade) {
-				if((statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()+statisticReportExcel.getMajor()+statisticReportExcel.getGrade()).equals(key)) {
-					mapByGrade.get(key).add(statisticReportExcel);
-				}
-			}
-		}
-
-		List<StatisticReportExcel> sumByGrade = new ArrayList<>();
-		for (String key : mapByGrade.keySet()) {
-			sumByGrade.addAll(mapByGrade.get(key));
-		}
-
-		return sumByGrade;
+		return statisticReportExcelsCalc;
 	}
 
 	private Workbook getExcelWorkBook(List<StatisticReportExcel> statisticReportExcels, LangStisticExt langStisticExt) {
