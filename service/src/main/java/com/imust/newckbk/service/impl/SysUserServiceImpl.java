@@ -53,11 +53,10 @@ public class SysUserServiceImpl extends AbstractService<SysUser, String> impleme
 
     public static void main(String[] args) {
 
-        String  password   = MD5.encode("19831216@hxw");
-        String  saltSource = Base64.encode(("admin" + password).getBytes()).replace("\n", "");
+        String  password   = MD5.encode("123456");
+        String  saltSource = Base64.encode(("adminjwk" + password).getBytes()).replace("\n", "");
         System.out.println(saltSource);
         System.out.println(StringUtil.saltCode(saltSource, password));
-
     }
 
     @Override

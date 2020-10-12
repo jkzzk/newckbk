@@ -29,9 +29,9 @@
                     <li class="dropDown dropDown_hover">
                         <a href="#" class="dropDown_A">${user.loginName} <i class="Hui-iconfont">&#xe6d5;</i></a>
                             <ul class="dropDown-menu menu radius box-shadow">
-<%--                                <c:if test="${user.roleIds != 2}">
+                                <c:if test="${user.roleIds != 2}">
                                     <li><a href="#" onclick="change_password('修改密码','/user/tochange?id='+${user.id},'500','270')">修改密码</a></li>
-                                </c:if>--%>
+                                </c:if>
                                 <li><a href="#" onclick="logOut()">退出登录</a></li>
                             </ul>
                     </li>

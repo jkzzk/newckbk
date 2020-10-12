@@ -99,6 +99,7 @@ public class StatisticStruct {
                 joinAcademyCalc(this.lanTypeCalcs.get(index), statisticReportExcel);
             }else {
                 this.lanTypeCalcs.add(key_lanType);
+                joinAcademyCalc(key_lanType,statisticReportExcel);
             }
         }
 
@@ -182,6 +183,7 @@ public class StatisticStruct {
             joinMajorCalc(lanTypeCalc.getStatisticReportExcels().get(index), statisticReportExcel);
         }else {
             lanTypeCalc.getStatisticReportExcels().add(key_academy);
+            joinMajorCalc(key_academy, statisticReportExcel);
         }
     }
 
@@ -192,6 +194,7 @@ public class StatisticStruct {
             joinGradeCalc(academyCalc.getStatisticReportExcels().get(index),statisticReportExcel);
         }else {
             academyCalc.getStatisticReportExcels().add(key_major);
+            joinGradeCalc(key_major,statisticReportExcel);
         }
     }
 

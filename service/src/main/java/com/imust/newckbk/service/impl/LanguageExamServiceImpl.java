@@ -16,11 +16,10 @@ import com.imust.newckbk.exception.CustomException;
 import com.imust.newckbk.utils.SnowRakeIdGenerator;
 import com.imust.newckbk.utils.easypoi.ExcelUtiles;
 import org.apache.ibatis.annotations.Lang;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -135,30 +134,66 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		boolean cet4 = languageInfoExt.getCet4().equals("1");
 		if(cet4) {
 
-			List<String> gardeList = this.getGradeArr(languageInfoExt.getFirstGrade());
+			this.getGradeArr(languageInfoExt);
 
 			// 分年级筛选，本科类型与特殊学院置于sql语句中
+			List<LanguageExam> languageExams = new ArrayList<>();
 
-			// 大一年级
+			// 大一年级本科
 			if("1".equals(languageInfoExt.getIsFirstGrade())) {
-
+				List<LanguageExam> firstCollagelanguageExams = languageExamDao.generateCET4CollageForFirstGrade(languageInfoExt);
+				languageExams.addAll(firstCollagelanguageExams);
 			}
 
-			// 大二年级
+			// 大二年级本科
 			if("1".equals(languageInfoExt.getIsSecondGrade())) {
-
+				List<LanguageExam> secondCollagelanguageExams = languageExamDao.generateCET4CollageForSecondGrade(languageInfoExt);
+				languageExams.addAll(secondCollagelanguageExams);
 			}
 
-			// 大三年级
+			// 大三年级本科
 			if("1".equals(languageInfoExt.getIsThirdGrade())) {
-
+				List<LanguageExam> thirdCollagelanguageExams = languageExamDao.generateCET4CollageForThirdGrade(languageInfoExt);
+				languageExams.addAll(thirdCollagelanguageExams);
 			}
 
-			// 大四年级
+			// 大四年级本科
 			if("1".equals(languageInfoExt.getIsFoGrade())) {
-
+				List<LanguageExam> foCollagelanguageExams = languageExamDao.generateCET4CollageForFoGrade(languageInfoExt);
+				languageExams.addAll(foCollagelanguageExams);
 			}
 
+			// 大五年级本科
+			if("1".equals(languageInfoExt.getIsFifthGrade())) {
+				List<LanguageExam> fifCollagelanguageExams = languageExamDao.generateCET4CollageForFifGrade(languageInfoExt);
+				languageExams.addAll(fifCollagelanguageExams);
+			}
+
+			// 专一年级
+			if("1".equals(languageInfoExt.getIsJuniorFirstGrade())) {
+				List<LanguageExam> firstJuniorlanguageExams = languageExamDao.generateCET4JuniorForFirstGrade(languageInfoExt);
+				languageExams.addAll(firstJuniorlanguageExams);
+			}
+
+			// 专二年级
+			if("1".equals(languageInfoExt.getIsJuniorSecondGrade())) {
+				List<LanguageExam> secondJuniorlanguageExams = languageExamDao.generateCET4JuniorForSecondGrade(languageInfoExt);
+				languageExams.addAll(secondJuniorlanguageExams);
+			}
+
+			// 专三年级
+			if("1".equals(languageInfoExt.getIsJuniorThirdGrade())) {
+				List<LanguageExam> thirdJuniorlanguageExams = languageExamDao.generateCET4JuniorForThirdGrade(languageInfoExt);
+				languageExams.addAll(thirdJuniorlanguageExams);
+			}
+
+			languageExams.forEach(item -> {
+				item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+			});
+
+			for (LanguageExam languageExam : languageExams) {
+				languageExamDao.insert(languageExam);
+			}
 
 			return RespData.successMsg("英语四级名单生成成功！");
 		}else {
@@ -167,128 +202,253 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		}
 	}
 
-	private List<String> getGradeArr(String firstGrade) {
+	/**
+	 * 根据大一年级获取在校所有年级
+	 *
+	 * @param languageInfoExt
+	 */
+	private void getGradeArr(LanguageInfoExt languageInfoExt) {
 
 		List<String> gradeList = new ArrayList<>();
 
-		if(firstGrade != null && !firstGrade.equals("")) {
-			int first = Integer.parseInt(firstGrade);
+		if(languageInfoExt.getFirstGrade() != null && !languageInfoExt.getFirstGrade().equals("")) {
+			int first = Integer.parseInt(languageInfoExt.getFirstGrade());
 			for(int i = first; i > first-5; i--) {
 				gradeList.add(String.valueOf(i));
 			}
-		}
 
-		return gradeList;
+			for(int i = 0; i < gradeList.size(); i++) {
+				if(i == 1) {
+					languageInfoExt.setSecondGrade(gradeList.get(i));
+				}
+				if(i == 2) {
+					languageInfoExt.setThirdGrade(gradeList.get(i));
+				}
+				if(i == 3) {
+					languageInfoExt.setFoGrade(gradeList.get(i));
+				}
+				if(i == 4) {
+					languageInfoExt.setFifGrade(gradeList.get(i));
+				}
+			}
+		}
 	}
 
 	@Override
 	public RespData generateCET6() {
 
-		CET4TJExt currentAllCET4TJ = this.getCurrentAllCET4TJ();
+		LanguageInfoExt languageInfoExt = languageTjjlDao.getAllTj();
 
-		if(currentAllCET4TJ == null) {
+		if(languageInfoExt == null) {
 			return RespData.errorMsg("条件出错！");
 		}
 
-		List<LanguageExam> languageExamsCET6 = languageExamDao.generateCET6ForAll(currentAllCET4TJ);
+		boolean cet6 = languageInfoExt.getCet6().equals("1");
 
-		languageExamsCET6.forEach(item -> {
-			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
-		});
+		if(cet6) {
 
-		if(!languageExamsCET6.isEmpty()) {
-			languageExamDao.insertBatch(languageExamsCET6);
+			List<LanguageExam> languageExamsCET6 = languageExamDao.generateCET6ForAll(languageInfoExt);
+
+			languageExamsCET6.forEach(item -> {
+				item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+			});
+
+			if(!languageExamsCET6.isEmpty()) {
+				for (LanguageExam languageExam : languageExamsCET6) {
+					languageExamDao.insert(languageExam);
+				}
+			}
+
+			return RespData.successMsg("英语六级名单生成成功！");
+		}else {
+			return RespData.errorMsg("条件中没有设置CET6考试！");
 		}
-
-		return RespData.successMsg("英语六级名单生成成功！");
 	}
 
 	@Override
 	public RespData generateCRT4() {
 
-		CET4TJExt currentAllCET4TJ = this.getCurrentAllCET4TJ();
+		LanguageInfoExt languageInfoExt = languageTjjlDao.getAllTj();
 
-		if(currentAllCET4TJ == null) {
+		if(languageInfoExt == null) {
 			return RespData.errorMsg("条件出错！");
 		}
 
-		List<LanguageExam> languageExamsCRT4 = languageExamDao.generateCRT4ForAll(currentAllCET4TJ);
+		boolean crt4 = languageInfoExt.getCrt4().equals("1");
 
-		languageExamsCRT4.forEach(item -> {
-			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
-		});
+		if(crt4) {
 
-		if(!languageExamsCRT4.isEmpty()) {
-			languageExamDao.insertBatch(languageExamsCRT4);
+			List<LanguageExam> languageExamsCRT4 = languageExamDao.generateCRT4ForAll(languageInfoExt);
+
+			languageExamsCRT4.forEach(item -> {
+				item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+			});
+
+			if(!languageExamsCRT4.isEmpty()) {
+				for (LanguageExam languageExam : languageExamsCRT4) {
+					languageExamDao.insert(languageExam);
+				}
+			}
+
+			return RespData.successMsg("俄语四级名单生成成功！");
+		}else {
+			return RespData.errorMsg("条件中没有设置CRT4考试！");
 		}
-
-		return RespData.successMsg("俄语四级名单生成成功！");
 	}
 
 	@Override
 	public RespData generateCRT6() {
 
-		CET4TJExt currentAllCET4TJ = this.getCurrentAllCET4TJ();
+		LanguageInfoExt languageInfoExt = languageTjjlDao.getAllTj();
 
-		if(currentAllCET4TJ == null) {
+		if(languageInfoExt == null) {
 			return RespData.errorMsg("条件出错！");
 		}
 
-		List<LanguageExam> languageExamsCRT6 = languageExamDao.generateCRT6ForAll(currentAllCET4TJ);
+		boolean crt6 = languageInfoExt.getCrt6().equals("1");
 
-		languageExamsCRT6.forEach(item -> {
-			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
-		});
+		if(crt6) {
 
-		if(!languageExamsCRT6.isEmpty()) {
-			languageExamDao.insertBatch(languageExamsCRT6);
+			List<LanguageExam> languageExamsCRT6 = languageExamDao.generateCRT6ForAll(languageInfoExt);
+
+			languageExamsCRT6.forEach(item -> {
+				item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+			});
+
+			if(!languageExamsCRT6.isEmpty()) {
+				for (LanguageExam languageExam : languageExamsCRT6) {
+					languageExamDao.insert(languageExam);
+				}
+			}
+
+			return RespData.successMsg("俄语六级名单生成成功！");
+		}else {
+			return RespData.errorMsg("条件中没有设置CRT6考试！");
 		}
-
-		return RespData.successMsg("俄语六级名单生成成功！");
 	}
 
 	@Override
 	public RespData generateCJT4() {
 
-		CET4TJExt currentAllCET4TJ = this.getCurrentAllCET4TJ();
+		LanguageInfoExt languageInfoExt = languageTjjlDao.getAllTj();
 
-		if(currentAllCET4TJ == null) {
+		if(languageInfoExt == null) {
 			return RespData.errorMsg("条件出错！");
 		}
 
-		List<LanguageExam> languageExamsCJT4 = languageExamDao.generateCJT4ForAll(currentAllCET4TJ);
+		boolean cjt4 = languageInfoExt.getCjt4().equals("1");
 
-		languageExamsCJT4.forEach(item -> {
-			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
-		});
+		if(cjt4) {
 
-		if(!languageExamsCJT4.isEmpty()) {
-			languageExamDao.insertBatch(languageExamsCJT4);
+			List<LanguageExam> languageExamsCJT4 = languageExamDao.generateCJT4ForAll(languageInfoExt);
+
+			languageExamsCJT4.forEach(item -> {
+				item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+			});
+
+			if(!languageExamsCJT4.isEmpty()) {
+				for (LanguageExam languageExam : languageExamsCJT4) {
+					languageExamDao.insert(languageExam);
+				}
+			}
+
+			return RespData.successMsg("日语四级名单生成成功！");
+		}else {
+			return RespData.errorMsg("条件中没有设置CJT4考试！");
 		}
-
-		return RespData.successMsg("日语四级名单生成成功！");
 	}
 
 	@Override
 	public RespData generateCJT6() {
 
-		CET4TJExt currentAllCET4TJ = this.getCurrentAllCET4TJ();
+		LanguageInfoExt languageInfoExt = languageTjjlDao.getAllTj();
 
-		if(currentAllCET4TJ == null) {
+		if(languageInfoExt == null) {
 			return RespData.errorMsg("条件出错！");
 		}
 
-		List<LanguageExam> languageExamsCJT6 = languageExamDao.generateCJT6ForAll(currentAllCET4TJ);
+		boolean crt6 = languageInfoExt.getCrt6().equals("1");
 
-		languageExamsCJT6.forEach(item -> {
-			item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
-		});
+		if(crt6) {
 
-		if(!languageExamsCJT6.isEmpty()) {
-			languageExamDao.insertBatch(languageExamsCJT6);
+			List<LanguageExam> languageExamsCJT6 = languageExamDao.generateCJT6ForAll(languageInfoExt);
+
+			languageExamsCJT6.forEach(item -> {
+				item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+			});
+
+			if(!languageExamsCJT6.isEmpty()) {
+				for (LanguageExam languageExam : languageExamsCJT6) {
+					languageExamDao.insert(languageExam);
+				}
+			}
+
+			return RespData.successMsg("日语六级名单生成成功！");
+		}else {
+			return RespData.errorMsg("条件中没有设置CJT6考试！");
+		}
+	}
+
+	@Override
+	public RespData generateCGT4() {
+
+		LanguageInfoExt languageInfoExt = languageTjjlDao.getAllTj();
+
+		if(languageInfoExt == null) {
+			return RespData.errorMsg("条件出错！");
 		}
 
-		return RespData.successMsg("日语六级名单生成成功！");
+		boolean cgt4 = languageInfoExt.getCgt4().equals("1");
+
+		if(cgt4) {
+
+			List<LanguageExam> languageExamsCGT4 = languageExamDao.generateCGT4ForAll(languageInfoExt);
+
+			languageExamsCGT4.forEach(item -> {
+				item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+			});
+
+			if(!languageExamsCGT4.isEmpty()) {
+				for (LanguageExam languageExam : languageExamsCGT4) {
+					languageExamDao.insert(languageExam);
+				}
+			}
+
+			return RespData.successMsg("德语四级名单生成成功！");
+		}else {
+			return RespData.errorMsg("条件中没有设置CGT4考试！");
+		}
+	}
+
+	@Override
+	public RespData generateCGT6() {
+
+		LanguageInfoExt languageInfoExt = languageTjjlDao.getAllTj();
+
+		if(languageInfoExt == null) {
+			return RespData.errorMsg("条件出错！");
+		}
+
+		boolean cgt6 = languageInfoExt.getCgt6().equals("1");
+
+		if(cgt6) {
+
+			List<LanguageExam> languageExamsCGT6 = languageExamDao.generateCGT6ForAll(languageInfoExt);
+
+			languageExamsCGT6.forEach(item -> {
+				item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+			});
+
+			if(!languageExamsCGT6.isEmpty()) {
+				for (LanguageExam languageExam : languageExamsCGT6) {
+					languageExamDao.insert(languageExam);
+				}
+			}
+
+			return RespData.successMsg("日语六级名单生成成功！");
+		}else {
+			return RespData.errorMsg("条件中没有设置CGT6考试！");
+		}
 	}
 
     @Override
@@ -542,7 +702,12 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		}
     }
 
-    // 分组合计并插入
+	@Override
+	public List<LanguageExam> getAllByType(String exportType) {
+    	return languageExamDao.getAllByType(exportType);
+	}
+
+	// 分组合计并插入
 	private List<StatisticReportExcel> getSumList(List<StatisticReportExcel> statisticReportExcels) {
 
 		// 按语种类别合计
@@ -550,6 +715,9 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByLangType) {
 			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
 			statisticReportExcel.setMissingRate(missingRate.toString());
+			if(statisticReportExcel.getSchoolNumber().equals("0")) {
+				statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+			}
 			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
 			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
@@ -560,6 +728,9 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByAcademy) {
 			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
 			statisticReportExcel.setMissingRate(missingRate.toString());
+			if(statisticReportExcel.getSchoolNumber().equals("0")) {
+				statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+			}
 			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
 			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
@@ -570,6 +741,9 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByMajor) {
 			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
 			statisticReportExcel.setMissingRate(missingRate.toString());
+			if(statisticReportExcel.getSchoolNumber().equals("0")) {
+				statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+			}
 			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
 			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
@@ -580,6 +754,9 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByGrade) {
 			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
 			statisticReportExcel.setMissingRate(missingRate.toString());
+			if(statisticReportExcel.getSchoolNumber().equals("0")) {
+				statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+			}
 			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
 			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
 			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
@@ -596,6 +773,35 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 	private Workbook getExcelWorkBook(List<StatisticReportExcel> statisticReportExcels, LangStisticExt langStisticExt) {
 		Workbook workbook = new SXSSFWorkbook();
 
+		CellStyle cellStyleValue = workbook.createCellStyle();
+		cellStyleValue.setBorderBottom(BorderStyle.THIN); //下边框
+		cellStyleValue.setBorderLeft(BorderStyle.THIN);//左边框
+		cellStyleValue.setBorderTop(BorderStyle.THIN);//上边框
+		cellStyleValue.setBorderRight(BorderStyle.THIN);//右边框
+		cellStyleValue.setAlignment(HorizontalAlignment.CENTER); // 居中
+		cellStyleValue.setVerticalAlignment(VerticalAlignment.CENTER); // 居中
+
+		CellStyle cellStyleTitle = workbook.createCellStyle();
+		cellStyleTitle.setBorderBottom(BorderStyle.THIN); //下边框
+		cellStyleTitle.setBorderLeft(BorderStyle.THIN);//左边框
+		cellStyleTitle.setBorderTop(BorderStyle.THIN);//上边框
+		cellStyleTitle.setBorderRight(BorderStyle.THIN);//右边框
+		cellStyleTitle.setAlignment(HorizontalAlignment.CENTER); // 居中
+		Font font = workbook.createFont();
+		font.setBold(true);
+		cellStyleTitle.setFont(font);
+
+		CellStyle cellStyleCalc = workbook.createCellStyle();
+		cellStyleTitle.setBorderBottom(BorderStyle.THIN); //下边框
+		cellStyleTitle.setBorderLeft(BorderStyle.THIN);//左边框
+		cellStyleTitle.setBorderTop(BorderStyle.THIN);//上边框
+		cellStyleTitle.setBorderRight(BorderStyle.THIN);//右边框
+		cellStyleTitle.setAlignment(HorizontalAlignment.CENTER); // 居中
+		Font font_color = workbook.createFont();
+		font_color.setBold(true);
+		font_color.setColor(Font.COLOR_RED);
+		cellStyleTitle.setFont(font);
+
 		if(langStisticExt == null) {
 			return null;
 		}
@@ -611,21 +817,45 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			column = 13;
 		}
 
-		for (int i = 0; i < statisticReportExcels.size(); i++) {
+		// 设置列宽
+		for (int i = 0; i < column; i++) {
+			statisticSheet.setColumnWidth(i, 6000);
+		}
+
+		// 设置标题
+		this.setTitle(column,statisticSheet,cellStyleTitle);
+
+		// 填写数据并统计合并列位置
+		Map<Integer,Integer> region = new TreeMap<>();
+		for (int i = 1; i < statisticReportExcels.size(); i++) {
 			Row row = statisticSheet.createRow(i);
+			row.setHeightInPoints(20);
 			for (int j = 0; j < column; j++) {
 				Cell cell = row.createCell(j);
+				cell.setCellStyle(cellStyleValue);
 				if(0 == j) {
 					cell.setCellValue(statisticReportExcels.get(i).getLangType());
 				}
 				if(1 == j) {
-					cell.setCellValue(statisticReportExcels.get(i).getAcademy());
+					String academy = statisticReportExcels.get(i).getAcademy();
+					cell.setCellValue(academy);
+					if(academy != null && !academy.equals("") && statisticReportExcels.get(i).getAcademy().equals("合计")) {
+						region.put(i,1);
+					}
 				}
 				if(2 == j) {
-					cell.setCellValue(statisticReportExcels.get(i).getMajor());
+					String major = statisticReportExcels.get(i).getMajor();
+					cell.setCellValue(major);
+					if(major != null && !major.equals("") && statisticReportExcels.get(i).getMajor().equals("合计")) {
+						region.put(i,2);
+					}
 				}
 				if(3 == j) {
-					cell.setCellValue(statisticReportExcels.get(i).getGrade());
+					String grade = statisticReportExcels.get(i).getGrade();
+					cell.setCellValue(grade);
+					if(grade != null && !grade.equals("") && statisticReportExcels.get(i).getGrade().equals("合计")) {
+						region.put(i,3);
+					}
 				}
 				if(4 == j) {
 					cell.setCellValue(statisticReportExcels.get(i).getClasses());
@@ -713,7 +943,118 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			}
 		}
 
+		// 合并列
+		for (Integer row : region.keySet()) {
+			Integer col = region.get(row);
+			if(1 == col) {
+				CellRangeAddress regionMerge = new CellRangeAddress(row,row,col,col+3);
+				statisticSheet.addMergedRegion(regionMerge);
+			}else if(2 == col) {
+				CellRangeAddress regionMerge = new CellRangeAddress(row,row,col,col+2);
+				statisticSheet.addMergedRegion(regionMerge);
+			}else if(3 == col) {
+				CellRangeAddress regionMerge = new CellRangeAddress(row,row,col,col+1);
+				statisticSheet.addMergedRegion(regionMerge);
+			}
+		}
+
 		return workbook;
+	}
+
+	/**
+	 * 设置表头
+	 *
+	 * @param column
+	 * @param statisticSheet
+	 * @param cellStyleTitle
+	 */
+	private void setTitle(int column, Sheet statisticSheet, CellStyle cellStyleTitle) {
+		// 设置表头
+		Row titleRow = statisticSheet.createRow(0);
+		titleRow.setHeightInPoints(30);
+		for (int i = 0; i < column; i++) {
+			titleRow.createCell(i);
+		}
+		titleRow.getCell(0).setCellValue("语种类别");
+		titleRow.getCell(0).setCellStyle(cellStyleTitle);
+		titleRow.getCell(1).setCellValue("学院");
+		titleRow.getCell(1).setCellStyle(cellStyleTitle);
+		titleRow.getCell(2).setCellValue("专业");
+		titleRow.getCell(2).setCellStyle(cellStyleTitle);
+		titleRow.getCell(3).setCellValue("年级");
+		titleRow.getCell(3).setCellStyle(cellStyleTitle);
+		titleRow.getCell(4).setCellValue("班级");
+		titleRow.getCell(4).setCellStyle(cellStyleTitle);
+		if(column == 15) {
+			titleRow.getCell(5).setCellValue("学籍人数");
+			titleRow.getCell(5).setCellStyle(cellStyleTitle);
+		}else if(column == 13) {
+			titleRow.getCell(5).setCellValue("报考人数");
+			titleRow.getCell(5).setCellStyle(cellStyleTitle);
+		}
+		if(column == 15) {
+			titleRow.getCell(6).setCellValue("报考人数");
+			titleRow.getCell(6).setCellStyle(cellStyleTitle);
+		}else if(column == 13) {
+			titleRow.getCell(6).setCellValue("实考人数");
+			titleRow.getCell(6).setCellStyle(cellStyleTitle);
+		}
+		if(column == 15) {
+			titleRow.getCell(7).setCellValue("实考人数");
+			titleRow.getCell(7).setCellStyle(cellStyleTitle);
+		}else if(column == 13) {
+			titleRow.getCell(7).setCellValue("缺考人数");
+			titleRow.getCell(7).setCellStyle(cellStyleTitle);
+		}
+		if(column == 15) {
+			titleRow.getCell(8).setCellValue("缺考人数");
+			titleRow.getCell(8).setCellStyle(cellStyleTitle);
+		}else if(column == 13) {
+			titleRow.getCell(8).setCellValue("缺考率");
+			titleRow.getCell(8).setCellStyle(cellStyleTitle);
+		}
+		if(column == 15) {
+			titleRow.getCell(9).setCellValue("缺考率");
+			titleRow.getCell(9).setCellStyle(cellStyleTitle);
+		}else if(column == 13) {
+			titleRow.getCell(9).setCellValue("通过人数");
+			titleRow.getCell(9).setCellStyle(cellStyleTitle);
+		}
+		if(column == 15) {
+			titleRow.getCell(10).setCellValue("通过人数");
+			titleRow.getCell(10).setCellStyle(cellStyleTitle);
+		}else if(column == 13) {
+			titleRow.getCell(10).setCellValue("通过率(报考)");
+			titleRow.getCell(10).setCellStyle(cellStyleTitle);
+		}
+		if(column == 15) {
+			titleRow.getCell(11).setCellValue("通过率(学籍)");
+			titleRow.getCell(11).setCellStyle(cellStyleTitle);
+		}else if(column == 13) {
+			titleRow.getCell(11).setCellValue("平均分数");
+			titleRow.getCell(11).setCellStyle(cellStyleTitle);
+		}
+		if(column == 15) {
+			titleRow.getCell(12).setCellValue("通过率(报考)");
+			titleRow.getCell(12).setCellStyle(cellStyleTitle);
+		}else if(column == 14) {
+			titleRow.getCell(12).setCellValue("平均分数");
+			titleRow.getCell(12).setCellStyle(cellStyleTitle);
+		}else if(column == 13) {
+			titleRow.getCell(12).setCellValue("最高分数");
+			titleRow.getCell(12).setCellStyle(cellStyleTitle);
+		}
+		if(column == 15) {
+			titleRow.getCell(13).setCellValue("平均分数");
+			titleRow.getCell(13).setCellStyle(cellStyleTitle);
+		}else if(column == 14) {
+			titleRow.getCell(13).setCellValue("最高分数");
+			titleRow.getCell(13).setCellStyle(cellStyleTitle);
+		}
+		if(column == 15) {
+			titleRow.getCell(14).setCellValue("最高分数");
+			titleRow.getCell(14).setCellStyle(cellStyleTitle);
+		}
 	}
 
 	private CET4TJExt getCurrentAllCET4TJ() {

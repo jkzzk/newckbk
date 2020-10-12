@@ -32,7 +32,7 @@
 		deleted
 	</sql>
 
-    <select id="getById" resultMap="sysUserMap" parameterType="java.lang.Integer">
+    <select id="getById" resultMap="sysUserMap" parameterType="java.lang.String">
 		select <include refid="cols"/> from sys_user  sysUser
 		 where id = #{id}
 	</select>

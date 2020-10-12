@@ -104,6 +104,20 @@ public interface LanguageExamService extends BaseService<LanguageExam, String>{
     RespData generateCJT6();
 
     /**
+     * 生成德语4级数据
+     *
+     * @return
+     */
+    RespData generateCGT4();
+
+    /**
+     * 生成德语6级数据
+     *
+     * @return
+     */
+    RespData generateCGT6();
+
+    /**
      * 清除全部数据
      *
      * @return
@@ -162,4 +176,12 @@ public interface LanguageExamService extends BaseService<LanguageExam, String>{
      * @param response
      */
     void exportStatistic(HttpServletResponse response);
+
+    /**
+     * 通过语种类别获取所有记录
+     *
+     * @param exportType
+     * @return
+     */
+    List<LanguageExam> getAllByType(String exportType);
 }

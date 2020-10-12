@@ -20,17 +20,29 @@
                 <label class="col-xs-1 col-sm-1 f-16 text-r">学期：</label>
                 <div class="formControls col-xs-2 col-sm-2">
                    <span class="select-box radius">
-                      <select class="select" size="1" name="zxjxjhh">
-                          <option value="" <c:if test="${param.zxjxjhh == null}">selected</c:if>>请选择学期</option>
+                      <select class="select" size="1" name="zxjxjhh" disabled>
+                          <%--<option value="" <c:if test="${param.zxjxjhh == null}">selected</c:if>>请选择学期</option>
                           <c:forEach var="t" items="${term}" >
                               <option value="${t.zxjxjhh}" <c:if test="${param.zxjxjhh == t.zxjxjhh}">selected</c:if>>${t.zxjxjhm}</option>
-                          </c:forEach>
+                          </c:forEach>--%>
                       </select>
                     </span>
                 </div>
                 <label class="col-xs-1 col-sm-1 f-16 text-r">语种类型：</label>
                 <div class="formControls col-xs-2 col-sm-2">
-                    <input type="text" placeholder="请输入语种类型" value="${param.type}" name="type" class="input-text radius">
+                    <span class="select-box radius">
+                        <select class="select" size="1" name="type">
+                            <option value="" <c:if test="${param.type == null}">selected</c:if>>请选择语种类型</option>
+                            <option value="CET4" <c:if test="${param.type == 'CET4'}">selected</c:if>>CET4</option>
+                            <option value="CET6" <c:if test="${param.type == 'CET6'}">selected</c:if>>CET6</option>
+                            <option value="CRT4" <c:if test="${param.type == 'CRT4'}">selected</c:if>>CRT4</option>
+                            <option value="CRT6" <c:if test="${param.type == 'CRT6'}">selected</c:if>>CRT6</option>
+                            <option value="CJT4" <c:if test="${param.type == 'CJT4'}">selected</c:if>>CJT4</option>
+                            <option value="CJT6" <c:if test="${param.type == 'CJT6'}">selected</c:if>>CJT6</option>
+                            <option value="CGT4" <c:if test="${param.type == 'CGT4'}">selected</c:if>>CGT4</option>
+                            <option value="CGT6" <c:if test="${param.type == 'CGT6'}">selected</c:if>>CGT6</option>
+                        </select>
+                    </span>
                 </div>
                 <label class="col-xs-1 col-sm-1 f-16 text-r">学号：</label>
                 <div class="formControls col-xs-2 col-sm-2">
@@ -100,13 +112,28 @@
             <a href="javascript:;" onclick="datadel('/langExam/delete')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
             <a href="javascript:;" onclick="add('新增资质名单','/langExam/edit','','600')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 新增</a>
             <a href="javascript:;" onclick="edit('修改资质名单','/langExam/edit','','600')" class="btn btn-warning radius"><i class="Hui-iconfont">&#xe60c;</i> 修改</a>
-            <a href="javascript:;" onclick="window.open('/langExam/export')" class="btn btn-success radius"><i class="Hui-iconfont">&#xe641;</i> 导出</a>
+            <span class="select-box radius">
+                <select class="select" size="1" name="exportType">
+                    <option value="" <c:if test="${param.type == null}">selected</c:if>>请选择导出语种类型</option>
+                    <option value="CET4" <c:if test="${param.type == 'CET4'}">selected</c:if>>CET4</option>
+                    <option value="CET6" <c:if test="${param.type == 'CET6'}">selected</c:if>>CET6</option>
+                    <option value="CRT4" <c:if test="${param.type == 'CRT4'}">selected</c:if>>CRT4</option>
+                    <option value="CRT6" <c:if test="${param.type == 'CRT6'}">selected</c:if>>CRT6</option>
+                    <option value="CJT4" <c:if test="${param.type == 'CJT4'}">selected</c:if>>CJT4</option>
+                    <option value="CJT6" <c:if test="${param.type == 'CJT6'}">selected</c:if>>CJT6</option>
+                    <option value="CGT4" <c:if test="${param.type == 'CGT4'}">selected</c:if>>CGT4</option>
+                    <option value="CGT6" <c:if test="${param.type == 'CGT6'}">selected</c:if>>CGT6</option>
+                </select>
+            </span>
+            <a href="javascript:;" onclick="exportLangExam()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe641;</i> 导出</a>
             <a href="javascript:;" onclick="generateLangExam(1)" class="btn btn-success-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CET4名单</a>
             <a href="javascript:;" onclick="generateLangExam(2)" class="btn btn-danger-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CET6名单</a>
             <a href="javascript:;" onclick="generateLangExam(3)" class="btn btn-success-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CRT4名单</a>
             <a href="javascript:;" onclick="generateLangExam(4)" class="btn btn-danger-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CRT6名单</a>
             <a href="javascript:;" onclick="generateLangExam(5)" class="btn btn-success-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CJT4名单</a>
             <a href="javascript:;" onclick="generateLangExam(6)" class="btn btn-danger-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CJT6名单</a>
+            <a href="javascript:;" onclick="generateLangExam(7)" class="btn btn-success-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CGT4名单</a>
+            <a href="javascript:;" onclick="generateLangExam(8)" class="btn btn-danger-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CGT6名单</a>
         </span>
     </div>
     <div class="mt-20">
@@ -142,7 +169,7 @@
                         <input type="checkbox" value="${langExam.id}" name="ids">
                     </td>
                     <td>${langExam.id}</td>
-                    <td>${langExam.zxjxjhm}</td>
+                    <!-- <td>${langExam.zxjxjhm}</td> -->
                     <td>${langExam.type}</td>
                     <td>${langExam.xxdm}</td>
                     <td>${langExam.xh}</td>
@@ -200,6 +227,11 @@
                 errMsg("网络异常");
             }
         });
+    }
+    
+    function exportLangExam() {
+        let exportType = $("#exportType").val();
+        window.open('/langExam/export?exportType='+exportType)
     }
 </script>
 </body>

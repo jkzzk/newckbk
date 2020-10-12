@@ -135,15 +135,10 @@ public class LanguageExamController {
      * @param response
      */
     @RequestMapping("/export")
-    public void export(HttpServletRequest request,HttpServletResponse response) {
+    public void export(String exportType,HttpServletRequest request,HttpServletResponse response) {
         try {
 
-            Cet4Tjjl cet4Tjjl = cet4TjjlService.getCurrentSet();
-
-            List<LanguageExam> languageExams = new ArrayList<>();
-            if(cet4Tjjl != null ) {
-                languageExams = languageExamService.getAllByTerm(cet4Tjjl.getZxjxjhh());
-            }
+            List<LanguageExam> languageExams = languageExamService.getAllByType(exportType);
 
             Map params = new HashMap();
             params.put("lang", languageExams);
@@ -166,6 +161,8 @@ public class LanguageExamController {
             case 4: return languageExamService.generateCRT6();
             case 5: return languageExamService.generateCJT4();
             case 6: return languageExamService.generateCJT6();
+            case 7: return languageExamService.generateCGT4();
+            case 8: return languageExamService.generateCGT6();
             default: return RespData.errorMsg("未知的语言种类");
         }
     }

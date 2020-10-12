@@ -67,6 +67,14 @@ public class LanguageInfoExt extends LanguageTjjl {
 
     private String firstGrade;
 
+    private String secondGrade;
+
+    private String thirdGrade;
+
+    private String foGrade;
+
+    private String fifGrade;
+
     private String benkeType;
 
     private String specialXsm;
@@ -311,6 +319,38 @@ public class LanguageInfoExt extends LanguageTjjl {
 
     public void setFirstGrade(String firstGrade) {
         this.firstGrade = firstGrade;
+    }
+
+    public String getSecondGrade() {
+        return secondGrade;
+    }
+
+    public void setSecondGrade(String secondGrade) {
+        this.secondGrade = secondGrade;
+    }
+
+    public String getThirdGrade() {
+        return thirdGrade;
+    }
+
+    public void setThirdGrade(String thirdGrade) {
+        this.thirdGrade = thirdGrade;
+    }
+
+    public String getFoGrade() {
+        return foGrade;
+    }
+
+    public void setFoGrade(String foGrade) {
+        this.foGrade = foGrade;
+    }
+
+    public String getFifGrade() {
+        return fifGrade;
+    }
+
+    public void setFifGrade(String fifGrade) {
+        this.fifGrade = fifGrade;
     }
 
     public String getBenkeType() {

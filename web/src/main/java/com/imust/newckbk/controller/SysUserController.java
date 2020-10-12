@@ -27,7 +27,7 @@ import com.imust.newckbk.service.SysRoleService;
 import com.imust.newckbk.service.SysUserService;
 
 /**
- * ÓÃ»§ÐÅÏ¢
+ * ç”¨æˆ·
  */
 @Controller
 @RequestMapping("/user")
@@ -39,7 +39,7 @@ public class SysUserController {
     private SysRoleService      sysRoleService;
 
     /**
-     * ÐÞ¸ÄÃÜÂë
+     * ä¿®æ”¹å¤±è´¥
      * @param newpassword
      * @return
      */
@@ -52,44 +52,44 @@ public class SysUserController {
             user.setPassword(newpassword);
 
             if (sysUserService.changePwd(user)) {
-                return RespData.successMsg("ÐÞ¸Ä³É¹¦£¡");
+                return RespData.successMsg("ä¿®æ”¹æˆåŠŸ");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("ÏµÍ³Òì³££¡" + e);
+            log.error("ç³»ç»Ÿå¼‚å¸¸" + e);
 
-            return RespData.errorMsg("ÏµÍ³Òì³££¡");
+            return RespData.errorMsg("ä¿®æ”¹å¤±è´¥");
         }
 
-        return RespData.errorMsg("ÐÞ¸ÄÊ§°Ü");
+        return RespData.errorMsg("ç³»ç»Ÿå¼‚å¸¸");
     }
 
     /**
-     * É¾³ýÓÃ»§
+     * É¾ï¿½ï¿½ï¿½Ã»ï¿½
      * @param params
      * @return
      */
     @RequestMapping("del")
     public @ResponseBody
     RespData del(@RequestParam Map params) {
-        log.info("É¾³ýÓÃ»§ params=¡¾" + params + "¡¿");
+        log.info("É¾ï¿½ï¿½ï¿½Ã»ï¿½ params=ï¿½ï¿½" + params + "ï¿½ï¿½");
 
         try {
             if (sysUserService.deleteByMap(params) > 0) {
-                return RespData.successMsg("ÒÑÉ¾³ý£¡");
+                return RespData.successMsg("ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("ÏµÍ³Òì³££¡" + e);
+            log.error("ÏµÍ³ï¿½ì³£ï¿½ï¿½" + e);
 
-            return RespData.errorMsg("ÏµÍ³Òì³££¡");
+            return RespData.errorMsg("ÏµÍ³ï¿½ì³£ï¿½ï¿½");
         }
 
-        return RespData.errorMsg("É¾³ýÊ§°Ü!");
+        return RespData.errorMsg("É¾ï¿½ï¿½Ê§ï¿½ï¿½!");
     }
 
     /**
-     * Ìí¼ÓÓÃ»§
+     * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
      * @param user
      * @return
      */
@@ -109,14 +109,14 @@ public class SysUserController {
     }
 
     /**
-     * ÓÃ»§ÁÐ±í
+     * ï¿½Ã»ï¿½ï¿½Ð±ï¿½
      * @param params
      * @param m
      * @return
      */
     @RequestMapping("list")
     public String list(@RequestParam Map params, Model m) {
-        log.info("»ñÈ¡ÓÃ»§ÁÐ±í params = ¡¾" + params + "¡¿");
+        log.info("ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½Ð±ï¿½ params = ï¿½ï¿½" + params + "ï¿½ï¿½");
 
         PageInfo<SysUser> page = sysUserService.query(DefaultPage.setDefaultPage(params));
 
@@ -127,7 +127,7 @@ public class SysUserController {
     }
 
     /**
-     * ±£´æÓÃ»§
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
      * @param user
      * @param request
      * @return
@@ -135,7 +135,7 @@ public class SysUserController {
     @RequestMapping("save")
     public @ResponseBody
     RespData save(SysUser user, HttpServletRequest request) {
-        log.info("±£´æÓÃ»§");
+        log.info("ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½");
 
         SysUser sess = SessionUtils.getCurrentSysUser(request);
         int     flag = 0;
@@ -151,23 +151,23 @@ public class SysUserController {
 
             if ((flag > 0) || ((user.getId() != null) && (!user.getId().equals("")))) {
                 String msg = (flag > 0)
-                             ? "²Ù×÷³É¹¦£¡"
-                             : "²Ù×÷³É¹¦£¡³õÊ¼ÃÜÂëÎª£º" + Contants.INIT_PASSWORD;
+                             ? "ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½"
+                             : "ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½" + Contants.INIT_PASSWORD;
 
                 return RespData.successMsg(msg);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("ÏµÍ³Òì³££¡" + e);
+            log.error("ÏµÍ³ï¿½ì³£ï¿½ï¿½" + e);
 
-            return RespData.errorMsg("ÏµÍ³Òì³££¡");
+            return RespData.errorMsg("ÏµÍ³ï¿½ì³£ï¿½ï¿½");
         }
 
-        return RespData.errorMsg("²Ù×÷Ê§°Ü£¡");
+        return RespData.errorMsg("ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½");
     }
 
     /**
-     * Description:ÐÞ¸ÄÃÜÂëÒ³Ãæ<br>
+     * Description:ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½<br>
      * url: /<br>
      * create by: dong gui peng<br>
      * date: 2019/7/3 0003 18:31 <br>
@@ -184,7 +184,7 @@ public class SysUserController {
     }
 
     /**
-     * Ð£ÑéÓÃ»§ÃûÊÇ·ñ´æÔÚ
+     * Ð£ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
      * @param params
      * @return
      */
@@ -194,7 +194,7 @@ public class SysUserController {
         List<SysUser> users = sysUserService.getByMap(params);
 
         if ((users != null) && (users.size() > 0)) {
-            return RespData.errorMsg("¸ÃÓÃ»§ÒÑ´æÔÚ!");
+            return RespData.errorMsg("ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½!");
         }
 
         return RespData.successMsg("");

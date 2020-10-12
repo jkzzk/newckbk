@@ -4,6 +4,8 @@ import com.imust.newckbk.domain.LanguageExam;
 import com.imust.newckbk.base.BaseDao;
 import com.imust.newckbk.domain.ext.CET4TJExt;
 import com.imust.newckbk.domain.ext.LanguageExamExt;
+import com.imust.newckbk.domain.ext.LanguageInfoExt;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -41,20 +43,68 @@ public interface LanguageExamDao extends BaseDao<LanguageExam, String>{
     List<LanguageExam> getAllByTerm(String zxjxjhh);
 
     /**
-     * 大一本科英语四级生成
+     * 大一本科CET4名单
      *
-     * @param currentAllCET4TJ
+     * @param languageInfoExt
      * @return
      */
-    List<LanguageExam> generateCET4ForFirstGrade(CET4TJExt currentAllCET4TJ);
+    List<LanguageExam> generateCET4CollageForFirstGrade(LanguageInfoExt languageInfoExt);
 
     /**
-     * 专科英语四级生成
+     * 筛选大二本科CET4名单
      *
-     * @param currentAllCET4TJ
+     * @param languageInfoExt
      * @return
      */
-    List<LanguageExam> generateCET4ForJunior(CET4TJExt currentAllCET4TJ);
+    List<LanguageExam> generateCET4CollageForSecondGrade(LanguageInfoExt languageInfoExt);
+
+    /**
+     * 筛选大三本科CET4名单
+     *
+     * @param languageInfoExt
+     * @return
+     */
+    List<LanguageExam> generateCET4CollageForThirdGrade(LanguageInfoExt languageInfoExt);
+
+    /**
+     * 筛选大四本科CET4名单
+     *
+     * @param languageInfoExt
+     * @return
+     */
+    List<LanguageExam> generateCET4CollageForFoGrade(LanguageInfoExt languageInfoExt);
+
+    /**
+     * 筛选大五本科CET4名单
+     *
+     * @param languageInfoExt
+     * @return
+     */
+    List<LanguageExam> generateCET4CollageForFifGrade(LanguageInfoExt languageInfoExt);
+
+    /**
+     * 筛选专一CET4名单
+     *
+     * @param languageInfoExt
+     * @return
+     */
+    List<LanguageExam> generateCET4JuniorForFirstGrade(LanguageInfoExt languageInfoExt);
+
+    /**
+     * 筛选专二CET4名单
+     *
+     * @param languageInfoExt
+     * @return
+     */
+    List<LanguageExam> generateCET4JuniorForSecondGrade(LanguageInfoExt languageInfoExt);
+
+    /**
+     * 筛选专三CET4名单
+     *
+     * @param languageInfoExt
+     * @return
+     */
+    List<LanguageExam> generateCET4JuniorForThirdGrade(LanguageInfoExt languageInfoExt);
 
     /**
      * 其他本科年级英语四级生成
@@ -67,42 +117,58 @@ public interface LanguageExamDao extends BaseDao<LanguageExam, String>{
     /**
      * 英语六级学生生成
      *
-     * @param currentAllCET4TJ
+     * @param languageInfoExt
      * @return
      */
-    List<LanguageExam> generateCET6ForAll(CET4TJExt currentAllCET4TJ);
+    List<LanguageExam> generateCET6ForAll(LanguageInfoExt languageInfoExt);
 
     /**
      * 俄语四级学生生成
      *
-     * @param currentAllCET4TJ
+     * @param languageInfoExt
      * @return
      */
-    List<LanguageExam> generateCRT4ForAll(CET4TJExt currentAllCET4TJ);
+    List<LanguageExam> generateCRT4ForAll(LanguageInfoExt languageInfoExt);
 
     /**
      * 俄语六级级学生生成
      *
-     * @param currentAllCET4TJ
+     * @param languageInfoExt
      * @return
      */
-    List<LanguageExam> generateCRT6ForAll(CET4TJExt currentAllCET4TJ);
+    List<LanguageExam> generateCRT6ForAll(LanguageInfoExt languageInfoExt);
 
     /**
      * 日语四级学生生成
      *
-     * @param currentAllCET4TJ
+     * @param languageInfoExt
      * @return
      */
-    List<LanguageExam> generateCJT4ForAll(CET4TJExt currentAllCET4TJ);
+    List<LanguageExam> generateCJT4ForAll(LanguageInfoExt languageInfoExt);
 
     /**
      * 日语六级学生生成
      *
-     * @param currentAllCET4TJ
+     * @param languageInfoExt
      * @return
      */
-    List<LanguageExam> generateCJT6ForAll(CET4TJExt currentAllCET4TJ);
+    List<LanguageExam> generateCJT6ForAll(LanguageInfoExt languageInfoExt);
+
+    /**
+     * 德语四级学生生成
+     *
+     * @param languageInfoExt
+     * @return
+     */
+    List<LanguageExam> generateCGT4ForAll(LanguageInfoExt languageInfoExt);
+
+    /**
+     * 德语六级学生生成
+     *
+     * @param languageInfoExt
+     * @return
+     */
+    List<LanguageExam> generateCGT6ForAll(LanguageInfoExt languageInfoExt);
 
     /**
      * 批量删除
@@ -118,4 +184,12 @@ public interface LanguageExamDao extends BaseDao<LanguageExam, String>{
      * @return
      */
     int deleteAll();
+
+    /**
+     * 根据语种类别查询
+     *
+     * @param exportType
+     * @return
+     */
+    List<LanguageExam> getAllByType(@Param("exportType") String exportType);
 }

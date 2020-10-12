@@ -230,11 +230,11 @@ $(function () {
         if(cleanUpParam()) {
             // console.log("statisticParam",statisticParam);
             $('#loadingToast').show();
-            /*setTimeout(function () {
+            setTimeout(function () {
                 window.open("/langExam/exportStatistic");
                 $('#loadingToast').hide();
-            },1000);*/
-            $.request({
+            },1000);
+            /*$.request({
                 async : false,
                 url : '/langExam/statisticReport',
                 data : JSON.stringify(statisticParam),
@@ -258,7 +258,7 @@ $(function () {
                     console.log(message);
                     errMsg("网络异常");
                 }
-            });
+            });*/
         }
     });
 });
