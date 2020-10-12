@@ -135,15 +135,50 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		boolean cet4 = languageInfoExt.getCet4().equals("1");
 		if(cet4) {
 
+			List<String> gardeList = this.getGradeArr(languageInfoExt.getFirstGrade());
+
 			// 分年级筛选，本科类型与特殊学院置于sql语句中
 
-			// 大一年级单独做筛选
+			// 大一年级
+			if("1".equals(languageInfoExt.getIsFirstGrade())) {
+
+			}
+
+			// 大二年级
+			if("1".equals(languageInfoExt.getIsSecondGrade())) {
+
+			}
+
+			// 大三年级
+			if("1".equals(languageInfoExt.getIsThirdGrade())) {
+
+			}
+
+			// 大四年级
+			if("1".equals(languageInfoExt.getIsFoGrade())) {
+
+			}
+
 
 			return RespData.successMsg("英语四级名单生成成功！");
 		}else {
 
 			return RespData.errorMsg("条件中没有设置CET4考试！");
 		}
+	}
+
+	private List<String> getGradeArr(String firstGrade) {
+
+		List<String> gradeList = new ArrayList<>();
+
+		if(firstGrade != null && !firstGrade.equals("")) {
+			int first = Integer.parseInt(firstGrade);
+			for(int i = first; i > first-5; i--) {
+				gradeList.add(String.valueOf(i));
+			}
+		}
+
+		return gradeList;
 	}
 
 	@Override

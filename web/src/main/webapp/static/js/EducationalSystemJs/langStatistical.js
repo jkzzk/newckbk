@@ -124,7 +124,7 @@ function loadChilrenNode(url) {
 // 整理参数
 function cleanUpParam() {
     let initParam = $('#form-member-add').serializeObject();
-    let checkNodes = $('#infoTree').jstree(true).get_selected(true);
+    let checkNodes = $('#infoTree').jstree(true).get_checked(true);
     let undeterminedNodes = $('#infoTree').jstree(true).get_undetermined(true);
     let assignOrigin = Object.assign([],treeOriginArr);
     let uncheckNodes = get_unCheckNodes(checkNodes.concat(undeterminedNodes),assignOrigin);
