@@ -41,6 +41,7 @@
                             <option value="CJT6" <c:if test="${param.type == 'CJT6'}">selected</c:if>>CJT6</option>
                             <option value="CGT4" <c:if test="${param.type == 'CGT4'}">selected</c:if>>CGT4</option>
                             <option value="CGT6" <c:if test="${param.type == 'CGT6'}">selected</c:if>>CGT6</option>
+                            <option value="PORECT-B" <c:if test="${param.type == 'PORECT-B'}">selected</c:if>>PORECT-B</option>
                         </select>
                     </span>
                 </div>
@@ -108,12 +109,12 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
-            <a href="javascript:;" onclick="clearData('/langExam/clear')" class="btn btn-danger radius"><i class="Hui-iconfont f-18">&#xe60b;</i> 清除全部</a>
-            <a href="javascript:;" onclick="datadel('/langExam/delete')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a href="javascript:;" onclick="add('新增资质名单','/langExam/edit','','600')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 新增</a>
-            <a href="javascript:;" onclick="edit('修改资质名单','/langExam/edit','','600')" class="btn btn-warning radius"><i class="Hui-iconfont">&#xe60c;</i> 修改</a>
-            <span class="select-box radius">
-                <select class="select" size="1" name="exportType">
+            <a href="javascript:;" onclick="clearData('/langExam/clear')" class="btn btn-danger radius mt-10"><i class="Hui-iconfont f-18">&#xe60b;</i> 清除全部</a>
+            <a href="javascript:;" onclick="datadel('/langExam/delete')" class="btn btn-danger radius mt-10"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+            <a href="javascript:;" onclick="add('新增资质名单','/langExam/edit','','600')" class="btn btn-primary radius mt-10"><i class="Hui-iconfont">&#xe600;</i> 新增</a>
+            <a href="javascript:;" onclick="edit('修改资质名单','/langExam/edit','','600')" class="btn btn-warning radius mt-10"><i class="Hui-iconfont">&#xe60c;</i> 修改</a>
+            <span class="select-box radius mt-10" style="width: 200px;">
+                <select class="select" size="1" name="exportType" id="exportType">
                     <option value="" <c:if test="${param.type == null}">selected</c:if>>请选择导出语种类型</option>
                     <option value="CET4" <c:if test="${param.type == 'CET4'}">selected</c:if>>CET4</option>
                     <option value="CET6" <c:if test="${param.type == 'CET6'}">selected</c:if>>CET6</option>
@@ -123,17 +124,19 @@
                     <option value="CJT6" <c:if test="${param.type == 'CJT6'}">selected</c:if>>CJT6</option>
                     <option value="CGT4" <c:if test="${param.type == 'CGT4'}">selected</c:if>>CGT4</option>
                     <option value="CGT6" <c:if test="${param.type == 'CGT6'}">selected</c:if>>CGT6</option>
+                    <option value="PORECT-B" <c:if test="${param.type == 'PORECT-B'}">selected</c:if>>PORECT-B</option>
                 </select>
             </span>
-            <a href="javascript:;" onclick="exportLangExam()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe641;</i> 导出</a>
-            <a href="javascript:;" onclick="generateLangExam(1)" class="btn btn-success-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CET4名单</a>
-            <a href="javascript:;" onclick="generateLangExam(2)" class="btn btn-danger-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CET6名单</a>
-            <a href="javascript:;" onclick="generateLangExam(3)" class="btn btn-success-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CRT4名单</a>
-            <a href="javascript:;" onclick="generateLangExam(4)" class="btn btn-danger-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CRT6名单</a>
-            <a href="javascript:;" onclick="generateLangExam(5)" class="btn btn-success-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CJT4名单</a>
-            <a href="javascript:;" onclick="generateLangExam(6)" class="btn btn-danger-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CJT6名单</a>
-            <a href="javascript:;" onclick="generateLangExam(7)" class="btn btn-success-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CGT4名单</a>
-            <a href="javascript:;" onclick="generateLangExam(8)" class="btn btn-danger-outline radius"><i class="Hui-iconfont">&#xe61f;</i> 生成CGT6名单</a>
+            <a href="javascript:;" onclick="exportLangExam()" class="btn btn-success radius  mt-10"><i class="Hui-iconfont">&#xe641;</i> 导出</a>
+            <a href="javascript:;" onclick="generateLangExam(1)" class="btn btn-success-outline radius mt-10"><i class="Hui-iconfont">&#xe61f;</i> 生成CET4名单</a>
+            <a href="javascript:;" onclick="generateLangExam(2)" class="btn btn-danger-outline radius mt-10"><i class="Hui-iconfont">&#xe61f;</i> 生成CET6名单</a>
+            <a href="javascript:;" onclick="generateLangExam(3)" class="btn btn-success-outline radius mt-10"><i class="Hui-iconfont">&#xe61f;</i> 生成CRT4名单</a>
+            <a href="javascript:;" onclick="generateLangExam(4)" class="btn btn-danger-outline radius mt-10"><i class="Hui-iconfont">&#xe61f;</i> 生成CRT6名单</a>
+            <a href="javascript:;" onclick="generateLangExam(5)" class="btn btn-success-outline radius mt-10"><i class="Hui-iconfont">&#xe61f;</i> 生成CJT4名单</a>
+            <a href="javascript:;" onclick="generateLangExam(6)" class="btn btn-danger-outline radius mt-10"><i class="Hui-iconfont">&#xe61f;</i> 生成CJT6名单</a>
+            <a href="javascript:;" onclick="generateLangExam(7)" class="btn btn-success-outline radius mt-10"><i class="Hui-iconfont">&#xe61f;</i> 生成CGT4名单</a>
+            <a href="javascript:;" onclick="generateLangExam(8)" class="btn btn-danger-outline radius mt-10"><i class="Hui-iconfont">&#xe61f;</i> 生成CGT6名单</a>
+            <a href="javascript:;" onclick="generateLangExam(9)" class="btn btn-danger-outline radius mt-10"><i class="Hui-iconfont">&#xe61f;</i> 生成PORECT-B名单</a>
         </span>
     </div>
     <div class="mt-20">
@@ -144,7 +147,7 @@
                     <input type="checkbox" name="ids" value="">
                 </th>
                 <th>编号</th>
-                <th>学期</th>
+                <!--<th>学期</th>-->
                 <th>语种类型</th>
                 <th>校区代码</th>
                 <th>学号</th>

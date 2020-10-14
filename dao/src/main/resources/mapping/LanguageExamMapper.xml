@@ -1002,7 +1002,7 @@
 	<!-- 筛选CET6名单 -->
 	<select id="generateCET6ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
 		select distinct
-			'cet6' as type,
+			'CET6' as type,
 			'15010' as xxdm,
 			XS_XJXXB_VIEW_KW.xm,
 			case XS_XJXXB_VIEW_KW.xb
@@ -1071,7 +1071,7 @@
 	<!-- 筛选CRT4名单 -->
 	<select id="generateCRT4ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
 		select distinct
-			'crt4' as type,
+			'CRT4' as type,
 			'15010' as xxdm,
 			XS_XJXXB_VIEW_KW.xm,
 			case XS_XJXXB_VIEW_KW.xb
@@ -1134,7 +1134,7 @@
 	<!-- 筛选CRT6名单 -->
 	<select id="generateCRT6ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
 		select distinct
-			'crt6' as type,
+			'CRT6' as type,
 			'15010' as xxdm,
 			XS_XJXXB_VIEW_KW.xm,
 			case XS_XJXXB_VIEW_KW.xb
@@ -1183,7 +1183,7 @@
 	<!-- 筛选CJT4名单 -->
 	<select id="generateCJT4ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
 		select distinct
-			'crt4' as type,
+			'CJT4' as type,
 			'15010' as xxdm,
 			XS_XJXXB_VIEW_KW.xm,
 			case XS_XJXXB_VIEW_KW.xb
@@ -1207,11 +1207,11 @@
 		where
 			XS_XJXXB_VIEW_KW.sfyxj = '是'
 			and xh in (
-			select distinct
-			xh
-			from
-			XK_XKB_VIEW
-			where kch in (${japaneseKch})
+				select distinct
+					xh
+				from
+					XK_XKB_VIEW
+				where kch in (${japaneseKch})
 			)
 			<if test="cjt4PassedExam != null and cjt4PassedExam ！= '' and cjt4PassedExam == 0">
 				and xh not in (
@@ -1246,7 +1246,7 @@
 	<!-- 筛选CJT6名单 -->
 	<select id="generateCJT6ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
 		select distinct
-			'crt6' as type,
+			'CJT6' as type,
 			'15010' as xxdm,
 			XS_XJXXB_VIEW_KW.xm,
 			case XS_XJXXB_VIEW_KW.xb
@@ -1295,7 +1295,7 @@
 	<!-- 筛选CGT4名单 -->
 	<select id="generateCGT4ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
 		select distinct
-			'crt4' as type,
+			'CGT4' as type,
 			'15010' as xxdm,
 			XS_XJXXB_VIEW_KW.xm,
 			case XS_XJXXB_VIEW_KW.xb
@@ -1358,7 +1358,7 @@
 	<!-- 筛选CGT6名单 -->
 	<select id="generateCGT6ForAll" resultType="com.imust.newckbk.domain.LanguageExam">
 		select distinct
-			'crt4' as type,
+			'CGT6' as type,
 			'15010' as xxdm,
 			XS_XJXXB_VIEW_KW.xm,
 			case XS_XJXXB_VIEW_KW.xb
@@ -1404,12 +1404,91 @@
 		</if>
 	</select>
 
+	<!-- 筛选PORECT-B名单 -->
+	<select id="generatePoretcoBForAll" resultType="com.imust.newckbk.domain.LanguageExam">
+		select distinct
+			'PORECT-B' as type,
+			'15010' as xxdm,
+			XS_XJXXB_VIEW_KW.xm,
+			case XS_XJXXB_VIEW_KW.xb
+			WHEN '男' then '1'
+			WHEN '女' then '2'
+			ELSE '0' end as xb,
+			XS_XJXXB_VIEW_KW.xh,
+			'1' as zjlb,
+			XS_XJXXB_VIEW_KW.sfzh,
+			'20' as xl,
+			XSZYXXB.XZ as xz,
+			substr(XS_XJXXB_VIEW_KW.rxnj,3,2) as rxnf,
+			substr(XS_XJXXB_VIEW_KW.dqnj,3,2) as nj,
+			XS_XJXXB_VIEW_KW.xsm,
+			XS_XJXXB_VIEW_KW.zym,
+			XS_XJXXB_VIEW_KW.bjh,
+			'15010' as xjdm
+		from
+			XS_XJXXB_VIEW_KW
+			left join XSZYXXB ON XSZYXXB.zym = XS_XJXXB_VIEW_KW.zym
+		where
+			XS_XJXXB_VIEW_KW.sfyxj = '是' and XS_XJXXB_VIEW_KW.xslbdm in (#{juniorType})
+			<if test="russianKch != null and russianKch != ''">
+				and xh not in (
+					select distinct
+						xh
+					from
+						XK_XKB_VIEW
+					where kch in (${russianKch})
+				)
+			</if>
+			<if test="japaneseKch != null and japaneseKch != ''">
+				and xh not in (
+					select distinct
+						xh
+					from
+						XK_XKB_VIEW
+					where kch in (${japaneseKch})
+				)
+			</if>
+			<if test="germanKch != null and germanKch != ''">
+				and xh not in (
+					select distinct
+						xh
+					from
+						XK_XKB_VIEW
+					where kch in (${germanKch})
+				)
+			</if>
+			<if test="pretcoPassedExam != null and pretcoPassedExam != '' and pretcoPassedExam == 0">
+				and xh not in  (
+					select distinct
+						ks_xh
+					from
+						CET_STUSCORE
+					where
+						CET_STUSCORE.ks_yyjb = 'PORECT-B'
+						and CET_STUSCORE.ks_kssj = #{pretcoLastExamTerm}
+						and CET_STUSCORE.ks_zf &gt;= #{pretcoPassScore}
+				)
+			</if>
+			<if test="pretcoMissingExam != null and pretcoMissingExam != '' and  pretcoMissingExam == 1">
+				and xh not in  (
+					select distinct
+						ks_xh
+					from
+						CET_STUSCORE
+					where
+						(CET_STUSCORE.ks_qk = '缺考' or CET_STUSCORE.ks_wj = '违纪')
+						and CET_STUSCORE.ks_yyjb = 'PORECT-B'
+						and CET_STUSCORE.ks_kssj = #{pretcoLastExamTerm}
+				)
+			</if>
+	</select>
+
 	<!-- 根据语种类别查询 -->
 	<select id="getAllByType" resultType="com.imust.newckbk.domain.LanguageExam">
 		select <include refid="cols"/> from LANGUAGE_EXAM  languageExam where type = #{exportType}
 	</select>
 
-	<insert id="insert" parameterType="com.imust.newckbk.domain.LanguageExam" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.imust.newckbk.domain.LanguageExam" useGeneratedKeys="true" keyProperty="id">
 		insert into LANGUAGE_EXAM
 		<trim prefix="(" suffix=")" suffixOverrides="," > 
 			<if test=" id != null and id != ''">

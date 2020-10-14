@@ -192,4 +192,12 @@ public interface LanguageExamDao extends BaseDao<LanguageExam, String>{
      * @return
      */
     List<LanguageExam> getAllByType(@Param("exportType") String exportType);
+
+    /**
+     * 生成英语三级名单
+     *
+     * @param languageInfoExt
+     * @return
+     */
+    List<LanguageExam> generatePoretcoBForAll(LanguageInfoExt languageInfoExt);
 }

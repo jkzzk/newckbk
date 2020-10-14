@@ -451,6 +451,37 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		}
 	}
 
+	@Override
+	public RespData generatePoretcoB() {
+
+		LanguageInfoExt languageInfoExt = languageTjjlDao.getAllTj();
+
+		if(languageInfoExt == null) {
+			return RespData.errorMsg("条件出错！");
+		}
+
+		boolean poretcoB = languageInfoExt.getPretcoB().equals("1");
+
+		if(poretcoB) {
+
+			List<LanguageExam> languageExamsPoretcoB = languageExamDao.generatePoretcoBForAll(languageInfoExt);
+
+			languageExamsPoretcoB.forEach(item -> {
+				item.setId(String.valueOf(snowRakeIdGenerator.nextId()));
+			});
+
+			if(!languageExamsPoretcoB.isEmpty()) {
+				for (LanguageExam languageExam : languageExamsPoretcoB) {
+					languageExamDao.insert(languageExam);
+				}
+			}
+
+			return RespData.successMsg("英语三级名单生成成功！");
+		}else {
+			return RespData.errorMsg("条件中没有设置PORECT-B考试！");
+		}
+	}
+
     @Override
     public RespData clearMaupData() {
 		try {
@@ -707,7 +738,7 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
     	return languageExamDao.getAllByType(exportType);
 	}
 
-	// 分组合计并插入
+    // 分组合计并插入
 	private List<StatisticReportExcel> getSumList(List<StatisticReportExcel> statisticReportExcels) {
 
 		// 按语种类别合计
