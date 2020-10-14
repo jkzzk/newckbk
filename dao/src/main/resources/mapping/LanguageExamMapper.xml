@@ -1423,7 +1423,7 @@
 			substr(XS_XJXXB_VIEW_KW.dqnj,3,2) as nj,
 			XS_XJXXB_VIEW_KW.xsm,
 			XS_XJXXB_VIEW_KW.zym,
-			XS_XJXXB_VIEW_KW.bm,
+			XS_XJXXB_VIEW_KW.bm as bjh,
 			'15010' as xjdm
 		from
 			XS_XJXXB_VIEW_KW
