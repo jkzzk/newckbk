@@ -3,9 +3,11 @@ package com.imust.newckbk.dao;
 import com.imust.newckbk.domain.CetStuscore;
 import com.imust.newckbk.base.BaseDao;
 import com.imust.newckbk.domain.excel.StatisticReport;
+import com.imust.newckbk.domain.ext.CetStuscoreExt;
 import com.imust.newckbk.domain.ext.LangStisticExt;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -67,4 +69,12 @@ public interface CetStuscoreDao extends BaseDao<CetStuscore, String>{
      * @return
      */
     List<StatisticReport> statisticMaxScore(LangStisticExt langStisticExt);
+
+    /**
+     * 分页查询
+     *
+     * @param data
+     * @return
+     */
+    List<CetStuscoreExt> getByExtPage(Map data);
 }

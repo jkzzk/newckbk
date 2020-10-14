@@ -8,13 +8,23 @@
         <result property="ksXh" column="ks_xh" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="ksZf" column="ks_zf" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="ksQk" column="ks_qk" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ksWj" column="ks_wj" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ksXymc" column="ks_xymc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ksZymc" column="ks_zymc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ksNj" column="ks_nj" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="ksBjmc" column="ks_bjmc" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="cols">
 		ks_kssj,
 		ks_yyjb,
 		ks_xh,
 		ks_zf,
-		ks_qk
+		ks_qk,
+		ks_wj,
+		ks_xymc,
+		ks_zymc,
+		ks_nj,
+		ks_bjmc
 	</sql>
     <select id="getById" resultMap="cetStuscoreMap" parameterType="java.lang.String">
 		select <include refid="cols"/> from CET_STUSCORE  cetStuscore
@@ -263,6 +273,37 @@
 		</where>
 	</select>
 
+	<select id="getByExtPage" resultType="com.imust.newckbk.domain.ext.CetStuscoreExt">
+		select
+			ks_kssj as ksKssj,
+			ks_yyjb as ksYyjb,
+			ks_xh as ksXh,
+			ks_zf as ksZf,
+			ks_qk as ksQk,
+			ks_wj as ksWj,
+			ks_xymc as ksXymc,
+			ks_zymc as ksZymc,
+			ks_nj as ksNj,
+			ks_bjmc as ksBjmc,
+			xm as ksXm,
+			xb as ksXb,
+			sfzh as ksSfzh
+		from
+			cet_stuscore
+			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
+		<where>
+			<if test="ksYyjb != null and ksYyjb != ''">
+				and cet_stuscore.ks_yyjb = #{ksYyjb}
+			</if>
+			<if test="ksXm != null and ksXm != ''">
+				and xs_xjxxb_view_kw.xm like concat('%',concat(#{ksXm},'%'))
+			</if>
+			<if test="ksXh != null and ksXh != ''">
+				and cet_stuscore.ks_xh like concat('%',concat(#{ksXh},'%'))
+			</if>
+		</where>
+	</select>
+
 	<insert id="insert" parameterType="com.imust.newckbk.domain.CetStuscore" useGeneratedKeys="true" keyProperty="id">
 		insert into CET_STUSCORE
 		<trim prefix="(" suffix=")" suffixOverrides="," > 
@@ -279,7 +320,22 @@
 				ks_zf,
 			</if>
 			<if test=" ksQk != null and ksQk != ''">
-				ks_qk
+				ks_qk,
+			</if>
+			<if test=" ksWj != null and ksWj != ''">
+				ks_wj,
+			</if>
+			<if test=" ksXymc != null and ksXymc != ''">
+				ks_xymc,
+			</if>
+			<if test=" ksZymc != null and ksZymc != ''">
+				ks_zymc,
+			</if>
+			<if test=" ksNj != null and ksNj != ''">
+				ks_nj,
+			</if>
+			<if test=" ksBjmc != null and ksBjmc != ''">
+				ks_bjmc
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -296,7 +352,22 @@
 				#{ksZf,jdbcType=VARCHAR},
 			</if>
 			<if test=" ksQk != null and ksQk != ''">
-				#{ksQk,jdbcType=VARCHAR}
+				#{ksQk,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksWj != null and ksWj != ''">
+				#{ksWj,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksXymc != null and ksXymc != ''">
+				#{ksXymc,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksZymc != null and ksZymc != ''">
+				#{ksZymc,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksNj != null and ksNj != ''">
+				#{ksNj,jdbcType=VARCHAR},
+			</if>
+			<if test=" ksBjmc != null and ksBjmc != ''">
+				#{ksBjmc,jdbcType=VARCHAR}
 			</if>
 		</trim>
 	</insert>
