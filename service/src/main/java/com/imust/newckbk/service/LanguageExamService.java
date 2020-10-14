@@ -184,4 +184,11 @@ public interface LanguageExamService extends BaseService<LanguageExam, String>{
      * @return
      */
     List<LanguageExam> getAllByType(String exportType);
+
+    /**
+     * 生成3级名单
+     *
+     * @return
+     */
+    RespData generatePoretcoB();
 }

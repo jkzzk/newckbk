@@ -76,7 +76,7 @@
                                 <input type="checkbox" class="check-box" name="langType" id="cgt6" value="'CGT6'">
                                 <label for="cgt6">CGT6</label>
                             </div>
-                            <div class="col-xs-1 col-sm-1 text-c title">
+                            <div class="col-xs-2 col-sm-2 text-c title">
                                 <input type="checkbox" class="check-box" name="langType" id="pretcob" value="'PRETCO-B'">
                                 <label for="pretcob">PRETCO-B</label>
                             </div>

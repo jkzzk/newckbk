@@ -233,7 +233,27 @@ function cleanUpData(data) {
     if(ifIsNull(saveParam.languageTjjlStudent.juniorType) != '' && Array.isArray(saveParam.languageTjjlStudent.juniorType)) {
         saveParam.languageTjjlStudent.juniorType = saveParam.languageTjjlStudent.juniorType.join(",");
     }
+
+    // 将课程号加入引号
+    saveParam.languageTjjl.japaneseKch = addQuotesInEle(saveParam.languageTjjl.japaneseKch);
+    saveParam.languageTjjl.russianKch = addQuotesInEle(saveParam.languageTjjl.russianKch);
+    saveParam.languageTjjl.germanKch = addQuotesInEle(saveParam.languageTjjl.germanKch);
 }
+
+//
+function addQuotesInEle(str) {
+    if(ifIsNull(str) != '') {
+        let split = str.split(",");
+        for(let i = 0; i < split.length; i++) {
+            split[i] = "'" + split[i] + "'"
+        }
+
+        return split.join(",");
+    }else {
+        return '';
+    }
+}
+
 // 校验保存参数
 function verifyData() {
 
@@ -462,7 +482,7 @@ $(function () {
     $('#saveCondition').click(function () {
         let serializeObject = $('#form-member-add').serializeObject();
         cleanUpData(serializeObject);
-        if(verifyData()) {
+        if(true) {
             console.log("saveParam",saveParam);
             $.request({
                 url : '/languageTj/save',

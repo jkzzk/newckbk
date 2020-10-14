@@ -163,6 +163,7 @@ public class LanguageExamController {
             case 6: return languageExamService.generateCJT6();
             case 7: return languageExamService.generateCGT4();
             case 8: return languageExamService.generateCGT6();
+            case 9: return languageExamService.generatePoretcoB();
             default: return RespData.errorMsg("未知的语言种类");
         }
     }

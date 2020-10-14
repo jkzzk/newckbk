@@ -317,7 +317,7 @@
                                 <div class="formControls col-xs-2 col-sm-2">
                                    <span class="select-box radius">
                                       <select class="select" size="1" name="juniorFirstGrade" id="juniorFirstGrade">
-                                        <option value="" selected>请选择大一年级</option>
+                                        <option value="" selected>请选择专一年级</option>
                                       </select>
                                     </span>
                                 </div>
