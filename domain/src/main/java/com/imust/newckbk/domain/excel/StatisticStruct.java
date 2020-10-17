@@ -200,11 +200,11 @@ public class StatisticStruct {
 
     private void joinGradeCalc(MajorCalc majorCalc, StatisticReportExcel statisticReportExcel) {
         GradeCalc key_grade = new GradeCalc(statisticReportExcel.getLangType()+statisticReportExcel.getAcademy()+statisticReportExcel.getMajor()+statisticReportExcel.getGrade());
-        key_grade.getStatisticReportExcels().add(statisticReportExcel);
         if(majorCalc.getStatisticReportExcels().contains(key_grade)) {
             int index = majorCalc.getStatisticReportExcels().indexOf(key_grade);
             majorCalc.getStatisticReportExcels().get(index).getStatisticReportExcels().add(statisticReportExcel);
         }else {
+            key_grade.getStatisticReportExcels().add(statisticReportExcel);
             majorCalc.getStatisticReportExcels().add(key_grade);
         }
     }

@@ -87,7 +87,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and dqnj not in (${classes})
+				and bjh not in (${classes})
 			</if>
 			group by xsm,zym,dqnj,bjh
 			order by bjh
@@ -116,7 +116,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and dqnj not in (${classes})
+				and ks_bjmc not in (${classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -153,7 +153,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and dqnj not in (${classes})
+				and ks_bjmc not in (${classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -188,7 +188,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and dqnj not in (${classes})
+				and ks_bjmc not in (${classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -224,7 +224,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and dqnj not in (${classes})
+				and ks_bjmc not in (${classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -260,7 +260,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and dqnj not in (${classes})
+				and ks_bjmc not in (${classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})

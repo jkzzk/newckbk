@@ -21,6 +21,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,8 @@ import java.util.*;
 */
 @Service("languageExamService")
 public class LanguageExamServiceImpl extends AbstractService<LanguageExam, String> implements LanguageExamService {
+
+	Logger logger = LoggerFactory.getLogger(LanguageExamServiceImpl.class);
 
 	@Autowired
 	private LanguageExamDao languageExamDao;
@@ -619,21 +623,22 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 				String[] gradeArr = langStisticExt.getGrade().split(",");
 				String newGradeStr = "";
 				for (String grade : gradeArr) {
-					newGradeStr += grade + "级" + ",";
+					String tmpGrade = grade.substring(0, grade.length() - 1) + "级\'";
+					newGradeStr += tmpGrade + ",";
 				}
 				langStisticExt.setGrade(newGradeStr.substring(0,newGradeStr.length()-1));
 			}
 			schoolBaseNumber = cetStuscoreDao.statisticBaseNumberRegister(langStisticExt);
 
 			List<StatisticReport> baseNumber = null;
-			if(langStisticExt.getGrade() != null && !langStisticExt.getGrade().equals("")) {
+			/*if(langStisticExt.getGrade() != null && !langStisticExt.getGrade().equals("")) {
 				String[] gradeArr = langStisticExt.getGrade().split(",");
 				String newGradeStr = "";
 				for (String grade : gradeArr) {
-					newGradeStr += grade.substring(0,2) + ",";
+					newGradeStr += grade.substring(1,2) + ",";
 				}
 				langStisticExt.setGrade(newGradeStr.substring(0,newGradeStr.length()-1));
-			}
+			}*/
 			baseNumber = cetStuscoreDao.statisticBaseNumberEnter(langStisticExt);
 
 			List<StatisticReport> missingNumber = null;
@@ -649,30 +654,35 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			maxScore = cetStuscoreDao.statisticMaxScore(langStisticExt);
 
 			for (StatisticReport statisticReportMax : maxScore) {
+				logger.debug("平均分");
 				for (StatisticReport statisticReportAvg : avgScore) {
 					if(statisticReportAvg.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportAvg.getMajor().equals(statisticReportMax.getMajor())
 					&& statisticReportAvg.getGrade().equals(statisticReportMax.getGrade()) && statisticReportAvg.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setAvgScore(statisticReportAvg.getAvgScore());
 					}
 				}
+				logger.debug("通过人数");
 				for (StatisticReport statisticReportPass : passNumber) {
 					if(statisticReportPass.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportPass.getMajor().equals(statisticReportMax.getMajor())
 							&& statisticReportPass.getGrade().equals(statisticReportMax.getGrade()) && statisticReportPass.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setPassNumber(statisticReportPass.getPassNumber());
 					}
 				}
+				logger.debug("缺考人数");
 				for (StatisticReport statisticReportMissing : missingNumber) {
 					if(statisticReportMissing.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportMissing.getMajor().equals(statisticReportMax.getMajor())
 							&& statisticReportMissing.getGrade().equals(statisticReportMax.getGrade()) && statisticReportMissing.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setMissingNumber(statisticReportMissing.getMissingNumber());
 					}
 				}
+				logger.debug("报考人数");
 				for (StatisticReport statisticReportBase: baseNumber) {
 					if(statisticReportBase.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportBase.getMajor().equals(statisticReportMax.getMajor())
 							&& statisticReportBase.getGrade().equals(statisticReportMax.getGrade()) && statisticReportBase.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setBaseNumber(statisticReportBase.getBaseNumber());
 					}
 				}
+				logger.debug("学籍");
 				if(null != schoolBaseNumber) {
 					for (StatisticReport statisticReportSchool: schoolBaseNumber) {
 						if(statisticReportSchool.getClasses().equals(statisticReportMax.getClasses())) {
@@ -684,10 +694,19 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 
 			for (StatisticReport statisticReport : maxScore) {
 				statisticReport.setActualNumber(statisticReport.getBaseNumber()-statisticReport.getMissingNumber());
-				statisticReport.setMissingRate(new BigDecimal(statisticReport.getMissingNumber().doubleValue()/statisticReport.getBaseNumber().doubleValue()).setScale(4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-				statisticReport.setPassRate(new BigDecimal(statisticReport.getPassNumber().doubleValue()/statisticReport.getBaseNumber().doubleValue()).setScale(4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-				if(langStisticExt.getDataSource().equals("1")) {
+				if(!statisticReport.getBaseNumber().equals(0)) {
+					logger.debug(statisticReport.getBaseNumber().toString());
+					statisticReport.setMissingRate(new BigDecimal(statisticReport.getMissingNumber().doubleValue() / statisticReport.getBaseNumber().doubleValue()).setScale(4, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+					statisticReport.setPassRate(new BigDecimal(statisticReport.getPassNumber().doubleValue()/statisticReport.getBaseNumber().doubleValue()).setScale(4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+				}else {
+					statisticReport.setMissingRate(new BigDecimal(0));
+					statisticReport.setPassRate(new BigDecimal(0));
+				}
+				if(!statisticReport.getSchoolNumber().equals(0)) {
+					logger.debug(statisticReport.getSchoolNumber().toString());
 					statisticReport.setSchoolPassRate(new BigDecimal(statisticReport.getPassNumber().doubleValue()/statisticReport.getSchoolNumber().doubleValue()).setScale(4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+				}else {
+					statisticReport.setSchoolPassRate(new BigDecimal(0));
 				}
 			}
 
