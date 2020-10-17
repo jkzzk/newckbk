@@ -227,6 +227,7 @@ $(function () {
 
     // 统计并导出
     $('#statisticAndExport').click(function () {
+        $('#loadingToast').show();
         if(cleanUpParam()) {
             // console.log("statisticParam",statisticParam);
 /*            $('#loadingToast').show();

@@ -1035,56 +1035,56 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		titleRow.getCell(3).setCellStyle(cellStyleTitle);
 		titleRow.getCell(4).setCellValue("班级");
 		titleRow.getCell(4).setCellStyle(cellStyleTitle);
-		if(column == 15) {
+		if(column == 15 || column == 14) {
 			titleRow.getCell(5).setCellValue("学籍人数");
 			titleRow.getCell(5).setCellStyle(cellStyleTitle);
 		}else if(column == 13) {
 			titleRow.getCell(5).setCellValue("报考人数");
 			titleRow.getCell(5).setCellStyle(cellStyleTitle);
 		}
-		if(column == 15) {
+		if(column == 15 || column == 14) {
 			titleRow.getCell(6).setCellValue("报考人数");
 			titleRow.getCell(6).setCellStyle(cellStyleTitle);
 		}else if(column == 13) {
 			titleRow.getCell(6).setCellValue("实考人数");
 			titleRow.getCell(6).setCellStyle(cellStyleTitle);
 		}
-		if(column == 15) {
+		if(column == 15 || column == 14) {
 			titleRow.getCell(7).setCellValue("实考人数");
 			titleRow.getCell(7).setCellStyle(cellStyleTitle);
 		}else if(column == 13) {
 			titleRow.getCell(7).setCellValue("缺考人数");
 			titleRow.getCell(7).setCellStyle(cellStyleTitle);
 		}
-		if(column == 15) {
+		if(column == 15 || column == 14) {
 			titleRow.getCell(8).setCellValue("缺考人数");
 			titleRow.getCell(8).setCellStyle(cellStyleTitle);
 		}else if(column == 13) {
 			titleRow.getCell(8).setCellValue("缺考率");
 			titleRow.getCell(8).setCellStyle(cellStyleTitle);
 		}
-		if(column == 15) {
+		if(column == 15 || column == 14) {
 			titleRow.getCell(9).setCellValue("缺考率");
 			titleRow.getCell(9).setCellStyle(cellStyleTitle);
 		}else if(column == 13) {
 			titleRow.getCell(9).setCellValue("通过人数");
 			titleRow.getCell(9).setCellStyle(cellStyleTitle);
 		}
-		if(column == 15) {
+		if(column == 15 || column == 14) {
 			titleRow.getCell(10).setCellValue("通过人数");
 			titleRow.getCell(10).setCellStyle(cellStyleTitle);
 		}else if(column == 13) {
 			titleRow.getCell(10).setCellValue("通过率(报考)");
 			titleRow.getCell(10).setCellStyle(cellStyleTitle);
 		}
-		if(column == 15) {
+		if(column == 15 || column == 14) {
 			titleRow.getCell(11).setCellValue("通过率(学籍)");
 			titleRow.getCell(11).setCellStyle(cellStyleTitle);
 		}else if(column == 13) {
 			titleRow.getCell(11).setCellValue("平均分数");
 			titleRow.getCell(11).setCellStyle(cellStyleTitle);
 		}
-		if(column == 15) {
+		if(column == 15 || column == 14) {
 			titleRow.getCell(12).setCellValue("通过率(报考)");
 			titleRow.getCell(12).setCellStyle(cellStyleTitle);
 		}else if(column == 14) {
