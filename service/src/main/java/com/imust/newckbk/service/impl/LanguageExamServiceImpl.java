@@ -771,14 +771,14 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		if(langStisticExt.getHasAcademy()) {
 			statisticReportExcelsByLangType = statisticReportDao.sumByLangType();
 			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByLangType) {
-				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 2, BigDecimal.ROUND_UP);
+				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setMissingRate(missingRate.toString());
 				if (statisticReportExcel.getSchoolNumber().equals("0")) {
 					statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
 				}
-				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()), 2, BigDecimal.ROUND_UP);
+				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()), 4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 2, BigDecimal.ROUND_UP);
+				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setPassRate(passRate.toString());
 			}
 		}
@@ -787,14 +787,14 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		if(langStisticExt.getHasMajor()) {
 			statisticReportExcelsByAcademy = statisticReportDao.sumByAcademy();
 			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByAcademy) {
-				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
+				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4,BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setMissingRate(missingRate.toString());
 				if(statisticReportExcel.getSchoolNumber().equals("0")) {
 					statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
 				}
-				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
+				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
+				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setPassRate(passRate.toString());
 			}
 		}
@@ -804,14 +804,14 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		if(langStisticExt.getHasGrade()) {
 			statisticReportExcelsByMajor = statisticReportDao.sumByMajor();
 			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByMajor) {
-				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 2, BigDecimal.ROUND_UP);
+				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setMissingRate(missingRate.toString());
 				if (statisticReportExcel.getSchoolNumber().equals("0")) {
 					statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
 				}
-				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()), 2, BigDecimal.ROUND_UP);
+				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()), 4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 2, BigDecimal.ROUND_UP);
+				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setPassRate(passRate.toString());
 			}
 		}
@@ -820,14 +820,14 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		if(langStisticExt.getHasClasses()) {
 			statisticReportExcelsByGrade = statisticReportDao.sumByGrade();
 			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByGrade) {
-				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
+				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4,BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setMissingRate(missingRate.toString());
 				if(statisticReportExcel.getSchoolNumber().equals("0")) {
 					statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
 				}
-				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
+				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
+				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),4, BigDecimal.ROUND_UP).multiply(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_UP);
 				statisticReportExcel.setPassRate(passRate.toString());
 			}
 		}
