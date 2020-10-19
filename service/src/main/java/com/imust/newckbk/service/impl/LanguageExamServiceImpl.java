@@ -660,28 +660,28 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			for (StatisticReport statisticReportMax : maxScore) {
 				logger.debug("平均分");
 				for (StatisticReport statisticReportAvg : avgScore) {
-					if(statisticReportAvg.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportAvg.getMajor().equals(statisticReportMax.getMajor())
+					if(statisticReportAvg.getLangType().equals(statisticReportMax.getLangType()) && statisticReportAvg.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportAvg.getMajor().equals(statisticReportMax.getMajor())
 					&& statisticReportAvg.getGrade().equals(statisticReportMax.getGrade()) && statisticReportAvg.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setAvgScore(statisticReportAvg.getAvgScore());
 					}
 				}
 				logger.debug("通过人数");
 				for (StatisticReport statisticReportPass : passNumber) {
-					if(statisticReportPass.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportPass.getMajor().equals(statisticReportMax.getMajor())
+					if(statisticReportPass.getLangType().equals(statisticReportMax.getLangType()) && statisticReportPass.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportPass.getMajor().equals(statisticReportMax.getMajor())
 							&& statisticReportPass.getGrade().equals(statisticReportMax.getGrade()) && statisticReportPass.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setPassNumber(statisticReportPass.getPassNumber());
 					}
 				}
 				logger.debug("缺考人数");
 				for (StatisticReport statisticReportMissing : missingNumber) {
-					if(statisticReportMissing.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportMissing.getMajor().equals(statisticReportMax.getMajor())
+					if(statisticReportMissing.getLangType().equals(statisticReportMax.getLangType()) && statisticReportMissing.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportMissing.getMajor().equals(statisticReportMax.getMajor())
 							&& statisticReportMissing.getGrade().equals(statisticReportMax.getGrade()) && statisticReportMissing.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setMissingNumber(statisticReportMissing.getMissingNumber());
 					}
 				}
 				logger.debug("报考人数");
 				for (StatisticReport statisticReportBase: baseNumber) {
-					if(statisticReportBase.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportBase.getMajor().equals(statisticReportMax.getMajor())
+					if(statisticReportBase.getLangType().equals(statisticReportMax.getLangType()) && statisticReportBase.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportBase.getMajor().equals(statisticReportMax.getMajor())
 							&& statisticReportBase.getGrade().equals(statisticReportMax.getGrade()) && statisticReportBase.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setBaseNumber(statisticReportBase.getBaseNumber());
 					}
@@ -689,7 +689,8 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 				logger.debug("学籍");
 				if(null != schoolBaseNumber) {
 					for (StatisticReport statisticReportSchool: schoolBaseNumber) {
-						if(statisticReportSchool.getClasses().equals(statisticReportMax.getClasses())) {
+						if(statisticReportSchool.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportSchool.getMajor().equals(statisticReportMax.getMajor())
+								&& statisticReportSchool.getGrade().equals(statisticReportMax.getGrade()) && statisticReportSchool.getClasses().equals(statisticReportMax.getClasses())) {
 							statisticReportMax.setSchoolNumber(statisticReportSchool.getSchoolNumber());
 						}
 					}
