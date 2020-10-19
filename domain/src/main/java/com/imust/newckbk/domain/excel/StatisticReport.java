@@ -11,15 +11,15 @@ import java.math.BigDecimal;
  */
 public class StatisticReport {
 
-    private String langType;
+    private String langType = "";
 
-    private String academy;
+    private String academy = "";
 
-    private String major;
+    private String major = "";
 
-    private String grade;
+    private String grade = "";
 
-    private String classes;
+    private String classes = "";
 
     private Integer schoolNumber = 0;
 
@@ -46,7 +46,7 @@ public class StatisticReport {
     }
 
     public void setLangType(String langType) {
-        this.langType = langType;
+        this.langType = langType == null ? "" : langType;
     }
 
     public String getAcademy() {
@@ -54,7 +54,7 @@ public class StatisticReport {
     }
 
     public void setAcademy(String academy) {
-        this.academy = academy;
+        this.academy = academy == null ? "" : academy;
     }
 
     public String getMajor() {
@@ -62,7 +62,7 @@ public class StatisticReport {
     }
 
     public void setMajor(String major) {
-        this.major = major;
+        this.major = major == null ? "" : major;
     }
 
     public String getGrade() {
@@ -70,7 +70,7 @@ public class StatisticReport {
     }
 
     public void setGrade(String grade) {
-        this.grade = grade;
+        this.grade = grade == null ? "" : grade;
     }
 
     public String getClasses() {
@@ -78,7 +78,7 @@ public class StatisticReport {
     }
 
     public void setClasses(String classes) {
-        this.classes = classes;
+        this.classes = classes == null ? "" : classes;
     }
 
     public Integer getBaseNumber() {

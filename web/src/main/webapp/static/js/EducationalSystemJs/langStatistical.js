@@ -238,45 +238,48 @@ $(function () {
 
     // 统计并导出
     $('#statisticAndExport').click(function () {
-        $('#loadingToast').show();
-        if(cleanUpParam()) {
-            // console.log("statisticParam",statisticParam);
-/*            $('#loadingToast').show();
-            setTimeout(function () {
-                window.open("/langExam/exportStatistic");
-                $('#loadingToast').hide();
-            },1000);*/
-            $.request({
-                async : false,
-                url : '/langExam/statisticReport',
-                data : JSON.stringify(statisticParam),
-                contentType : 'application/json;charset=UTF-8',
-                type : "POST",
-                dataType: 'json',
-                success : function(result) {
-                    if(result.code == 1) {
-                        // 导出excel
-                        // window.open("/langExam/exportStatistic");
-                    }else {
-                        // 导出失败
-                        if(ifIsNull(result.msg) == '') {
-                            errMsg("统计失败！")
+        window.open("/langExam/exportStatistic");
+        /*$('#loadingToast').show();
+        setTimeout(function () {
+            if(cleanUpParam()) {
+                // console.log("statisticParam",statisticParam);
+                /!*            $('#loadingToast').show();
+                            setTimeout(function () {
+                                window.open("/langExam/exportStatistic");
+                                $('#loadingToast').hide();
+                            },1000);*!/
+                $.request({
+                    async : false,
+                    url : '/langExam/statisticReport',
+                    data : JSON.stringify(statisticParam),
+                    contentType : 'application/json;charset=UTF-8',
+                    type : "POST",
+                    dataType: 'json',
+                    success : function(result) {
+                        if(result.code == 1) {
+                            // 导出excel
+                            window.open("/langExam/exportStatistic");
                         }else {
-                            errMsg(result.msg);
+                            // 导出失败
+                            if(ifIsNull(result.msg) == '') {
+                                errMsg("统计失败！")
+                            }else {
+                                errMsg(result.msg);
+                            }
                         }
-                    }
-                    setTimeout(function () {
+                        setTimeout(function () {
+                            $('#loadingToast').hide();
+                        },1000)
+                    },
+                    error:function (message) {
                         $('#loadingToast').hide();
-                    },1000)
-                },
-                error:function (message) {
-                    $('#loadingToast').hide();
-                    console.log(message);
-                    errMsg("网络异常");
-                }
-            });
-        }else {
-            $('#loadingToast').hide();
-        }
+                        console.log(message);
+                        errMsg("网络异常");
+                    }
+                });
+            }else {
+                $('#loadingToast').hide();
+            }
+        },1000);*/
     });
 });

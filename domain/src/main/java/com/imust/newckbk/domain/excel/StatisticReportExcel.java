@@ -1,15 +1,15 @@
 package com.imust.newckbk.domain.excel;
 
 public class StatisticReportExcel {
-    private String langType;
+    private String langType = "";
 
-    private String academy;
+    private String academy = "";
 
-    private String major;
+    private String major = "";
 
-    private String grade;
+    private String grade = "";
 
-    private String classes;
+    private String classes = "";
 
     private String schoolNumber;
 
@@ -149,5 +149,26 @@ public class StatisticReportExcel {
 
     public void setMaxScore(String maxScore) {
         this.maxScore = maxScore == null ? null : maxScore.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "StatisticReportExcel{" +
+                "langType='" + langType + '\'' +
+                ", academy='" + academy + '\'' +
+                ", major='" + major + '\'' +
+                ", grade='" + grade + '\'' +
+                ", classes='" + classes + '\'' +
+                ", schoolNumber='" + schoolNumber + '\'' +
+                ", baseNumber='" + baseNumber + '\'' +
+                ", actualNumber='" + actualNumber + '\'' +
+                ", missingNumber='" + missingNumber + '\'' +
+                ", missingRate='" + missingRate + '\'' +
+                ", passNumber='" + passNumber + '\'' +
+                ", schoolPassRate='" + schoolPassRate + '\'' +
+                ", passRate='" + passRate + '\'' +
+                ", avgScore='" + avgScore + '\'' +
+                ", maxScore='" + maxScore + '\'' +
+                '}';
     }
 }

@@ -722,6 +722,7 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			return RespData.successMsg("统计成功！",1);
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.debug("系统错误：" + e.toString());
 			throw e;
 		}
 	}
@@ -735,13 +736,14 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 
 			List<LangStisticExt> langStisticExts = langStisticExtDao.getOne();
 
-			// 分组合计
-			statisticReportExcels = this.getSumList(statisticReportExcels);
-
 			LangStisticExt langStisticExt = null;
 			if(langStisticExts != null && langStisticExts.size() >= 0) {
 				langStisticExt = langStisticExts.get(0);
+				langStisticExt.cleanUpStatisticType();
 			}
+
+			// 分组合计
+			statisticReportExcels = this.getSumList(statisticReportExcels,langStisticExt);
 
 			Workbook workbook = this.getExcelWorkBook(statisticReportExcels,langStisticExt);
 
@@ -762,59 +764,72 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 	}
 
     // 分组合计并插入
-	private List<StatisticReportExcel> getSumList(List<StatisticReportExcel> statisticReportExcels) {
+	private List<StatisticReportExcel> getSumList(List<StatisticReportExcel> statisticReportExcels, LangStisticExt langStisticExt) {
 
 		// 按语种类别合计
-		List<StatisticReportExcel> statisticReportExcelsByLangType = statisticReportDao.sumByLangType();
-		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByLangType) {
-			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
-			statisticReportExcel.setMissingRate(missingRate.toString());
-			if(statisticReportExcel.getSchoolNumber().equals("0")) {
-				statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+		List<StatisticReportExcel> statisticReportExcelsByLangType = new ArrayList<>();
+		if(langStisticExt.getHasAcademy()) {
+			statisticReportExcelsByLangType = statisticReportDao.sumByLangType();
+			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByLangType) {
+				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 2, BigDecimal.ROUND_UP);
+				statisticReportExcel.setMissingRate(missingRate.toString());
+				if (statisticReportExcel.getSchoolNumber().equals("0")) {
+					statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+				}
+				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()), 2, BigDecimal.ROUND_UP);
+				statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
+				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 2, BigDecimal.ROUND_UP);
+				statisticReportExcel.setPassRate(passRate.toString());
 			}
-			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
-			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
-			statisticReportExcel.setPassRate(passRate.toString());
 		}
 		// 按学院合计
-		List<StatisticReportExcel> statisticReportExcelsByAcademy = statisticReportDao.sumByAcademy();
-		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByAcademy) {
-			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
-			statisticReportExcel.setMissingRate(missingRate.toString());
-			if(statisticReportExcel.getSchoolNumber().equals("0")) {
-				statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+		List<StatisticReportExcel> statisticReportExcelsByAcademy = new ArrayList<>();
+		if(langStisticExt.getHasMajor()) {
+			statisticReportExcelsByAcademy = statisticReportDao.sumByAcademy();
+			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByAcademy) {
+				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
+				statisticReportExcel.setMissingRate(missingRate.toString());
+				if(statisticReportExcel.getSchoolNumber().equals("0")) {
+					statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+				}
+				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
+				statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
+				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
+				statisticReportExcel.setPassRate(passRate.toString());
 			}
-			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
-			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
-			statisticReportExcel.setPassRate(passRate.toString());
 		}
+
 		// 按专业合计
-		List<StatisticReportExcel> statisticReportExcelsByMajor = statisticReportDao.sumByMajor();
-		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByMajor) {
-			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
-			statisticReportExcel.setMissingRate(missingRate.toString());
-			if(statisticReportExcel.getSchoolNumber().equals("0")) {
-				statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+		List<StatisticReportExcel> statisticReportExcelsByMajor = new ArrayList<>();
+		if(langStisticExt.getHasGrade()) {
+			statisticReportExcelsByMajor = statisticReportDao.sumByMajor();
+			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByMajor) {
+				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 2, BigDecimal.ROUND_UP);
+				statisticReportExcel.setMissingRate(missingRate.toString());
+				if (statisticReportExcel.getSchoolNumber().equals("0")) {
+					statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+				}
+				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()), 2, BigDecimal.ROUND_UP);
+				statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
+				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()), 2, BigDecimal.ROUND_UP);
+				statisticReportExcel.setPassRate(passRate.toString());
 			}
-			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
-			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
-			statisticReportExcel.setPassRate(passRate.toString());
 		}
 		// 按年级合计
-		List<StatisticReportExcel> statisticReportExcelsByGrade = statisticReportDao.sumByGrade();
-		for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByGrade) {
-			BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
-			statisticReportExcel.setMissingRate(missingRate.toString());
-			if(statisticReportExcel.getSchoolNumber().equals("0")) {
-				statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+		List<StatisticReportExcel> statisticReportExcelsByGrade = new ArrayList<>();
+		if(langStisticExt.getHasClasses()) {
+			statisticReportExcelsByGrade = statisticReportDao.sumByGrade();
+			for (StatisticReportExcel statisticReportExcel : statisticReportExcelsByGrade) {
+				BigDecimal missingRate = new BigDecimal(statisticReportExcel.getMissingNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2,BigDecimal.ROUND_UP);
+				statisticReportExcel.setMissingRate(missingRate.toString());
+				if(statisticReportExcel.getSchoolNumber().equals("0")) {
+					statisticReportExcel.setSchoolNumber(statisticReportExcel.getBaseNumber());
+				}
+				BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
+				statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
+				BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
+				statisticReportExcel.setPassRate(passRate.toString());
 			}
-			BigDecimal schoolPassRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getSchoolNumber()),2, BigDecimal.ROUND_UP);
-			statisticReportExcel.setSchoolPassRate(schoolPassRate.toString());
-			BigDecimal passRate = new BigDecimal(statisticReportExcel.getPassNumber()).divide(new BigDecimal(statisticReportExcel.getBaseNumber()),2, BigDecimal.ROUND_UP);
-			statisticReportExcel.setPassRate(passRate.toString());
 		}
 
 		StatisticStruct statisticStruct = new StatisticStruct(statisticReportExcels,statisticReportExcelsByLangType,statisticReportExcelsByAcademy,statisticReportExcelsByMajor,statisticReportExcelsByGrade);
@@ -881,117 +896,124 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 
 		// 填写数据并统计合并列位置
 		Map<Integer,Integer> region = new TreeMap<>();
-		for (int i = 1; i < statisticReportExcels.size(); i++) {
+		Iterator<StatisticReportExcel> iterator = statisticReportExcels.iterator();
+		int i = 0;
+		while (iterator.hasNext()) {
+			StatisticReportExcel next = iterator.next();
+			if(next == null) {
+				continue;
+			}
+			i++;
 			Row row = statisticSheet.createRow(i);
 			row.setHeightInPoints(20);
 			for (int j = 0; j < column; j++) {
 				Cell cell = row.createCell(j);
 				cell.setCellStyle(cellStyleValue);
 				if(0 == j) {
-					cell.setCellValue(statisticReportExcels.get(i).getLangType());
+					cell.setCellValue(next.getLangType());
 				}
 				if(1 == j) {
-					String academy = statisticReportExcels.get(i).getAcademy();
+					String academy = next.getAcademy();
 					cell.setCellValue(academy);
-					if(academy != null && !academy.equals("") && statisticReportExcels.get(i).getAcademy().equals("合计")) {
+					if(academy != null && !academy.equals("") && next.getAcademy().equals("合计")) {
 						region.put(i,1);
 					}
 				}
 				if(2 == j) {
-					String major = statisticReportExcels.get(i).getMajor();
+					String major = next.getMajor();
 					cell.setCellValue(major);
-					if(major != null && !major.equals("") && statisticReportExcels.get(i).getMajor().equals("合计")) {
+					if(major != null && !major.equals("") && next.getMajor().equals("合计")) {
 						region.put(i,2);
 					}
 				}
 				if(3 == j) {
-					String grade = statisticReportExcels.get(i).getGrade();
+					String grade = next.getGrade();
 					cell.setCellValue(grade);
-					if(grade != null && !grade.equals("") && statisticReportExcels.get(i).getGrade().equals("合计")) {
+					if(grade != null && !grade.equals("") && next.getGrade().equals("合计")) {
 						region.put(i,3);
 					}
 				}
 				if(4 == j) {
-					cell.setCellValue(statisticReportExcels.get(i).getClasses());
+					cell.setCellValue(next.getClasses());
 				}
 				if(5 == j) {
 					if(column == 15 || column == 14) {
-						cell.setCellValue(statisticReportExcels.get(i).getSchoolNumber());
+						cell.setCellValue(next.getSchoolNumber());
 					}else {
-						cell.setCellValue(statisticReportExcels.get(i).getBaseNumber());
+						cell.setCellValue(next.getBaseNumber());
 					}
 				}
 				if(6 == j) {
 					if(column == 15 || column == 14) {
-						cell.setCellValue(statisticReportExcels.get(i).getBaseNumber());
+						cell.setCellValue(next.getBaseNumber());
 					}else {
-						cell.setCellValue(statisticReportExcels.get(i).getActualNumber());
+						cell.setCellValue(next.getActualNumber());
 					}
 				}
 				if(7 == j) {
 					if(column == 15 || column == 14) {
-						cell.setCellValue(statisticReportExcels.get(i).getActualNumber());
+						cell.setCellValue(next.getActualNumber());
 					}else {
-						cell.setCellValue(statisticReportExcels.get(i).getMissingNumber());
+						cell.setCellValue(next.getMissingNumber());
 					}
 				}
 				if(8 == j) {
 					if(column == 15 || column == 14) {
-						cell.setCellValue(statisticReportExcels.get(i).getMissingNumber());
+						cell.setCellValue(next.getMissingNumber());
 					}else {
-						cell.setCellValue(statisticReportExcels.get(i).getMissingRate()+"%");
+						cell.setCellValue(next.getMissingRate()+"%");
 					}
 				}
 				if(9 == j) {
 					if(column == 15 || column == 14) {
-						cell.setCellValue(statisticReportExcels.get(i).getMissingRate()+"%");
+						cell.setCellValue(next.getMissingRate()+"%");
 					}else {
-						cell.setCellValue(statisticReportExcels.get(i).getPassNumber());
+						cell.setCellValue(next.getPassNumber());
 					}
 				}
 				if(10 == j) {
 					if(column == 15 || column == 14) {
-						cell.setCellValue(statisticReportExcels.get(i).getPassNumber());
+						cell.setCellValue(next.getPassNumber());
 					}else {
 						if(column == 13) {
-							cell.setCellValue(statisticReportExcels.get(i).getPassRate() + "%");
+							cell.setCellValue(next.getPassRate() + "%");
 						}else {
-							cell.setCellValue(statisticReportExcels.get(i).getAvgScore());
+							cell.setCellValue(next.getAvgScore());
 						}
 					}
 				}
 				if(11 == j) {
 					if(column == 15 || column == 14) {
-						cell.setCellValue(statisticReportExcels.get(i).getSchoolPassRate() + "%");
+						cell.setCellValue(next.getSchoolPassRate() + "%");
 					}else {
 						if(column == 13) {
-							cell.setCellValue(statisticReportExcels.get(i).getAvgScore());
+							cell.setCellValue(next.getAvgScore());
 						}else {
-							cell.setCellValue(statisticReportExcels.get(i).getMaxScore());
+							cell.setCellValue(next.getMaxScore());
 						}
 					}
 				}
 				if(12 == j) {
 					if(column == 15) {
-						cell.setCellValue(statisticReportExcels.get(i).getPassRate() + "%");
+						cell.setCellValue(next.getPassRate() + "%");
 					}else {
 						if(column == 13) {
-							cell.setCellValue(statisticReportExcels.get(i).getMaxScore());
+							cell.setCellValue(next.getMaxScore());
 						}else {
-							cell.setCellValue(statisticReportExcels.get(i).getAvgScore());
+							cell.setCellValue(next.getAvgScore());
 						}
 					}
 				}
 				if(13 == j) {
 					if(column == 15) {
-						cell.setCellValue(statisticReportExcels.get(i).getAvgScore());
+						cell.setCellValue(next.getAvgScore());
 					}else if(column == 14) {
-						cell.setCellValue(statisticReportExcels.get(i).getMaxScore());
+						cell.setCellValue(next.getMaxScore());
 					}
 				}
 				if(14 == j) {
 					if(column == 15) {
-						cell.setCellValue(statisticReportExcels.get(i).getMaxScore());
+						cell.setCellValue(next.getMaxScore());
 					}
 				}
 			}
@@ -1011,6 +1033,10 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 				statisticSheet.addMergedRegion(regionMerge);
 			}
 		}
+
+		//合并行
+
+		//删除列
 
 		return workbook;
 	}
@@ -1111,21 +1137,29 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		}
 	}
 
-	private CET4TJExt getCurrentAllCET4TJ() {
-		List<Cet4Tjjl> cet4Tjjls = cet4TjjlDao.getByStatus("1");
+	/**
+	 * 删除列，把每一个行的属于删除列的单元格，删除，在把后面的单元格依次向前移动
+	 *
+	 * @param sheet
+	 * @param removeColumnNum
+	 * @param removeColumnTotal
+	 */
+	public static void removeColumn(Sheet sheet, int removeColumnNum, int removeColumnTotal){
 
-		CET4TJExt cet4TJExt = null;
-		if(cet4Tjjls != null && !cet4Tjjls.isEmpty()) {
-			cet4TJExt = new CET4TJExt(cet4Tjjls.get(0));
-			cet4TJExt.setCet4Tytjjl(cet4TytjjlDao.getById(cet4TJExt.getTyId()));
-			if(cet4TJExt.getFirstTermId() != null && !cet4TJExt.getFirstTermId().equals("")) {
-				cet4TJExt.setCet4FirstTerm(cet4FirstTermDao.getById(cet4TJExt.getFirstTermId()));
+		if(sheet == null){
+			return;
+		}
+		for (Iterator<Row> rowIterator = sheet.rowIterator(); rowIterator.hasNext();) {
+			Row row = rowIterator.next();
+			Cell cell = row.getCell(removeColumnNum);
+			if(cell == null){
+				continue;
 			}
-			if(cet4TJExt.getSecondTermId() != null && !cet4TJExt.getSecondTermId().equals("")) {
-				cet4TJExt.setCet4SecondTerm(cet4SecondTermDao.getById(cet4TJExt.getSecondTermId()));
+			row.removeCell(cell);
+
+			for(int n = removeColumnNum; n < (removeColumnTotal + removeColumnNum); n++){
+				row.shiftCellsLeft(n,n+1,1);
 			}
 		}
-
-		return cet4TJExt;
 	}
 }
