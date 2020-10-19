@@ -269,7 +269,7 @@ $(function () {
                         }
                         setTimeout(function () {
                             $('#loadingToast').hide();
-                        },1000)
+                        },500)
                     },
                     error:function (message) {
                         $('#loadingToast').hide();
@@ -280,6 +280,6 @@ $(function () {
             }else {
                 $('#loadingToast').hide();
             }
-        },1000);
+        },50);
     });
 });
