@@ -238,16 +238,16 @@ $(function () {
 
     // 统计并导出
     $('#statisticAndExport').click(function () {
-        window.open("/langExam/exportStatistic");
-        /*$('#loadingToast').show();
+        // window.open("/langExam/exportStatistic");
+        $('#loadingToast').show();
         setTimeout(function () {
             if(cleanUpParam()) {
                 // console.log("statisticParam",statisticParam);
-                /!*            $('#loadingToast').show();
+                /*            $('#loadingToast').show();
                             setTimeout(function () {
                                 window.open("/langExam/exportStatistic");
                                 $('#loadingToast').hide();
-                            },1000);*!/
+                            },1000);*/
                 $.request({
                     async : false,
                     url : '/langExam/statisticReport',
@@ -280,6 +280,6 @@ $(function () {
             }else {
                 $('#loadingToast').hide();
             }
-        },1000);*/
+        },1000);
     });
 });
