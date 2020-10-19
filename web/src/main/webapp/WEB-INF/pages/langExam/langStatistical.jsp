@@ -96,6 +96,33 @@
                         </div>
                     </a>
                 </dd>
+                <dt>统计类型</dt>
+                <dd>
+                    <a>
+                        <div class="row cl form-item" id="">
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="statisticType" checked readonly value="1">
+                                <label for="cet4">语种级别</label>
+                            </div>
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="statisticType" value="2">
+                                <label for="cet4">学院</label>
+                            </div>
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="statisticType" value="3">
+                                <label for="cet4">专业</label>
+                            </div>
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="statisticType" value="4">
+                                <label for="cet4">年级</label>
+                            </div>
+                            <div class="col-xs-1 col-sm-1 text-c title">
+                                <input type="checkbox" class="check-box" name="statisticType" value="5">
+                                <label for="cet4">班级</label>
+                            </div>
+                        </div>
+                    </a>
+                </dd>
                 <dt>统计信息</dt>
                 <dd>
                     <a>

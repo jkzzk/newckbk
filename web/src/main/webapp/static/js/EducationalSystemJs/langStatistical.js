@@ -13,6 +13,7 @@ var statisticParam = {
     dataSource : '0',
     langType : '',
     examDate : '',
+    statisticType : '',
     grade : '',
     academy : '',
     major : '',
@@ -174,6 +175,16 @@ function cleanUpParam() {
         errMsg("请选择考试时间！");
         return false;
     }
+    if(ifIsNull(initParam.statisticType) != '') {
+        if(Array.isArray(initParam.statisticType)) {
+            statisticParam.statisticType = initParam.statisticType.join(",");
+        }else {
+            statisticParam.statisticType = initParam.statisticType;
+        }
+    }else {
+        errMsg("请选择统计类型！");
+        return false;
+    }
     statisticParam.grade = grade.join(",");
     statisticParam.academy = academy.join(",");
     statisticParam.major = major.join(",");
@@ -245,10 +256,14 @@ $(function () {
                 success : function(result) {
                     if(result.code == 1) {
                         // 导出excel
-                        window.open("/langExam/exportStatistic");
+                        // window.open("/langExam/exportStatistic");
                     }else {
                         // 导出失败
-                        errMsg("统计失败！");
+                        if(ifIsNull(result.msg) == '') {
+                            errMsg("统计失败！")
+                        }else {
+                            errMsg(result.msg);
+                        }
                     }
                     setTimeout(function () {
                         $('#loadingToast').hide();
@@ -260,6 +275,8 @@ $(function () {
                     errMsg("网络异常");
                 }
             });
+        }else {
+            $('#loadingToast').hide();
         }
     });
 });

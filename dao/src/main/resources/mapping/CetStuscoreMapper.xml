@@ -68,10 +68,18 @@
 
 	<select id="statisticBaseNumberRegister" resultType="com.imust.newckbk.domain.excel.StatisticReport">
 		select
-			xsm as academy,
-			zym as major,
-			substr(dqnj,3,2) as grade,
-			bjh as classes,
+			<if test="hasAcademy">
+				xsm as academy,
+			</if>
+			<if test="hasMajor">
+				zym as major,
+			</if>
+			<if test="hasGrade">
+				substr(dqnj,3,2) as grade,
+			</if>
+			<if test="hasClasses">
+				bjh as classes,
+			</if>
 			count(*) as schoolNumber
 		from
 			xs_xjxxb_view_kw
@@ -89,17 +97,41 @@
 			<if test="classes != null and classes != ''">
 				and bjh not in (${classes})
 			</if>
-			group by xsm,zym,dqnj,bjh
-			order by bjh
+			group by
+				<trim suffixOverrides=",">
+					<if test="hasAcademy">
+						xsm,
+					</if>
+					<if test="hasMajor">
+						zym,
+					</if>
+					<if test="hasGrade">
+						dqnj,
+					</if>
+					<if test="hasClasses">
+						bjh
+					</if>
+				</trim>
+			<if test="hasClasses">
+				order by bjh
+			</if>
 		</where>
 	</select>
 	<select id="statisticBaseNumberEnter" resultType="com.imust.newckbk.domain.excel.StatisticReport">
 		select
 			ks_yyjb as langType,
-			ks_xymc as academy,
-			ks_zymc as major,
-			ks_nj as grade,
-			ks_bjmc as classes,
+			<if test="hasAcademy">
+				xs_xjxxb_view_kw.xsm as academy,
+			</if>
+			<if test="hasMajor">
+				xs_xjxxb_view_kw.zym as major,
+			</if>
+			<if test="hasGrade">
+				substr(xs_xjxxb_view_kw.dqnj,3,2) as grade,
+			</if>
+			<if test="hasClasses">
+				xs_xjxxb_view_kw.bjh as classes,
+			</if>
 			count(*) as baseNumber
 		from
 			cet_stuscore
@@ -116,7 +148,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and ks_bjmc not in (${classes})
+				and xs_xjxxb_view_kw.bjh not in (${classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -124,7 +156,22 @@
 			<if test="langType != null and langType != ''">
 				and ks_yyjb in (${langType})
 			</if>
-			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
+			group by
+				ks_yyjb,
+				<trim suffixOverrides=",">
+					<if test="hasAcademy">
+						xs_xjxxb_view_kw.xsm,
+					</if>
+					<if test="hasMajor">
+						xs_xjxxb_view_kw.zym,
+					</if>
+					<if test="hasGrade">
+						xs_xjxxb_view_kw.dqnj,
+					</if>
+					<if test="hasClasses">
+						xs_xjxxb_view_kw.bjh
+					</if>
+				</trim>
 			order by ks_yyjb
 		</where>
 	</select>
@@ -133,10 +180,18 @@
     <select id="statisticMissingNumber" resultType="com.imust.newckbk.domain.excel.StatisticReport">
 		select
 			ks_yyjb as langType,
-			ks_xymc as academy,
-			ks_zymc as major,
-			ks_nj as grade,
-			ks_bjmc as classes,
+			<if test="hasAcademy">
+				xs_xjxxb_view_kw.xsm as academy,
+			</if>
+			<if test="hasMajor">
+				xs_xjxxb_view_kw.zym as major,
+			</if>
+			<if test="hasGrade">
+				substr(xs_xjxxb_view_kw.dqnj,3,2) as grade,
+			</if>
+			<if test="hasClasses">
+				xs_xjxxb_view_kw.bjh as classes,
+			</if>
 			count(*) as missingNumber
 		from
 			cet_stuscore
@@ -153,7 +208,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and ks_bjmc not in (${classes})
+				and xs_xjxxb_view_kw.bjh not in (${classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -161,17 +216,40 @@
 			<if test="langType != null and langType != ''">
 				and ks_yyjb in (${langType})
 			</if>
-			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
+			group by
+				ks_yyjb,
+				<trim suffixOverrides=",">
+					<if test="hasAcademy">
+						xs_xjxxb_view_kw.xsm,
+					</if>
+					<if test="hasMajor">
+						xs_xjxxb_view_kw.zym,
+					</if>
+					<if test="hasGrade">
+						xs_xjxxb_view_kw.dqnj,
+					</if>
+					<if test="hasClasses">
+						xs_xjxxb_view_kw.bjh
+					</if>
+				</trim>
 			order by ks_yyjb
 		</where>
 	</select>
 	<select id="statisticPassNumber" resultType="com.imust.newckbk.domain.excel.StatisticReport">
 		select
 			ks_yyjb as langType,
-			ks_xymc as academy,
-			ks_zymc as major,
-			ks_nj as grade,
-			ks_bjmc as classes,
+			<if test="hasAcademy">
+				xs_xjxxb_view_kw.xsm as academy,
+			</if>
+			<if test="hasMajor">
+				xs_xjxxb_view_kw.zym as major,
+			</if>
+			<if test="hasGrade">
+				substr(xs_xjxxb_view_kw.dqnj,3,2) as grade,
+			</if>
+			<if test="hasClasses">
+				xs_xjxxb_view_kw.bjh as classes,
+			</if>
 			count(*) as passNumber
 		from
 			cet_stuscore
@@ -188,7 +266,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and ks_bjmc not in (${classes})
+				and xs_xjxxb_view_kw.bjh not in (${classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -196,7 +274,22 @@
 			<if test="langType != null and langType != ''">
 				and ks_yyjb in (${langType})
 			</if>
-			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
+			group by
+				ks_yyjb,
+				<trim suffixOverrides=",">
+					<if test="hasAcademy">
+						xs_xjxxb_view_kw.xsm,
+					</if>
+					<if test="hasMajor">
+						xs_xjxxb_view_kw.zym,
+					</if>
+					<if test="hasGrade">
+						xs_xjxxb_view_kw.dqnj,
+					</if>
+					<if test="hasClasses">
+						xs_xjxxb_view_kw.bjh
+					</if>
+				</trim>
 			order by ks_yyjb
 		</where>
 	</select>
@@ -204,10 +297,18 @@
 	<select id="statisticAvgScore" resultType="com.imust.newckbk.domain.excel.StatisticReport">
 		select
 			ks_yyjb as langType,
-			ks_xymc as academy,
-			ks_zymc as major,
-			ks_nj as grade,
-			ks_bjmc as classes,
+			<if test="hasAcademy">
+				xs_xjxxb_view_kw.xsm as academy,
+			</if>
+			<if test="hasMajor">
+				xs_xjxxb_view_kw.zym as major,
+			</if>
+			<if test="hasGrade">
+				substr(xs_xjxxb_view_kw.dqnj,3,2) as grade,
+			</if>
+			<if test="hasClasses">
+				xs_xjxxb_view_kw.bjh as classes,
+			</if>
 			round(avg(ks_zf),2) as avgScore
 		from
 			cet_stuscore
@@ -224,7 +325,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and ks_bjmc not in (${classes})
+				and xs_xjxxb_view_kw.bjh not in (${classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -232,7 +333,22 @@
 			<if test="langType != null and langType != ''">
 				and ks_yyjb in (${langType})
 			</if>
-			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
+			group by
+				ks_yyjb,
+				<trim suffixOverrides=",">
+					<if test="hasAcademy">
+						xs_xjxxb_view_kw.xsm,
+					</if>
+					<if test="hasMajor">
+						xs_xjxxb_view_kw.zym,
+					</if>
+					<if test="hasGrade">
+						xs_xjxxb_view_kw.dqnj,
+					</if>
+					<if test="hasClasses">
+						xs_xjxxb_view_kw.bjh
+					</if>
+				</trim>
 			order by ks_yyjb
 		</where>
 	</select>
@@ -240,10 +356,18 @@
 	<select id="statisticMaxScore" resultType="com.imust.newckbk.domain.excel.StatisticReport">
 		select
 			ks_yyjb as langType,
-			ks_xymc as academy,
-			ks_zymc as major,
-			ks_nj as grade,
-			ks_bjmc as classes,
+			<if test="hasAcademy">
+				xs_xjxxb_view_kw.xsm as academy,
+			</if>
+			<if test="hasMajor">
+				xs_xjxxb_view_kw.zym as major,
+			</if>
+			<if test="hasGrade">
+				substr(xs_xjxxb_view_kw.dqnj,3,2) as grade,
+			</if>
+			<if test="hasClasses">
+				xs_xjxxb_view_kw.bjh as classes,
+			</if>
 			max(ks_zf) as maxScore
 		from
 			cet_stuscore
@@ -260,7 +384,7 @@
 				and zym not in (${major})
 			</if>
 			<if test="classes != null and classes != ''">
-				and ks_bjmc not in (${classes})
+				and xs_xjxxb_view_kw.bjh not in (${classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -268,7 +392,22 @@
 			<if test="langType != null and langType != ''">
 				and ks_yyjb in (${langType})
 			</if>
-			group by ks_yyjb,ks_xymc,ks_zymc,ks_nj,ks_bjmc
+			group by
+				ks_yyjb,
+				<trim suffixOverrides=",">
+					<if test="hasAcademy">
+						xs_xjxxb_view_kw.xsm,
+					</if>
+					<if test="hasMajor">
+						xs_xjxxb_view_kw.zym,
+					</if>
+					<if test="hasGrade">
+						xs_xjxxb_view_kw.dqnj,
+					</if>
+					<if test="hasClasses">
+						xs_xjxxb_view_kw.bjh
+					</if>
+				</trim>
 			order by ks_yyjb
 		</where>
 	</select>

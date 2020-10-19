@@ -13,6 +13,8 @@ public class LangStisticExt {
 
     private String examDate;
 
+    private String statisticType;
+
     private String grade;
 
     private String academy;
@@ -20,6 +22,16 @@ public class LangStisticExt {
     private String major;
 
     private String classes;
+
+    private Boolean hasLangType = false;
+
+    private Boolean hasAcademy = false;
+
+    private Boolean hasMajor = false;
+
+    private Boolean hasGrade = false;
+
+    private Boolean hasClasses = false;
 
     public String getDataSource() {
         return dataSource;
@@ -43,6 +55,14 @@ public class LangStisticExt {
 
     public void setExamDate(String examDate) {
         this.examDate = examDate;
+    }
+
+    public String getStatisticType() {
+        return statisticType;
+    }
+
+    public void setStatisticType(String statisticType) {
+        this.statisticType = statisticType;
     }
 
     public String getGrade() {
@@ -75,5 +95,71 @@ public class LangStisticExt {
 
     public void setClasses(String classes) {
         this.classes = classes;
+    }
+
+    public Boolean getHasLangType() {
+        return hasLangType;
+    }
+
+    public void setHasLangType(Boolean hasLangType) {
+        this.hasLangType = hasLangType;
+    }
+
+    public Boolean getHasAcademy() {
+        return hasAcademy;
+    }
+
+    public void setHasAcademy(Boolean hasAcademy) {
+        this.hasAcademy = hasAcademy;
+    }
+
+    public Boolean getHasMajor() {
+        return hasMajor;
+    }
+
+    public void setHasMajor(Boolean hasMajor) {
+        this.hasMajor = hasMajor;
+    }
+
+    public Boolean getHasGrade() {
+        return hasGrade;
+    }
+
+    public void setHasGrade(Boolean hasGrade) {
+        this.hasGrade = hasGrade;
+    }
+
+    public Boolean getHasClasses() {
+        return hasClasses;
+    }
+
+    public void setHasClasses(Boolean hasClasses) {
+        this.hasClasses = hasClasses;
+    }
+
+    public boolean
+    cleanUpStatisticType() {
+        if(this.statisticType != null && !this.statisticType.equals("")) {
+
+            if(this.statisticType.contains("1")) {
+                this.hasLangType = true;
+            }
+            if(this.statisticType.contains("2")) {
+                this.hasAcademy = true;
+            }
+            if(this.statisticType.contains("3")) {
+                this.hasMajor = true;
+            }
+            if(this.statisticType.contains("4")) {
+                this.hasGrade = true;
+            }
+            if(this.statisticType.contains("5")) {
+                this.hasClasses = true;
+            }
+
+            return true;
+        }else {
+            return false;
+        }
     }
 }

@@ -618,6 +618,10 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			// 插入新数据
 			langStisticExtDao.insert(langStisticExt);
 
+			if(!langStisticExt.cleanUpStatisticType()) {
+				return RespData.errorMsg("统计类别为空");
+			}
+
 			List<StatisticReport> schoolBaseNumber = null;
 			if(langStisticExt.getGrade() != null && !langStisticExt.getGrade().equals("")) {
 				String[] gradeArr = langStisticExt.getGrade().split(",");
@@ -1084,7 +1088,7 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 			titleRow.getCell(11).setCellValue("平均分数");
 			titleRow.getCell(11).setCellStyle(cellStyleTitle);
 		}
-		if(column == 15 || column == 14) {
+		if(column == 15) {
 			titleRow.getCell(12).setCellValue("通过率(报考)");
 			titleRow.getCell(12).setCellStyle(cellStyleTitle);
 		}else if(column == 14) {

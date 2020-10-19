@@ -6,6 +6,7 @@
         <result property="dataSource" column="data_source" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="langType" column="lang_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="examDate" column="exam_date" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="statisticType" column="statistic_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="grade" column="grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="academy" column="academy" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="major" column="major" javaType="java.lang.String" jdbcType="VARCHAR"/>
@@ -15,6 +16,7 @@
 		data_source,
 		lang_type,
 		exam_date,
+		statistic_type,
 		grade,
 		academy,
 		major,
@@ -74,6 +76,9 @@
 			<if test=" examDate != null and examDate != ''">
 				exam_date,
 			</if>
+			<if test=" statisticType != null and statisticType != ''">
+				statistic_type,
+			</if>
 			<if test=" grade != null and grade != ''">
 				grade,
 			</if>
@@ -96,6 +101,9 @@
 			</if>
 			<if test=" examDate != null and examDate != ''">
 				#{examDate,jdbcType=VARCHAR},
+			</if>
+			<if test=" statisticType != null and statisticType != ''">
+				#{statisticType,jdbcType=VARCHAR},
 			</if>
 			<if test=" grade != null and grade != ''">
 				#{grade,jdbcType=VARCHAR},
@@ -122,6 +130,9 @@
 			</if>
 			<if test=" examDate != null and examDate != ''">
 				exam_date = #{examDate,jdbcType=VARCHAR},
+			</if>
+			<if test=" statisticType != null and statisticType != ''">
+				statistic_type = #{statisticType,jdbcType=VARCHAR},
 			</if>
 			<if test=" grade != null and grade != ''">
 				grade = #{grade,jdbcType=VARCHAR},
