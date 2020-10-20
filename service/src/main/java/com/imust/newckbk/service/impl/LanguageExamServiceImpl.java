@@ -530,7 +530,7 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 				index = year-1;
 			}
 
-			for (int i = index; i > index-5; i--) {
+			for (int i = index; i > index-6; i--) {
 				TreeExt treeExt = new TreeExt();
 				treeExt.setId(String.valueOf(snowRakeIdGenerator.nextId()));
 				treeExt.setText(String.valueOf(i));

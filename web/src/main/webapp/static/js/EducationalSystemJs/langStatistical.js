@@ -133,10 +133,20 @@ function cleanUpParam() {
     let academy = [];
     let major = [];
     let classes = [];
+    console.log("undeterminedNodes",undeterminedNodes);
+    console.log("checkNodes",checkNodes);
+    for(let i = 0; i < checkNodes.length; i++) {
+        if(checkNodes[i].original.level == "0") {
+            grade.push("'" + checkNodes[i].text + "'");
+        }
+    }
+    for(let i = 0; i < undeterminedNodes.length; i++) {
+        if(undeterminedNodes[i].original.level == "0") {
+            grade.push("'" + undeterminedNodes[i].text + "'");
+        }
+    }
     for(let i = 0; i < uncheckNodes.length; i++) {
-        if(uncheckNodes[i].level == "0") {
-            grade.push("'" + uncheckNodes[i].text + "'");
-        }else if(uncheckNodes[i].level == "1") {
+        if(uncheckNodes[i].level == "1") {
             academy.push("'" + uncheckNodes[i].text + "'");
         }else if(uncheckNodes[i].level == "2") {
             major.push("'" + uncheckNodes[i].text + "'");
