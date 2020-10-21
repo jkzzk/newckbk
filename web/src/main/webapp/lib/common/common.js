@@ -347,6 +347,49 @@ function get_unCheckNodes(checkNodes,allNodes) {
 
     return allNodes;
 }
+
+function get_checkStruct(checkNodes) {
+    if(!Array.isArray(checkNodes)) {
+        return [];
+    }
+
+    let gradeNodes = [];
+
+    for(let i = 0; i < checkNodes.length; i++){
+        if(checkNodes[i].original.level == '0') {
+            let gradeNode = {};
+            gradeNode.grade = checkNodes[i].text;
+            gradeNode.children = checkNodes[i].children_d;
+            gradeNode.academy = [];
+            gradeNode.major = [];
+            gradeNode.classes = [];
+            gradeNodes.push(gradeNode);
+        }
+    }
+
+    for (let i = 0; i < checkNodes.length; i++) {
+        for(let j = 0; j < gradeNodes.length; j++) {
+            if(gradeNodes[j].children.indexOf(checkNodes[i].id) != -1) {
+                if(checkNodes[i].original.level == '1') {
+                    gradeNodes[j].academy.push("'" + checkNodes[i].text + "'");
+                }else if(checkNodes[i].original.level == '2') {
+                    gradeNodes[j].major.push("'" + checkNodes[i].text + "'");
+                }else if(checkNodes[i].original.level == '3') {
+                    gradeNodes[j].classes.push("'" + checkNodes[i].text + "'");
+                }
+            }
+        }
+    }
+
+    for(let i = 0; i < gradeNodes.length; i++) {
+        delete gradeNodes[i].children;
+        gradeNodes[i].academy = gradeNodes[i].academy.join(",");
+        gradeNodes[i].major = gradeNodes[i].major.join(",");
+        gradeNodes[i].classes = gradeNodes[i].classes.join(",");
+    }
+
+    return gradeNodes;
+}
 /**
  * 时间格式化
  * 作者：闫慧彬

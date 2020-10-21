@@ -7,20 +7,14 @@
         <result property="langType" column="lang_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="examDate" column="exam_date" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result property="statisticType" column="statistic_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result property="grade" column="grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result property="academy" column="academy" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result property="major" column="major" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result property="classes" column="classes" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="gradeParamStrs" column="grade" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="cols">
 		data_source,
 		lang_type,
 		exam_date,
 		statistic_type,
-		grade,
-		academy,
-		major,
-		classes
+		grade_param_strs
 	</sql>
 	<delete id="deleteAll">
 		delete from LANG_STISTIC_EXT
@@ -79,17 +73,8 @@
 			<if test=" statisticType != null and statisticType != ''">
 				statistic_type,
 			</if>
-			<if test=" grade != null and grade != ''">
-				grade,
-			</if>
-			<if test=" academy != null and academy != ''">
-				academy,
-			</if>
-			<if test=" major != null and major != ''">
-				major,
-			</if>
-			<if test=" classes != null and classes != ''">
-				classes
+			<if test=" gradeParamStrs != null and gradeParamStrs != ''">
+				grade_param_strs
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -105,17 +90,8 @@
 			<if test=" statisticType != null and statisticType != ''">
 				#{statisticType,jdbcType=VARCHAR},
 			</if>
-			<if test=" grade != null and grade != ''">
-				#{grade,jdbcType=VARCHAR},
-			</if>
-			<if test=" academy != null and academy != ''">
-				#{academy,jdbcType=VARCHAR},
-			</if>
-			<if test=" major != null and major != ''">
-				#{major,jdbcType=VARCHAR},
-			</if>
-			<if test=" classes != null and classes != ''">
-				#{classes,jdbcType=VARCHAR}
+			<if test=" gradeParamStrs != null and gradeParamStrs != ''">
+				#{gradeParamStrs,jdbcType=VARCHAR}
 			</if>
 		</trim>
 	</insert>
@@ -134,17 +110,8 @@
 			<if test=" statisticType != null and statisticType != ''">
 				statistic_type = #{statisticType,jdbcType=VARCHAR},
 			</if>
-			<if test=" grade != null and grade != ''">
-				grade = #{grade,jdbcType=VARCHAR},
-			</if>
-			<if test=" academy != null and academy != ''">
-				academy = #{academy,jdbcType=VARCHAR},
-			</if>
-			<if test=" major != null and major != ''">
-				major = #{major,jdbcType=VARCHAR},
-			</if>
-			<if test=" classes != null and classes != ''">
-				classes = #{classes,jdbcType=VARCHAR}
+			<if test=" gradeParamStrs != null and gradeParamStrs != ''">
+				grade_param_strs = #{gradeParamStrs,jdbcType=VARCHAR}
 			</if>
 		</set>
 		 where id= #{id} 

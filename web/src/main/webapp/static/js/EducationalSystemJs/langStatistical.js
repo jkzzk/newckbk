@@ -14,6 +14,7 @@ var statisticParam = {
     langType : '',
     examDate : '',
     statisticType : '',
+    gradeParam : [],
     grade : '',
     academy : '',
     major : '',
@@ -129,12 +130,14 @@ function cleanUpParam() {
     let undeterminedNodes = $('#infoTree').jstree(true).get_undetermined(true);
     let assignOrigin = Object.assign([],treeOriginArr);
     let uncheckNodes = get_unCheckNodes(checkNodes.concat(undeterminedNodes),assignOrigin);
+    let checkStructParam = get_checkStruct(checkNodes.concat(undeterminedNodes));
     let grade = [];
     let academy = [];
     let major = [];
     let classes = [];
-    console.log("undeterminedNodes",undeterminedNodes);
+/*    console.log("undeterminedNodes",undeterminedNodes);
     console.log("checkNodes",checkNodes);
+    console.log("checkStructParam",checkStructParam);
     for(let i = 0; i < checkNodes.length; i++) {
         if(checkNodes[i].original.level == "0") {
             grade.push("'" + checkNodes[i].text + "'");
@@ -153,7 +156,9 @@ function cleanUpParam() {
         }else if(uncheckNodes[i].level == "3") {
             classes.push("'" + uncheckNodes[i].text + "'");
         }
-    }
+    }*/
+
+    console.log("checkStructParam",checkStructParam);
 
     if(ifIsNull(initParam.dataSource) != '') {
         if(Array.isArray(initParam.dataSource)) {
@@ -195,10 +200,11 @@ function cleanUpParam() {
         errMsg("请选择统计类型！");
         return false;
     }
-    statisticParam.grade = grade.join(",");
+    statisticParam.gradeParam = checkStructParam;
+/*    statisticParam.grade = grade.join(",");
     statisticParam.academy = academy.join(",");
     statisticParam.major = major.join(",");
-    statisticParam.classes = classes.join(",");
+    statisticParam.classes = classes.join(",");*/
 
     return true;
 }
@@ -248,16 +254,10 @@ $(function () {
 
     // 统计并导出
     $('#statisticAndExport').click(function () {
-        // window.open("/langExam/exportStatistic");
-        $('#loadingToast').show();
+        window.open("/langExam/exportStatistic");
+        /*$('#loadingToast').show();
         setTimeout(function () {
             if(cleanUpParam()) {
-                // console.log("statisticParam",statisticParam);
-                /*            $('#loadingToast').show();
-                            setTimeout(function () {
-                                window.open("/langExam/exportStatistic");
-                                $('#loadingToast').hide();
-                            },1000);*/
                 $.request({
                     async : false,
                     url : '/langExam/statisticReport',
@@ -290,6 +290,6 @@ $(function () {
             }else {
                 $('#loadingToast').hide();
             }
-        },50);
+        },50);*/
     });
 });
