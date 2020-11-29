@@ -85,17 +85,17 @@
 			xs_xjxxb_view_kw
 		<where>
 			<!--SFYXJ = '是'-->
-			<if test="grade != null and grade != ''">
-				and dqnj in (${grade})
+			<if test="hasGrade and currentParam.grade != null and currentParam.grade != ''">
+				and dqnj in (${currentParam.grade})
 			</if>
-			<if test="academy != null and academy != ''">
-				and xsm not in (${academy})
+			<if test="hasAcademy and currentParam.academy != null and currentParam.academy != ''">
+				and xsm in (${currentParam.academy})
 			</if>
-			<if test="major != null and major != ''">
-				and zym not in (${major})
+			<if test="hasMajor and currentParam.major != null and currentParam.major != ''">
+				and zym in (${currentParam.major})
 			</if>
-			<if test="classes != null and classes != ''">
-				and bjh not in (${classes})
+			<if test="hasClasses and currentParam.classes != null and currentParam.classes != ''">
+				and bjh in (${currentParam.classes})
 			</if>
 			group by
 				<trim suffixOverrides=",">
@@ -138,17 +138,17 @@
 			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
 		<where>
 			<!--xs_xjxxb_view_kw.SFYXJ = '是'-->
-			<if test="grade != null and grade != ''">
-				and dqnj in (${grade})
+			<if test="hasGrade and currentParam.grade != null and currentParam.grade != ''">
+				and dqnj in (${currentParam.grade})
 			</if>
-			<if test="academy != null and academy != ''">
-				and xsm not in (${academy})
+			<if test="hasAcademy and currentParam.academy != null and currentParam.academy != ''">
+				and xsm in (${currentParam.academy})
 			</if>
-			<if test="major != null and major != ''">
-				and zym not in (${major})
+			<if test="hasMajor and currentParam.major != null and currentParam.major != ''">
+				and zym in (${currentParam.major})
 			</if>
-			<if test="classes != null and classes != ''">
-				and xs_xjxxb_view_kw.bjh not in (${classes})
+			<if test="hasClasses and currentParam.classes != null and currentParam.classes != ''">
+				and xs_xjxxb_view_kw.bjh in (${currentParam.classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -198,17 +198,17 @@
 			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
 		<where>
 			<!--xs_xjxxb_view_kw.SFYXJ = '是' and--> ks_qk = '缺考'
-			<if test="grade != null and grade != ''">
-				and dqnj in (${grade})
+			<if test="hasGrade and currentParam.grade != null and currentParam.grade != ''">
+				and dqnj in (${currentParam.grade})
 			</if>
-			<if test="academy != null and academy != ''">
-				and xsm not in (${academy})
+			<if test="hasAcademy and currentParam.academy != null and currentParam.academy != ''">
+				and xsm in (${currentParam.academy})
 			</if>
-			<if test="major != null and major != ''">
-				and zym not in (${major})
+			<if test="hasMajor and currentParam.major != null and currentParam.major != ''">
+				and zym in (${currentParam.major})
 			</if>
-			<if test="classes != null and classes != ''">
-				and xs_xjxxb_view_kw.bjh not in (${classes})
+			<if test="hasClasses and currentParam.classes != null and currentParam.classes != ''">
+				and xs_xjxxb_view_kw.bjh in (${currentParam.classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -256,17 +256,17 @@
 			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
 		<where>
 			<!--xs_xjxxb_view_kw.SFYXJ = '是' and--> ks_zf >= 425
-			<if test="grade != null and grade != ''">
-				and dqnj in (${grade})
+			<if test="hasGrade and currentParam.grade != null and currentParam.grade != ''">
+				and dqnj in (${currentParam.grade})
 			</if>
-			<if test="academy != null and academy != ''">
-				and xsm not in (${academy})
+			<if test="hasAcademy and currentParam.academy != null and currentParam.academy != ''">
+				and xsm in (${currentParam.academy})
 			</if>
-			<if test="major != null and major != ''">
-				and zym not in (${major})
+			<if test="hasMajor and currentParam.major != null and currentParam.major != ''">
+				and zym in (${currentParam.major})
 			</if>
-			<if test="classes != null and classes != ''">
-				and xs_xjxxb_view_kw.bjh not in (${classes})
+			<if test="hasClasses and currentParam.classes != null and currentParam.classes != ''">
+				and xs_xjxxb_view_kw.bjh in (${currentParam.classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -315,17 +315,17 @@
 			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
 		<where>
 			<!--xs_xjxxb_view_kw.SFYXJ = '是'-->
-			<if test="grade != null and grade != ''">
-				and dqnj in (${grade})
+			<if test="hasGrade and currentParam.grade != null and currentParam.grade != ''">
+				and dqnj in (${currentParam.grade})
 			</if>
-			<if test="academy != null and academy != ''">
-				and xsm not in (${academy})
+			<if test="hasAcademy and currentParam.academy != null and currentParam.academy != ''">
+				and xsm in (${currentParam.academy})
 			</if>
-			<if test="major != null and major != ''">
-				and zym not in (${major})
+			<if test="hasMajor and currentParam.major != null and currentParam.major != ''">
+				and zym in (${currentParam.major})
 			</if>
-			<if test="classes != null and classes != ''">
-				and xs_xjxxb_view_kw.bjh not in (${classes})
+			<if test="hasClasses and currentParam.classes != null and currentParam.classes != ''">
+				and xs_xjxxb_view_kw.bjh in (${currentParam.classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})
@@ -374,17 +374,17 @@
 			left join xs_xjxxb_view_kw on xs_xjxxb_view_kw.xh = cet_stuscore.ks_xh
 		<where>
 			<!--xs_xjxxb_view_kw.SFYXJ = '是'-->
-			<if test="grade != null and grade != ''">
-				and dqnj in (${grade})
+			<if test="hasGrade and currentParam.grade != null and currentParam.grade != ''">
+				and dqnj in (${currentParam.grade})
 			</if>
-			<if test="academy != null and academy != ''">
-				and xsm not in (${academy})
+			<if test="hasAcademy and currentParam.academy != null and currentParam.academy != ''">
+				and xsm in (${currentParam.academy})
 			</if>
-			<if test="major != null and major != ''">
-				and zym not in (${major})
+			<if test="hasMajor and currentParam.major != null and currentParam.major != ''">
+				and zym in (${currentParam.major})
 			</if>
-			<if test="classes != null and classes != ''">
-				and xs_xjxxb_view_kw.bjh not in (${classes})
+			<if test="hasClasses and currentParam.classes != null and currentParam.classes != ''">
+				and xs_xjxxb_view_kw.bjh in (${currentParam.classes})
 			</if>
 			<if test="examDate != null and examDate != ''">
 				and ks_kssj in (${examDate})

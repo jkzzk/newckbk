@@ -1,5 +1,8 @@
 package com.imust.newckbk.domain.ext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author jkzzk
  * @description
@@ -15,13 +18,11 @@ public class LangStisticExt {
 
     private String statisticType;
 
-    private String grade;
+    private List<GradeParam> gradeParam;
 
-    private String academy;
+    private GradeParam currentParam;
 
-    private String major;
-
-    private String classes;
+    private String gradeParamStrs;
 
     private Boolean hasLangType = false;
 
@@ -65,36 +66,56 @@ public class LangStisticExt {
         this.statisticType = statisticType;
     }
 
-    public String getGrade() {
-        return grade;
+    public List<GradeParam> getGradeParam() {
+        return gradeParam;
     }
 
-    public void setGrade(String grade) {
-        this.grade = grade;
+    public void setGradeParam(List<GradeParam> gradeParam) {
+        this.gradeParam = gradeParam;
     }
 
-    public String getAcademy() {
-        return academy;
+    public GradeParam getCurrentParam() {
+        return currentParam;
     }
 
-    public void setAcademy(String academy) {
-        this.academy = academy;
+    public void setCurrentParam(GradeParam currentParam) {
+        this.currentParam = currentParam;
     }
 
-    public String getMajor() {
-        return major;
+    public String deCodeGradeParamStrs() {
+        String gradeParamStrs = "";
+        if(this.gradeParam != null && !this.gradeParam.isEmpty()) {
+            for (GradeParam param : this.gradeParam) {
+                gradeParamStrs += param.getGradeParamStr() + "@";
+            }
+            gradeParamStrs = gradeParamStrs.substring(0,gradeParamStrs.length()-1);
+        }
+
+        return gradeParamStrs;
     }
 
-    public void setMajor(String major) {
-        this.major = major;
+    public List<GradeParam> enCodeGradeParamStrs(String gradeParamStrs) {
+        List<GradeParam> gradeParams = new ArrayList<GradeParam>();
+        String[] gradeParamStr = gradeParamStrs.split("@");
+        for (String _gradeParam : gradeParamStr) {
+            GradeParam gradeParam = new GradeParam();
+            String[] paramChildren = _gradeParam.split("#");
+            gradeParam.setGrade(paramChildren[0]);
+            gradeParam.setAcademy(paramChildren[1]);
+            gradeParam.setMajor(paramChildren[2]);
+            gradeParam.setClasses(paramChildren[3]);
+            gradeParams.add(gradeParam);
+        }
+
+        return gradeParams;
     }
 
-    public String getClasses() {
-        return classes;
+    public String getGradeParamStrs() {
+        return gradeParamStrs;
     }
 
-    public void setClasses(String classes) {
-        this.classes = classes;
+    public void setGradeParamStrs(String gradeParamStrs) {
+        this.gradeParamStrs = gradeParamStrs;
     }
 
     public Boolean getHasLangType() {

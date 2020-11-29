@@ -21,6 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import com.imust.newckbk.base.AbstractService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
@@ -609,12 +611,24 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		}
 	}
 
+	@Override
+	public List<LanguageExam> getAllByType(String exportType) {
+		return languageExamDao.getAllByType(exportType);
+	}
+
+	/**
+	 * 统计数据
+	 *
+	 * @param langStisticExt
+	 * @return
+	 */
     @Override
     public RespData statisticReport(LangStisticExt langStisticExt) {
 		try {
 
 			// 删除旧数据
 			langStisticExtDao.deleteAll();
+			langStisticExt.setGradeParamStrs(langStisticExt.deCodeGradeParamStrs()); // 编译参数为字符串，以便存储
 			// 插入新数据
 			langStisticExtDao.insert(langStisticExt);
 
@@ -622,73 +636,80 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 				return RespData.errorMsg("统计类别为空");
 			}
 
-			List<StatisticReport> schoolBaseNumber = null;
-			if(langStisticExt.getGrade() != null && !langStisticExt.getGrade().equals("")) {
-				String[] gradeArr = langStisticExt.getGrade().split(",");
-				String newGradeStr = "";
-				for (String grade : gradeArr) {
-					String tmpGrade = grade.substring(0, grade.length() - 1) + "级\'";
-					newGradeStr += tmpGrade + ",";
+			// 按照年级参数查询
+			List<GradeParam> gradeParam = langStisticExt.getGradeParam();
+			List<StatisticReportExt> statisticReportExts = new ArrayList<>();
+			if(gradeParam != null && !gradeParam.isEmpty()) {
+				for (GradeParam param : gradeParam) {
+					langStisticExt.setCurrentParam(param);
+					StatisticReportExt statisticResult = this.getStatisticResult(langStisticExt);
+					statisticReportExts.add(statisticResult);
 				}
-				langStisticExt.setGrade(newGradeStr.substring(0,newGradeStr.length()-1));
 			}
-			schoolBaseNumber = cetStuscoreDao.statisticBaseNumberRegister(langStisticExt);
 
-			List<StatisticReport> baseNumber = null;
-			/*if(langStisticExt.getGrade() != null && !langStisticExt.getGrade().equals("")) {
-				String[] gradeArr = langStisticExt.getGrade().split(",");
-				String newGradeStr = "";
-				for (String grade : gradeArr) {
-					newGradeStr += grade.substring(1,2) + ",";
-				}
-				langStisticExt.setGrade(newGradeStr.substring(0,newGradeStr.length()-1));
-			}*/
-			baseNumber = cetStuscoreDao.statisticBaseNumberEnter(langStisticExt);
+			// 将按年级查询结果整理成一个单独有效的数据集合
+			List<StatisticReport> statisticDataSet = this.getStatisticDataSet(statisticReportExts);
 
-			List<StatisticReport> missingNumber = null;
-			missingNumber = cetStuscoreDao.statisticMissingNumber(langStisticExt);
+			// 将统计数据插入到统计表中存储，以便之后导出与二次统计
+			statisticReportDao.deleteAll();
+			for (StatisticReport statisticReport : statisticDataSet) {
+				statisticReportDao.insert(statisticReport);
+			}
 
-			List<StatisticReport> passNumber = null;
-			passNumber = cetStuscoreDao.statisticPassNumber(langStisticExt);
+			return RespData.successMsg("统计成功！",1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug("系统错误：" + e.toString());
+			throw e;
+		}
+	}
 
-			List<StatisticReport> avgScore = null;
-			avgScore = cetStuscoreDao.statisticAvgScore(langStisticExt);
+	/**
+	 * 综合按年级统计结果
+	 *
+	 * @param statisticReportExts
+	 * @return
+	 */
+	private List<StatisticReport> getStatisticDataSet(List<StatisticReportExt> statisticReportExts) {
 
-			List<StatisticReport> maxScore = null;
-			maxScore = cetStuscoreDao.statisticMaxScore(langStisticExt);
+		List<StatisticReport> statisticReports = new ArrayList<>();
 
+		for (StatisticReportExt statisticReportExt : statisticReportExts) {
+			List<StatisticReport> maxScore = statisticReportExt.getMaxScore();
+
+			// 综合整理
 			for (StatisticReport statisticReportMax : maxScore) {
 				logger.debug("平均分");
-				for (StatisticReport statisticReportAvg : avgScore) {
+				for (StatisticReport statisticReportAvg : statisticReportExt.getAvgScore()) {
 					if(statisticReportAvg.getLangType().equals(statisticReportMax.getLangType()) && statisticReportAvg.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportAvg.getMajor().equals(statisticReportMax.getMajor())
-					&& statisticReportAvg.getGrade().equals(statisticReportMax.getGrade()) && statisticReportAvg.getClasses().equals(statisticReportMax.getClasses())) {
+							&& statisticReportAvg.getGrade().equals(statisticReportMax.getGrade()) && statisticReportAvg.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setAvgScore(statisticReportAvg.getAvgScore());
 					}
 				}
 				logger.debug("通过人数");
-				for (StatisticReport statisticReportPass : passNumber) {
+				for (StatisticReport statisticReportPass : statisticReportExt.getPassNumber()) {
 					if(statisticReportPass.getLangType().equals(statisticReportMax.getLangType()) && statisticReportPass.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportPass.getMajor().equals(statisticReportMax.getMajor())
 							&& statisticReportPass.getGrade().equals(statisticReportMax.getGrade()) && statisticReportPass.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setPassNumber(statisticReportPass.getPassNumber());
 					}
 				}
 				logger.debug("缺考人数");
-				for (StatisticReport statisticReportMissing : missingNumber) {
+				for (StatisticReport statisticReportMissing : statisticReportExt.getMissingNumber()) {
 					if(statisticReportMissing.getLangType().equals(statisticReportMax.getLangType()) && statisticReportMissing.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportMissing.getMajor().equals(statisticReportMax.getMajor())
 							&& statisticReportMissing.getGrade().equals(statisticReportMax.getGrade()) && statisticReportMissing.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setMissingNumber(statisticReportMissing.getMissingNumber());
 					}
 				}
 				logger.debug("报考人数");
-				for (StatisticReport statisticReportBase: baseNumber) {
+				for (StatisticReport statisticReportBase: statisticReportExt.getBaseNumber()) {
 					if(statisticReportBase.getLangType().equals(statisticReportMax.getLangType()) && statisticReportBase.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportBase.getMajor().equals(statisticReportMax.getMajor())
 							&& statisticReportBase.getGrade().equals(statisticReportMax.getGrade()) && statisticReportBase.getClasses().equals(statisticReportMax.getClasses())) {
 						statisticReportMax.setBaseNumber(statisticReportBase.getBaseNumber());
 					}
 				}
 				logger.debug("学籍");
-				if(null != schoolBaseNumber) {
-					for (StatisticReport statisticReportSchool: schoolBaseNumber) {
+				if(null != statisticReportExt.getSchoolBaseNumber()) {
+					for (StatisticReport statisticReportSchool: statisticReportExt.getSchoolBaseNumber()) {
 						if(statisticReportSchool.getAcademy().equals(statisticReportMax.getAcademy()) && statisticReportSchool.getMajor().equals(statisticReportMax.getMajor())
 								&& statisticReportSchool.getGrade().equals(statisticReportMax.getGrade()) && statisticReportSchool.getClasses().equals(statisticReportMax.getClasses())) {
 							statisticReportMax.setSchoolNumber(statisticReportSchool.getSchoolNumber());
@@ -697,6 +718,7 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 				}
 			}
 
+			// 综合计算
 			for (StatisticReport statisticReport : maxScore) {
 				statisticReport.setActualNumber(statisticReport.getBaseNumber()-statisticReport.getMissingNumber());
 				if(!statisticReport.getBaseNumber().equals(0)) {
@@ -715,31 +737,70 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 				}
 			}
 
-			statisticReportDao.deleteAll();
-			for (StatisticReport statisticReport : maxScore) {
-				statisticReportDao.insert(statisticReport);
-			}
-
-			return RespData.successMsg("统计成功！",1);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.debug("系统错误：" + e.toString());
-			throw e;
+			// 将整理好的数据加入数据集合
+			statisticReports.addAll(maxScore);
 		}
+
+		return statisticReports;
 	}
 
-    @Override
+	/**
+	 * 获取查询结果
+	 *
+	 * @param langStisticExt
+	 * @return
+	 */
+	private StatisticReportExt getStatisticResult(LangStisticExt langStisticExt) {
+
+		StatisticReportExt statisticReportExt = new StatisticReportExt();
+
+		List<StatisticReport> schoolBaseNumber = null;
+		langStisticExt.getCurrentParam().setGrade("\'" + langStisticExt.getCurrentParam().getGrade() + "级" + "\'");
+		schoolBaseNumber = cetStuscoreDao.statisticBaseNumberRegister(langStisticExt);
+		statisticReportExt.setSchoolBaseNumber(schoolBaseNumber);
+
+		List<StatisticReport> baseNumber = null;
+		baseNumber = cetStuscoreDao.statisticBaseNumberEnter(langStisticExt);
+		statisticReportExt.setBaseNumber(baseNumber);
+
+		List<StatisticReport> missingNumber = null;
+		missingNumber = cetStuscoreDao.statisticMissingNumber(langStisticExt);
+		statisticReportExt.setMissingNumber(missingNumber);
+
+		List<StatisticReport> passNumber = null;
+		passNumber = cetStuscoreDao.statisticPassNumber(langStisticExt);
+		statisticReportExt.setPassNumber(passNumber);
+
+		List<StatisticReport> avgScore = null;
+		avgScore = cetStuscoreDao.statisticAvgScore(langStisticExt);
+		statisticReportExt.setAvgScore(avgScore);
+
+		List<StatisticReport> maxScore = null;
+		maxScore = cetStuscoreDao.statisticMaxScore(langStisticExt);
+		statisticReportExt.setMaxScore(maxScore);
+
+		return statisticReportExt;
+	}
+
+	/**
+	 * 导出统计结果
+	 *
+	 * @param response
+	 */
+	@Override
     public void exportStatistic(HttpServletResponse response) {
         try {
 
 			// 查询统计好的数据
 			List<StatisticReportExcel> statisticReportExcels = statisticReportDao.getAll();
 
+			// 查询统计条件
 			List<LangStisticExt> langStisticExts = langStisticExtDao.getOne();
 
 			LangStisticExt langStisticExt = null;
 			if(langStisticExts != null && langStisticExts.size() >= 0) {
 				langStisticExt = langStisticExts.get(0);
+				//langStisticExt.setGradeParam(langStisticExt.enCodeGradeParamStrs(langStisticExt.getGradeParamStrs()));
 				langStisticExt.cleanUpStatisticType();
 			}
 
@@ -759,12 +820,13 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		}
     }
 
-	@Override
-	public List<LanguageExam> getAllByType(String exportType) {
-    	return languageExamDao.getAllByType(exportType);
-	}
-
-    // 分组合计并插入
+	/**
+	 * 分组合计并插入，统计数据集合
+	 *
+	 * @param statisticReportExcels
+	 * @param langStisticExt
+	 * @return
+	 */
 	private List<StatisticReportExcel> getSumList(List<StatisticReportExcel> statisticReportExcels, LangStisticExt langStisticExt) {
 
 		// 按语种类别合计
@@ -840,7 +902,15 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		return statisticReportExcelsCalc;
 	}
 
+	/**
+	 * 获取导出Excel
+	 * @param statisticReportExcels
+	 * @param langStisticExt
+	 * @return
+	 */
 	private Workbook getExcelWorkBook(List<StatisticReportExcel> statisticReportExcels, LangStisticExt langStisticExt) {
+
+
 		Workbook workbook = new SXSSFWorkbook();
 
 		CellStyle cellStyleValue = workbook.createCellStyle();
@@ -857,19 +927,9 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		cellStyleTitle.setBorderTop(BorderStyle.THIN);//上边框
 		cellStyleTitle.setBorderRight(BorderStyle.THIN);//右边框
 		cellStyleTitle.setAlignment(HorizontalAlignment.CENTER); // 居中
+		cellStyleTitle.setVerticalAlignment(VerticalAlignment.CENTER); // 居中
 		Font font = workbook.createFont();
 		font.setBold(true);
-		cellStyleTitle.setFont(font);
-
-		CellStyle cellStyleCalc = workbook.createCellStyle();
-		cellStyleTitle.setBorderBottom(BorderStyle.THIN); //下边框
-		cellStyleTitle.setBorderLeft(BorderStyle.THIN);//左边框
-		cellStyleTitle.setBorderTop(BorderStyle.THIN);//上边框
-		cellStyleTitle.setBorderRight(BorderStyle.THIN);//右边框
-		cellStyleTitle.setAlignment(HorizontalAlignment.CENTER); // 居中
-		Font font_color = workbook.createFont();
-		font_color.setBold(true);
-		font_color.setColor(Font.COLOR_RED);
 		cellStyleTitle.setFont(font);
 
 		if(langStisticExt == null) {
@@ -1036,10 +1096,154 @@ public class LanguageExamServiceImpl extends AbstractService<LanguageExam, Strin
 		}
 
 		//合并行
+		this.merageLanyType(statisticSheet,statisticReportExcels); // 合并语种类别
 
-		//删除列
+		if(langStisticExt.getHasAcademy()) {
+			this.merageAcademy(statisticSheet, statisticReportExcels);// 合并学院
+		}
+		if(langStisticExt.getHasMajor()) {
+			this.merageMajor(statisticSheet, statisticReportExcels);// 合并专业
+		}
+		if(langStisticExt.getHasGrade()) {
+			this.merageGrade(statisticSheet, statisticReportExcels);// 合并年级
+		}
 
 		return workbook;
+	}
+
+	// 合并语种级别
+	private void merageLanyType(Sheet statisticSheet, List<StatisticReportExcel> statisticReportExcels) {
+
+		Map<String,Integer> langTypeMerage = new LinkedHashMap<>();
+		Iterator<StatisticReportExcel> iterator = statisticReportExcels.iterator();
+		while (iterator.hasNext()) {
+			StatisticReportExcel statisticReportExcel = iterator.next();
+			if(statisticReportExcel == null) {
+				continue;
+			}
+			String langTypeKey = statisticReportExcel.getLangType();
+			if(langTypeMerage.containsKey(langTypeKey)) {
+				Integer num = langTypeMerage.get(langTypeKey);
+				langTypeMerage.put(langTypeKey,num+1);
+			}else {
+				langTypeMerage.put(langTypeKey,1);
+			}
+		}
+
+		int startIndex = 1;
+		int endIndex = 0;
+		for (String key : langTypeMerage.keySet()) {
+			Integer num = langTypeMerage.get(key);
+			if(num < 1) {
+				continue;
+			}
+			endIndex = startIndex + num - 1;
+			CellRangeAddress regionMerge = new CellRangeAddress(startIndex,endIndex,0,0);
+			statisticSheet.addMergedRegion(regionMerge);
+			startIndex = endIndex+1;
+		}
+	}
+
+	// 合并学院
+	private void merageAcademy(Sheet statisticSheet, List<StatisticReportExcel> statisticReportExcels) {
+		Map<String,Integer> academyMerage = new LinkedHashMap<>();
+		Iterator<StatisticReportExcel> iterator = statisticReportExcels.iterator();
+		while (iterator.hasNext()) {
+			StatisticReportExcel statisticReportExcel = iterator.next();
+			if(statisticReportExcel == null) {
+				continue;
+			}
+			String academyKey = statisticReportExcel.getLangType() + statisticReportExcel.getAcademy();
+			if(academyMerage.containsKey(academyKey)) {
+				Integer num = academyMerage.get(academyKey);
+				academyMerage.put(academyKey,num+1);
+			}else {
+				academyMerage.put(academyKey,1);
+			}
+		}
+
+		int startIndex = 1;
+		int endIndex = 0;
+		for (String key : academyMerage.keySet()) {
+			Integer num = academyMerage.get(key);
+			if(num < 2) {
+				endIndex = startIndex + num - 1;
+				startIndex = endIndex+1;
+				continue;
+			}
+			endIndex = startIndex + num - 1;
+			CellRangeAddress regionMerge = new CellRangeAddress(startIndex,endIndex,1,1);
+			statisticSheet.addMergedRegion(regionMerge);
+			startIndex = endIndex+1;
+		}
+	}
+
+	// 合并专业
+	private void merageMajor(Sheet statisticSheet, List<StatisticReportExcel> statisticReportExcels) {
+		Map<String,Integer> majorMerage = new LinkedHashMap<>();
+		Iterator<StatisticReportExcel> iterator = statisticReportExcels.iterator();
+		while (iterator.hasNext()) {
+			StatisticReportExcel statisticReportExcel = iterator.next();
+			if(statisticReportExcel == null) {
+				continue;
+			}
+			String majorKey = statisticReportExcel.getLangType() + statisticReportExcel.getAcademy() + statisticReportExcel.getMajor();
+			if(majorMerage.containsKey(majorKey)) {
+				Integer num = majorMerage.get(majorKey);
+				majorMerage.put(majorKey,num+1);
+			}else {
+				majorMerage.put(majorKey,1);
+			}
+		}
+
+		int startIndex = 1;
+		int endIndex = 0;
+		for (String key : majorMerage.keySet()) {
+			Integer num = majorMerage.get(key);
+			if(num < 2) {
+				endIndex = startIndex + num - 1;
+				startIndex = endIndex+1;
+				continue;
+			}
+			endIndex = startIndex + num - 1;
+			CellRangeAddress regionMerge = new CellRangeAddress(startIndex,endIndex,2,2);
+			statisticSheet.addMergedRegion(regionMerge);
+			startIndex = endIndex+1;
+		}
+	}
+
+	// 合并年级
+	private void merageGrade(Sheet statisticSheet, List<StatisticReportExcel> statisticReportExcels) {
+		Map<String,Integer> gardeMerage = new LinkedHashMap<>();
+		Iterator<StatisticReportExcel> iterator = statisticReportExcels.iterator();
+		while (iterator.hasNext()) {
+			StatisticReportExcel statisticReportExcel = iterator.next();
+			if(statisticReportExcel == null) {
+				continue;
+			}
+			String gradeKey = statisticReportExcel.getLangType() + statisticReportExcel.getAcademy() + statisticReportExcel.getMajor() + statisticReportExcel.getGrade();
+			if(gardeMerage.containsKey(gradeKey)) {
+				Integer num = gardeMerage.get(gradeKey);
+				gardeMerage.put(gradeKey,num+1);
+			}else {
+				gardeMerage.put(gradeKey,1);
+			}
+		}
+
+		int startIndex = 1;
+		int endIndex = 0;
+		for (String key : gardeMerage.keySet()) {
+			Integer num = gardeMerage.get(key);
+			if(num < 2) {
+				endIndex = startIndex + num - 1;
+				startIndex = endIndex+1;
+				continue;
+			}
+			endIndex = startIndex + num - 1;
+			CellRangeAddress regionMerge = new CellRangeAddress(startIndex,endIndex,3,3);
+			statisticSheet.addMergedRegion(regionMerge);
+			startIndex = endIndex+1;
+		}
 	}
 
 	/**
